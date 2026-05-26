@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>hSQLite Editor v0.1beta</title>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/eclipse.min.css">
@@ -5809,7 +5808,7 @@
             </button>
           </div>
         </details>
-        <input type="file" id="dbFile" accept=".db,.sqlite,.sqlite3,application/octet-stream" style="display:none" />
+        <input type="file" id="dbFile" accept=".db,.sqlite,.sqlite3,.db3,.s3db,.sl3,.sqlite.db,application/x-sqlite3,application/octet-stream" style="display:none" />
         <input type="file" id="sqlFileInput" accept=".sql,.txt,text/plain,application/sql" style="display:none" />
 
         <button id="clearRecentDbBtn" class="editor-action-btn ghost-btn" type="button" title="Limpar lista de bancos recentes">Limpar lista</button>
@@ -6350,6 +6349,7 @@ order by</textarea>
         <section>
           <h4>1. Começando</h4>
           <div>Use <span class="kbd">Escolher .db</span> para abrir uma base. Depois escreva SQL e execute com <span class="kbd">F5</span>.</div>
+          <div class="small-muted" style="margin-top:6px;">Extensões aceitas para bancos SQLite: <code>.db</code>, <code>.sqlite</code>, <code>.sqlite3</code>, <code>.db3</code>, <code>.s3db</code>, <code>.sl3</code>, <code>.sqlite.db</code>.</div>
         </section>
         <section>
           <h4>2. Área SQL</h4>
@@ -6926,9 +6926,15 @@ order by</textarea>
     selectedTypes: new Set(["table", "view"])
   };
   let sampleDatabasesIndex = [];
+  const ALLOWED_SQLITE_EXTENSIONS = [".db", ".sqlite", ".sqlite3", ".db3", ".s3db", ".sl3", ".sqlite.db"];
+  const SQLITE_HEADER_TEXT = "SQLite format 3";
   const SQLJS_CANDIDATE_BASES = [
-    "./vendor/sql.js/1.10.3",
-    "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3"
+    "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3",
+    "./vendor/sql.js/1.10.3"
+  ];
+  const CODEMIRROR_CANDIDATE_BASES = [
+    "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16",
+    "./vendor/codemirror/5.65.16"
   ];
   function getSqlJsCandidateBases() {
     const isFileProtocol = location.protocol === "file:";
@@ -6937,6 +6943,9 @@ order by</textarea>
       return SQLJS_CANDIDATE_BASES.filter(base => /^https?:\/\//i.test(base));
     }
     return [...SQLJS_CANDIDATE_BASES];
+  }
+  function getCodeMirrorCandidateBases() {
+    return [...CODEMIRROR_CANDIDATE_BASES];
   }
   const SAMPLE_DATABASES_INDEX_URL = "https://raw.githubusercontent.com/SEU_USUARIO/SEU_REPOSITORIO/main/sample-databases/index.json";
   const BOTTOM_TOOLBAR_MIN_ROWS = 31;
@@ -7622,7 +7631,7 @@ order by</textarea>
     return extraKeys;
   }
 
-  function initSqlEditor() {
+  async function initSqlEditor() {
     console.info("[SQLite Mini Editor] initSqlEditor called", {
       codeMirrorLoaded: Boolean(window.CodeMirror),
       sqlEditorFound: Boolean(sqlEditor),
@@ -7630,6 +7639,10 @@ order by</textarea>
     });
 
     if (!window.CodeMirror) {
+      const loaded = await ensureCodeMirrorRuntimeLoaded();
+      if (loaded) {
+        return initSqlEditor();
+      }
       console.error("[SQLite Mini Editor] CodeMirror não carregou. Verifique CDN/rede/adblock/CSP.");
       setStatus("CodeMirror não carregou. Editor simples ativado.", "warn");
       return;
@@ -9930,6 +9943,7 @@ order by</textarea>
       await initSqlJsIfNeeded();
       const buffer = await file.arrayBuffer();
       currentDbBytes = new Uint8Array(buffer);
+      assertValidSqliteFile(file, currentDbBytes);
       db = new SQL.Database(currentDbBytes);
       currentDbFileName = file && file.name ? file.name : "sqlite-db";
       currentDbSessionId = buildDbSessionId({
@@ -10005,8 +10019,8 @@ order by</textarea>
           types: [{
             description: "SQLite database",
             accept: {
-              "application/octet-stream": [".db", ".sqlite", ".sqlite3"],
-              "application/x-sqlite3": [".db", ".sqlite", ".sqlite3"]
+              "application/octet-stream": ALLOWED_SQLITE_EXTENSIONS,
+              "application/x-sqlite3": ALLOWED_SQLITE_EXTENSIONS
             }
           }]
         });
@@ -10068,6 +10082,43 @@ order by</textarea>
 
   async function openRecentDb(recentId = "") {
     return dbController.openRecent(recentId);
+  }
+
+  function hasAllowedSqliteExtension(fileName) {
+    const lower = String(fileName || "").trim().toLowerCase();
+    return ALLOWED_SQLITE_EXTENSIONS.some(ext => lower.endsWith(ext));
+  }
+
+  function isLikelySqliteBySignature(bytes) {
+    if (!bytes || bytes.length < 16) return false;
+    const decoder = new TextDecoder("ascii");
+    const header = decoder.decode(bytes.slice(0, 15));
+    return header === SQLITE_HEADER_TEXT && bytes[15] === 0;
+  }
+
+  function getKnownBinaryTypeLabel(bytes) {
+    if (!bytes || !bytes.length) return "desconhecido";
+    if (bytes.length >= 4 && bytes[0] === 0x50 && bytes[1] === 0x4B && bytes[2] === 0x03 && bytes[3] === 0x04) return "ZIP";
+    if (bytes.length >= 4 && bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46) return "PDF";
+    if (bytes.length >= 3 && bytes[0] === 0xFF && bytes[1] === 0xD8 && bytes[2] === 0xFF) return "JPEG";
+    if (bytes.length >= 8 && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) return "PNG";
+    if (bytes.length >= 6 && bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46) return "GIF";
+    if (bytes.length >= 12 && bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46 && bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50) return "WEBP";
+    if (bytes.length >= 3 && bytes[0] === 0x49 && bytes[1] === 0x44 && bytes[2] === 0x33) return "MP3";
+    if (bytes.length >= 8 && bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) return "MP4/MOV";
+    return "desconhecido";
+  }
+
+  function assertValidSqliteFile(file, bytes) {
+    const fileName = file && file.name ? file.name : "arquivo";
+    if (!hasAllowedSqliteExtension(fileName)) {
+      throw new Error(`Extensão não permitida para banco SQLite: ${fileName}. Use apenas ${ALLOWED_SQLITE_EXTENSIONS.join(", ")}.`);
+    }
+    if (!isLikelySqliteBySignature(bytes)) {
+      const detected = getKnownBinaryTypeLabel(bytes);
+      const detectedInfo = detected !== "desconhecido" ? ` Tipo detectado: ${detected}.` : "";
+      throw new Error(`O arquivo selecionado não parece ser um banco SQLite válido.${detectedInfo}`);
+    }
   }
 
 
@@ -10331,6 +10382,20 @@ order by</textarea>
     });
   }
 
+  async function loadStyleOnce(href) {
+    return await new Promise((resolve, reject) => {
+      const existing = document.querySelector(`link[data-runtime-href="${href}"], link[href="${href}"]`);
+      if (existing) return resolve();
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = href;
+      link.dataset.runtimeHref = href;
+      link.addEventListener("load", () => resolve(), { once: true });
+      link.addEventListener("error", () => reject(new Error(`Falha ao carregar stylesheet: ${href}`)), { once: true });
+      document.head.appendChild(link);
+    });
+  }
+
   async function ensureSqlJsRuntimeLoaded() {
     if (typeof window.initSqlJs === "function") return true;
     const bases = getSqlJsCandidateBases();
@@ -10338,6 +10403,22 @@ order by</textarea>
       try {
         await loadScriptOnce(`${base}/sql-wasm.js`);
         if (typeof window.initSqlJs === "function") return true;
+      } catch {}
+    }
+    return false;
+  }
+
+  async function ensureCodeMirrorRuntimeLoaded() {
+    if (window.CodeMirror) return true;
+    const bases = getCodeMirrorCandidateBases();
+    for (const base of bases) {
+      try {
+        await loadStyleOnce(`${base}/codemirror.min.css`);
+        await loadStyleOnce(`${base}/theme/material-darker.min.css`);
+        await loadStyleOnce(`${base}/theme/eclipse.min.css`);
+        await loadScriptOnce(`${base}/codemirror.min.js`);
+        await loadScriptOnce(`${base}/mode/sql/sql.min.js`);
+        if (window.CodeMirror) return true;
       } catch {}
     }
     return false;
