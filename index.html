@@ -5758,7 +5758,7 @@
     </div>
 
       <div class="header-actions">
-      <div class="session-switch" title="Salvar/restaurar sessão de abas e consultas (Ctrl/Cmd+F2)">
+      <div class="session-switch" title="Ao ativar esta opção, o hSQLite Editor salva localmente no seu navegador: abas abertas, consultas em edição, históricos, instruções favoritas e preferências. Em outro navegador/dispositivo esses dados não aparecem automaticamente. Para migrá-las, utilize Configurações → Exportar/Importar.">
         <span class="session-switch-label">Salvar sessão</span>
         <button id="sessionToggle" class="theme-toggle seg-switch session-toggle" type="button" role="switch" aria-checked="true" aria-label="Salvar sessão">
           <span class="session-toggle-option seg-switch-option" data-session-option="off" aria-hidden="true"><span class="seg-switch-center">OFF</span></span>
@@ -6071,7 +6071,7 @@ order by</textarea>
         <section class="first-run-option">
           <div>
             <strong>Salvar sessão</strong>
-            <span>Restaura abas, nomes e consultas em edição ao reabrir o editor neste navegador.</span>
+            <span>Ao ativar esta opção, o hSQLite Editor salva localmente no seu navegador: abas abertas, consultas em edição, históricos, instruções favoritas e preferências. Em outro navegador/dispositivo esses dados não aparecem automaticamente. Para migrá-las, utilize Configurações → Exportar/Importar.</span>
           </div>
           <div class="segmented-choice" role="group" aria-label="Salvar sessão">
             <label>
@@ -6865,12 +6865,6 @@ order by</textarea>
     });
   }
 
-  function updateTabPresetIndicator() {
-    if (!tabPresetIndicator) return;
-    const label = SQL_TAB_NAME_PRESET_LABELS[selectedTabNamePreset] || selectedTabNamePreset;
-    tabPresetIndicator.textContent = `Preset: ${label}`;
-  }
-
   function setTabNamePresetPreference(presetKey) {
     const normalized = Object.prototype.hasOwnProperty.call(SQL_TAB_NAME_PRESETS, presetKey) ? presetKey : "tlor";
     selectedTabNamePreset = normalized;
@@ -6878,7 +6872,6 @@ order by</textarea>
     tabNameBag = [];
     setSqlTabsState({ nextSqlTabNameIndex: 0 });
     syncTabNamePresetSelectValue();
-    updateTabPresetIndicator();
   }
   let quickHistoryActiveIndex = 0;
   let sqlFindState = {
@@ -7082,7 +7075,6 @@ order by</textarea>
   const firstRunTabNamePresetSelect = document.getElementById("firstRunTabNamePresetSelect");
   const themeToggle = document.getElementById("themeToggle");
   const tabNamePresetSelect = document.getElementById("tabNamePresetSelect");
-  const tabPresetIndicator = document.getElementById("tabPresetIndicator");
   const lightThemeConfirmModal = document.getElementById("lightThemeConfirmModal");
   const cancelLightThemeBtn = document.getElementById("cancelLightThemeBtn");
   const confirmLightThemeBtn = document.getElementById("confirmLightThemeBtn");
@@ -7202,6 +7194,17 @@ order by</textarea>
       setTheme(themeValue);
       setSessionPersistence(sessionValue);
       setTabNamePresetPreference(presetValue);
+
+      // First run: keep content, but always align the initial auto-generated
+      // tab name to the preset confirmed by the user.
+      if (sqlTabs.length === 1 && firstRunController.shouldShow()) {
+        const initialTab = sqlTabs[0];
+        if (initialTab) {
+          initialTab.title = getNextSqlTabName();
+          renderSqlTabs();
+          saveSqlTabsToStorage();
+        }
+      }
 
       storage.set(STORAGE_KEYS.FIRST_RUN_DONE, "true");
       modalController.close(firstRunModal);
@@ -7346,10 +7349,6 @@ order by</textarea>
   }
 
 
-  function openLightThemeConfirm() {
-    setTheme("light");
-  }
-
   function closeLightThemeConfirm() {
     modalController.close(lightThemeConfirmModal);
   }
@@ -7376,10 +7375,6 @@ order by</textarea>
   }
 
 
-
-  function setSchemaCollapsed(collapsed) {
-    schemaPanelController.setCollapsed(collapsed);
-  }
 
   function toggleSchemaPanel() {
     schemaPanelController.toggle();
@@ -7605,7 +7600,6 @@ order by</textarea>
     initSchemaPanelState();
     loadTabNamePresetPreference();
     renderTabNamePresetSelectOptions();
-    updateTabPresetIndicator();
     loadSessionPersistenceSetting();
     loadQueryHistoryFromStorage();
     initSqlEditor();
@@ -7782,12 +7776,6 @@ order by</textarea>
   }
 
   function clearSqlError() {
-    sqlErrorText.textContent = "";
-    sqlErrorBox.style.display = "none";
-  }
-
-  function showSqlError(message) {
-    // Erros SQL agora são exibidos apenas no toast persistente.
     sqlErrorText.textContent = "";
     sqlErrorBox.style.display = "none";
   }
@@ -8041,20 +8029,12 @@ order by</textarea>
     sessionController.load();
   }
 
-  function updateSessionToggleUI() {
-    sessionController.updateToggleUI();
-  }
-
   function setSessionPersistence(value) {
     sessionController.set(value);
   }
 
   function toggleSessionPersistence() {
     sessionController.toggle();
-  }
-
-  function shouldShowFirstRunModal() {
-    return firstRunController.shouldShow();
   }
 
   function openFirstRunModalIfNeeded() {
@@ -8559,10 +8539,6 @@ order by</textarea>
     }
   }
 
-  function renameSqlTab(tabId) {
-    startInlineTabRename(tabId);
-  }
-
   function startInlineTabRename(tabId) {
     const tab = sqlTabs.find(item => item.id === tabId);
     if (!tab) return;
@@ -8868,10 +8844,6 @@ order by</textarea>
     sqlTabsController.confirmClose();
   }
 
-  function closeSqlTab(tabId, confirmed = false) {
-    sqlTabsController.close(tabId, confirmed);
-  }
-
   function closeAllSqlTabs() {
     sqlTabsController.closeAll();
   }
@@ -8908,10 +8880,6 @@ order by</textarea>
     if (!needle) return escapeHtml(text);
     const regex = new RegExp(`(${escapeRegExp(needle)})`, "ig");
     return escapeHtml(text).replace(regex, '<mark class="query-history-highlight">$1</mark>');
-  }
-
-  function getFilteredQueryHistory() {
-    return queryHistoryController.getFiltered(queryHistorySearch.value);
   }
 
   function renderQueryHistory() {
@@ -10100,10 +10068,6 @@ order by</textarea>
 
   async function openRecentDb(recentId = "") {
     return dbController.openRecent(recentId);
-  }
-
-  async function chooseDbWithFileSystemApi() {
-    return dbController.chooseWithFsApi();
   }
 
 
@@ -12223,40 +12187,8 @@ function splitSqlStatements(sql) {
     return new URL(scriptPath, getSampleIndexUrl()).toString();
   }
 
-  async function loadSampleDatabaseIndex() {
-    return sampleDbController.loadIndex();
-  }
-
-  function renderSampleDatabaseOptions() {
-    sampleDbController.renderOptions();
-  }
-
-  function getSelectedSampleDatabase() {
-    return sampleDbController.getSelectedDatabase();
-  }
-
   function renderSelectedSampleDatabase() {
     sampleDbController.renderSelected();
-  }
-
-  function getSelectedSampleParts() {
-    return sampleDbController.getSelectedParts();
-  }
-
-  function getSampleAction() {
-    return sampleDbController.getAction();
-  }
-
-  async function fetchSampleScripts(dbItem, parts) {
-    return sampleDbController.fetchScripts(dbItem, parts);
-  }
-
-  async function insertSelectedSampleScripts() {
-    return sampleDbController.insertScripts();
-  }
-
-  async function createSelectedSampleDatabase() {
-    return sampleDbController.createDatabase();
   }
 
   async function handleSampleDatabaseConfirm() {
