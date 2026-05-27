@@ -21,6 +21,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          CONVENTIONAL_REGEX='^(feat|fix|chore|docs|refactor|perf|build|ci|test|revert)(\([^)]+\))?(!)?: .+'
 
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             BASE_SHA="${{ github.event.pull_request.base.sha }}"
@@ -53,7 +54,7 @@ jobs:
               continue
             fi
 
-            if [[ ! "$SUBJECT" =~ ^(feat|fix|chore|docs|refactor|perf|build|ci|test)(\([^)]+\))?(!)?:\ .+ ]]; then
+            if [[ ! "$SUBJECT" =~ $CONVENTIONAL_REGEX ]]; then
               echo "❌ Commit inválido: $COMMIT"
               echo "   Mensagem: $SUBJECT"
               FAIL=1
