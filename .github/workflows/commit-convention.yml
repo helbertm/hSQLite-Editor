@@ -1,0 +1,74 @@
+name: Commit Convention Check
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+
+jobs:
+  conventional-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate commit messages
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            BASE_SHA="${{ github.event.pull_request.base.sha }}"
+            HEAD_SHA="${{ github.event.pull_request.head.sha }}"
+          else
+            BASE_SHA="${{ github.event.before }}"
+            HEAD_SHA="${{ github.sha }}"
+          fi
+
+          echo "Checking commits in range: ${BASE_SHA}..${HEAD_SHA}"
+
+          # First push on repo may have all-zero before SHA.
+          if [[ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]]; then
+            COMMITS=$(git rev-list --max-count=1 "$HEAD_SHA")
+          else
+            COMMITS=$(git rev-list "${BASE_SHA}..${HEAD_SHA}")
+          fi
+
+          if [[ -z "$COMMITS" ]]; then
+            echo "No commits to validate."
+            exit 0
+          fi
+
+          FAIL=0
+          while IFS= read -r COMMIT; do
+            SUBJECT=$(git log -1 --pretty=%s "$COMMIT")
+
+            # Ignore merge commits created by GitHub.
+            if [[ "$SUBJECT" =~ ^Merge\ pull\ request\  ]] || [[ "$SUBJECT" =~ ^Merge\ branch\  ]]; then
+              continue
+            fi
+
+            if [[ ! "$SUBJECT" =~ ^(feat|fix|chore|docs|refactor|perf|build|ci|test)(\([^)]+\))?(!)?:\ .+ ]]; then
+              echo "❌ Commit inválido: $COMMIT"
+              echo "   Mensagem: $SUBJECT"
+              FAIL=1
+            fi
+          done <<< "$COMMITS"
+
+          if [[ "$FAIL" -ne 0 ]]; then
+            echo ""
+            echo "Use o padrão Conventional Commits:"
+            echo "  feat: descrição"
+            echo "  fix: descrição"
+            echo "  chore: descrição"
+            echo "Exemplo amigável:"
+            echo "  fix: Correção do texto das novidades no release de versão"
+            exit 1
+          fi
+
+          echo "✅ Todas as mensagens de commit estão válidas."
