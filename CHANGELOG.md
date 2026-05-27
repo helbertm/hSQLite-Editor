@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.3.0...hsqlite-editor-v0.3.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* publish release metadata files in pages artifact ([df7b96e](https://github.com/helbertm/hSQLite-Editor/commit/df7b96e9996f66381cd241d478f7b336b650bf33))
+
 ## [0.3.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.2.0...hsqlite-editor-v0.3.0) (2026-05-27)
 
 
