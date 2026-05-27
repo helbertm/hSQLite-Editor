@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.2.0...hsqlite-editor-v0.3.0) (2026-05-27)
+
+
+### Features
+
+* auto-sync app version and release notes from release-please files ([03e15e0](https://github.com/helbertm/hSQLite-Editor/commit/03e15e0a4568da12bf5790fd5b67d11b3e8782a3))
+
 ## [0.2.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.1.0...hsqlite-editor-v0.2.0) (2026-05-27)
 
 
