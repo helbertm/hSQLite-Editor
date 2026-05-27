@@ -2495,6 +2495,24 @@
       background: var(--accent);
     }
 
+    .release-notes-btn {
+      position: relative;
+      padding-right: 10px;
+    }
+
+    .release-badge {
+      position: absolute;
+      top: -4px;
+      right: 0px;
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--destructive);
+      border: 1.5px solid var(--panel);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--destructive) 35%, transparent);
+      pointer-events: none;
+    }
+
     .bug-icon {
       width: 14px;
       height: 14px;
@@ -5752,7 +5770,7 @@
   <div id="appRoot">
   <header class="app-header">
     <div class="brand-block">
-      <h1>hSQLite Editor <span class="version-pill">v0.1beta</span></h1>
+      <h1>hSQLite Editor <span class="version-pill" id="appVersionPill">v0.1.1</span></h1>
       <div class="subtitle">Para trabalhar e estudar</div>
     </div>
 
@@ -5772,6 +5790,10 @@
           <span class="theme-toggle-thumb"></span>
         </button>
       </div>
+      <button id="releaseNotesBtn" class="header-link-btn release-notes-btn" type="button" title="Novidades da versão">
+        Novidades
+        <span id="releaseNotesBadge" class="release-badge" aria-hidden="true" style="display:none;"></span>
+      </button>
       <button id="helpBtn" class="header-link-btn" type="button" title="Ajuda geral do Editor">? Help</button>
       <a id="bugReportBtn" class="header-link-btn" href="https://github.com/SEU_USUARIO/SEU_REPOSITORIO/issues" target="_blank" rel="noopener noreferrer" title="Reportar erros no GitHub Issues">
         <span class="bug-icon" aria-hidden="true">
@@ -6382,6 +6404,17 @@ order by</textarea>
     </div>
   </div>
 
+  <div class="modal-backdrop" id="releaseNotesModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="releaseNotesTitle">
+      <h3 id="releaseNotesTitle">Novidades da versão</h3>
+      <p id="releaseNotesSummary">Seu editor foi atualizado.</p>
+      <div id="releaseNotesContent" class="hint-content"></div>
+      <div class="modal-actions">
+        <button id="closeReleaseNotesBtn" class="primary" type="button" data-modal-cancel="true" data-modal-initial="true">Fechar</button>
+      </div>
+    </div>
+  </div>
+
 
   <div class="modal-backdrop" id="sampleDbModal">
     <div class="modal sample-db-modal" role="dialog" aria-modal="true" aria-labelledby="sampleDbTitle" aria-describedby="sampleDbDescriptionText">
@@ -6559,7 +6592,14 @@ order by</textarea>
     SCHEMA_FILTERS: "sqliteMiniEditorSchemaFiltersV1",
     RECENT_DBS: "sqliteMiniEditorRecentDbsV1",
     FILE_HANDLES_STORE: "sqliteMiniEditorFileHandlesV1",
-    LAST_SETTINGS_EXPORT_AT: "hSQLiteEditorLastSettingsExportAtV1"
+    LAST_SETTINGS_EXPORT_AT: "hSQLiteEditorLastSettingsExportAtV1",
+    LAST_SEEN_RELEASE_VERSION: "hSQLiteEditorLastSeenReleaseVersionV1"
+  };
+  const APP_VERSION = "0.1.1";
+  const RELEASE_NOTES = {
+    "0.1.1": [
+      "Alertas de novos releases."
+    ]
   };
   const CURRENT_STORAGE_SCHEMA_VERSION = 2;
   const SHORTCUT_ACTIONS = {
@@ -6990,6 +7030,12 @@ order by</textarea>
   const favoritesBtn = document.getElementById("favoritesBtn");
   const settingsTransferBtn = document.getElementById("settingsTransferBtn");
   const shortcutsHelpBtn = document.getElementById("shortcutsHelpBtn");
+  const releaseNotesBtn = document.getElementById("releaseNotesBtn");
+  const releaseNotesBadge = document.getElementById("releaseNotesBadge");
+  const releaseNotesModal = document.getElementById("releaseNotesModal");
+  const releaseNotesSummary = document.getElementById("releaseNotesSummary");
+  const releaseNotesContent = document.getElementById("releaseNotesContent");
+  const closeReleaseNotesBtn = document.getElementById("closeReleaseNotesBtn");
   const helpBtn = document.getElementById("helpBtn");
   const editorMoreActions = document.getElementById("editorMoreActions");
   const queryHistoryModal = document.getElementById("queryHistoryModal");
@@ -7589,6 +7635,40 @@ order by</textarea>
   bindEditorMoreActions();
   bindDatabaseMenuActions();
 
+  function setReleaseBadgeVisible(visible) {
+    if (!releaseNotesBadge) return;
+    releaseNotesBadge.style.display = visible ? "inline-flex" : "none";
+  }
+
+  function markReleaseVersionAsSeen() {
+    storage.set(STORAGE_KEYS.LAST_SEEN_RELEASE_VERSION, APP_VERSION);
+    setReleaseBadgeVisible(false);
+  }
+
+  function buildReleaseNotesList(version) {
+    const notes = RELEASE_NOTES[version] || ["Melhorias gerais de estabilidade e usabilidade."];
+    return `<ul>${notes.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+  }
+
+  function openReleaseNotesModal(markAsSeen = true) {
+    if (releaseNotesSummary) {
+      releaseNotesSummary.textContent = `Seu editor foi atualizado para a versão ${APP_VERSION}.`;
+    }
+    if (releaseNotesContent) {
+      releaseNotesContent.innerHTML = buildReleaseNotesList(APP_VERSION);
+    }
+    modalController.open(releaseNotesModal);
+    if (markAsSeen) markReleaseVersionAsSeen();
+  }
+
+  function evaluateReleaseNotesUpdate() {
+    const versionPill = document.getElementById("appVersionPill");
+    if (versionPill) versionPill.textContent = `v${APP_VERSION}`;
+    const seenVersion = storage.get(STORAGE_KEYS.LAST_SEEN_RELEASE_VERSION, "");
+    const isNewVersion = seenVersion !== APP_VERSION;
+    setReleaseBadgeVisible(isNewVersion);
+  }
+
   schemaCollapseBtn.addEventListener("click", toggleSchemaPanel);
   schemaToggleRail.addEventListener("click", toggleSchemaPanel);
 
@@ -7605,6 +7685,7 @@ order by</textarea>
 
   function bootApp() {
     storageMigrationController.run();
+    evaluateReleaseNotesUpdate();
     initTheme();
     initSchemaPanelState();
     loadTabNamePresetPreference();
@@ -12624,8 +12705,10 @@ function splitSqlStatements(sql) {
     renderLastSettingsExportInfo();
     modalController.open(settingsTransferModal);
   });
+  releaseNotesBtn.addEventListener("click", () => openReleaseNotesModal(true));
   closeSettingsTransferBtn.addEventListener("click", () => modalController.close(settingsTransferModal));
   shortcutsHelpBtn.addEventListener("click", () => modalController.open(shortcutsHelpModal));
+  closeReleaseNotesBtn.addEventListener("click", () => modalController.close(releaseNotesModal));
   closeShortcutsHelpBtn.addEventListener("click", () => modalController.close(shortcutsHelpModal));
   helpBtn.addEventListener("click", () => modalController.open(helpModal));
   closeHelpBtn.addEventListener("click", () => modalController.close(helpModal));
@@ -12685,6 +12768,9 @@ function splitSqlStatements(sql) {
   });
   helpModal.addEventListener("click", (event) => {
     if (modalController.isBackdropClick(event, helpModal)) modalController.close(helpModal);
+  });
+  releaseNotesModal.addEventListener("click", (event) => {
+    if (modalController.isBackdropClick(event, releaseNotesModal)) modalController.close(releaseNotesModal);
   });
   cancelCloseTabBtn.addEventListener("click", cancelCloseSqlTab);
   confirmCloseTabBtn.addEventListener("click", confirmCloseSqlTab);
