@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.2](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.3.1...hsqlite-editor-v0.3.2) (2026-05-27)
+
+
+### Bug Fixes
+
+* corrigir regex da validação de conventional commits no actions ([8e119a7](https://github.com/helbertm/hSQLite-Editor/commit/8e119a7adc293f26e31ebeb51f640fd3a97ce294))
+
 ## [0.3.1](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.3.0...hsqlite-editor-v0.3.1) (2026-05-27)
 
 
