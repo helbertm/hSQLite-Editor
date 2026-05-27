@@ -313,7 +313,7 @@
 
     textarea {
       width: 100%;
-      min-height: 230px;
+      min-height: 180px;
       background: var(--input-bg);
       color: var(--text);
       border: 1px solid var(--border);
@@ -335,7 +335,7 @@
 
     .CodeMirror {
       width: 100%;
-      min-height: 230px;
+      min-height: 180px;
       height: auto;
       background: var(--input-bg);
       color: var(--text);
@@ -353,7 +353,7 @@
     }
 
     .CodeMirror-scroll {
-      min-height: 230px;
+      min-height: 180px;
     }
 
     .cm-s-material-darker.CodeMirror,
@@ -625,12 +625,42 @@
     .table-wrap {
       width: 100%;
       max-width: 100%;
-      overflow: auto;
+      overflow-x: scroll;
+      overflow-y: auto;
       max-height: 620px;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--input-bg);
       overscroll-behavior: contain;
+      scrollbar-gutter: stable both-edges;
+    }
+
+    .result-hscroll {
+      display: none;
+      margin-top: 6px;
+      align-items: center;
+      gap: 8px;
+      color: var(--mutedText);
+      font-size: 11px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 120ms ease;
+    }
+
+    .result-hscroll.show {
+      display: flex;
+    }
+
+    .result-section:hover .result-hscroll.show,
+    .result-section:focus-within .result-hscroll.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .result-hscroll input[type="range"] {
+      width: 100%;
+      margin: 0;
+      accent-color: var(--accentLine);
     }
 
     table {
@@ -638,7 +668,7 @@
       border-spacing: 0;
       min-width: max-content;
       width: max-content;
-      font-size: 13px;
+      font-size: 11px;
       background: var(--input-bg);
     }
 
@@ -646,8 +676,9 @@
       position: relative;
       border-bottom: 1px solid var(--border);
       border-right: 1px solid var(--border);
-      padding: 8px 10px;
-      vertical-align: top;
+      padding: 3px 8px;
+      vertical-align: middle;
+      line-height: 1.1;
       white-space: nowrap;
       max-width: 420px;
       overflow: hidden;
@@ -677,9 +708,21 @@
       left: 0;
       z-index: 3;
       background: var(--panel2);
-      width: 46px;
+      width: 30px;
+      min-width: 30px;
+      max-width: 30px;
+      padding: 1px 3px !important;
       text-align: center;
       cursor: default;
+    }
+
+    th.checkbox input[type="checkbox"],
+    td.checkbox input[type="checkbox"] {
+      width: 12px;
+      height: 12px;
+      margin: 0;
+      display: block;
+      margin-inline: auto;
     }
 
     td.checkbox {
@@ -2757,21 +2800,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin: 0 0 10px;
+      gap: 8px;
+      margin: 0 0 8px;
       flex-wrap: wrap;
     }
 
     .result-header h2 {
       margin: 0;
-      font-size: 15px;
+      font-size: 14px;
       letter-spacing: -0.01em;
     }
 
     .result-actions {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
@@ -2879,7 +2922,10 @@
 
     /* v51 harmonize result export buttons */
     .result-actions .editor-action-btn {
-      min-width: 118px;
+      min-width: 104px;
+      min-height: 30px;
+      padding: 0 10px;
+      font-size: 12px;
       justify-content: center;
     }
 
@@ -3950,8 +3996,8 @@
     .editor-wrap {
       resize: vertical;
       overflow: auto;
-      min-height: 220px;
-      height: 300px;
+      min-height: 170px;
+      height: 230px;
       max-height: min(68vh, 720px);
       border-radius: var(--radius);
     }
@@ -3968,6 +4014,22 @@
       background:
         linear-gradient(135deg, transparent 0 45%, var(--mutedText) 45% 55%, transparent 55%),
         linear-gradient(135deg, transparent 0 63%, var(--mutedText) 63% 73%, transparent 73%);
+    }
+
+    .editor-resize-handle {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 14px;
+      cursor: ns-resize;
+      z-index: 35;
+      background: linear-gradient(to bottom, transparent 0%, color-mix(in srgb, var(--border) 30%, transparent) 100%);
+    }
+
+    .editor-wrap.resizing-editor {
+      user-select: none;
+      cursor: ns-resize;
     }
 
     .editor-wrap .CodeMirror {
@@ -5971,6 +6033,7 @@
 from 
 where
 order by</textarea>
+          <div class="editor-resize-handle" id="editorResizeHandle" aria-hidden="true" title="Arraste para ajustar a altura do editor"></div>
           <div class="editor-drop-overlay" id="editorDropOverlay">
             <div class="editor-drop-card">
               <div class="editor-drop-icon" aria-hidden="true">↧</div>
@@ -6042,6 +6105,10 @@ order by</textarea>
                 <div class="sleeper"><div class="bed"></div><div class="pillow"></div><div class="head"></div><div class="blanket"></div></div>
               </div>
             </div></div>
+          <div class="result-hscroll" id="resultHScroll" aria-hidden="true">
+            <span>↔</span>
+            <input id="resultHScrollRange" type="range" min="0" max="0" value="0" step="1" aria-label="Rolagem horizontal da tabela de resultados">
+          </div>
 
           <div class="result-toolbar" id="bottomResultToolbar" style="margin-top:12px;"></div>
         </section>
@@ -7107,6 +7174,13 @@ order by</textarea>
   let cmEditor = null;
   const statusEl = document.getElementById("status");
   const tableWrap = document.getElementById("tableWrap");
+  const resultHScroll = document.getElementById("resultHScroll");
+  const resultHScrollRange = document.getElementById("resultHScrollRange");
+  const isMacOS = (() => {
+    const platform = navigator.platform || "";
+    const ua = navigator.userAgent || "";
+    return /Mac|iPhone|iPad|iPod/i.test(platform) || /Mac OS X|iPhone OS|iPad/i.test(ua);
+  })();
   const schemaList = document.getElementById("schemaList");
   const schemaSearch = document.getElementById("schemaSearch");
   const schemaTypeFilters = document.getElementById("schemaTypeFilters");
@@ -7696,6 +7770,9 @@ order by</textarea>
     initSqlTabs();
     bindEditorDropZone();
     bindEditorResizeRefresh();
+    bindEditorBottomResize();
+    bindResultTableHorizontalWheel();
+    bindPersistentResultHorizontalScrollbar();
     updateToolbars();
     openFirstRunModalIfNeeded();
   }
@@ -9298,6 +9375,107 @@ order by</textarea>
     });
 
     observer.observe(wrap);
+  }
+
+  function bindEditorBottomResize() {
+    const wrap = document.querySelector(".editor-wrap");
+    const handle = document.getElementById("editorResizeHandle");
+    if (!wrap || !handle) return;
+
+    let isDragging = false;
+    let startY = 0;
+    let startHeight = 0;
+
+    const minHeight = () => 170;
+    const maxHeight = () => Math.max(minHeight(), Math.min(window.innerHeight * 0.68, 720));
+
+    function onMouseMove(event) {
+      if (!isDragging) return;
+      const delta = event.clientY - startY;
+      const nextHeight = Math.max(minHeight(), Math.min(maxHeight(), startHeight + delta));
+      wrap.style.height = `${nextHeight}px`;
+      if (cmEditor) cmEditor.refresh();
+    }
+
+    function onMouseUp() {
+      if (!isDragging) return;
+      isDragging = false;
+      wrap.classList.remove("resizing-editor");
+      document.removeEventListener("mousemove", onMouseMove);
+      document.removeEventListener("mouseup", onMouseUp);
+      if (cmEditor) cmEditor.refresh();
+    }
+
+    handle.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      isDragging = true;
+      startY = event.clientY;
+      startHeight = wrap.getBoundingClientRect().height;
+      wrap.classList.add("resizing-editor");
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", onMouseUp);
+    });
+  }
+
+  function bindResultTableHorizontalWheel() {
+    const wrap = document.getElementById("tableWrap");
+    if (!wrap) return;
+    wrap.addEventListener("wheel", (event) => {
+      if (!event.shiftKey) return;
+      const hasHorizontalOverflow = wrap.scrollWidth > wrap.clientWidth;
+      if (!hasHorizontalOverflow) return;
+      event.preventDefault();
+      wrap.scrollLeft += event.deltaY;
+    }, { passive: false });
+  }
+
+  function updatePersistentResultHorizontalScrollbar() {
+    if (!tableWrap || !resultHScroll || !resultHScrollRange) return;
+    if (!isMacOS) {
+      resultHScroll.classList.remove("show");
+      return;
+    }
+
+    const hasOverflow = tableWrap.scrollWidth > tableWrap.clientWidth + 1;
+    resultHScroll.classList.toggle("show", hasOverflow);
+    if (!hasOverflow) {
+      resultHScrollRange.max = "0";
+      resultHScrollRange.value = "0";
+      return;
+    }
+
+    const maxScroll = Math.max(0, tableWrap.scrollWidth - tableWrap.clientWidth);
+    resultHScrollRange.max = String(maxScroll);
+    resultHScrollRange.value = String(Math.min(maxScroll, tableWrap.scrollLeft));
+  }
+
+  function bindPersistentResultHorizontalScrollbar() {
+    if (!tableWrap || !resultHScroll || !resultHScrollRange) return;
+    if (!isMacOS) {
+      resultHScroll.classList.remove("show");
+      return;
+    }
+
+    let syncLock = false;
+
+    tableWrap.addEventListener("scroll", () => {
+      if (syncLock) return;
+      syncLock = true;
+      const maxScroll = Math.max(0, tableWrap.scrollWidth - tableWrap.clientWidth);
+      resultHScrollRange.max = String(maxScroll);
+      resultHScrollRange.value = String(Math.min(maxScroll, tableWrap.scrollLeft));
+      syncLock = false;
+    });
+
+    resultHScrollRange.addEventListener("input", () => {
+      if (syncLock) return;
+      syncLock = true;
+      tableWrap.scrollLeft = Number(resultHScrollRange.value || 0);
+      syncLock = false;
+    });
+
+    window.addEventListener("resize", updatePersistentResultHorizontalScrollbar);
+    updatePersistentResultHorizontalScrollbar();
   }
 
   async function clearAndPasteSql() {
@@ -11699,7 +11877,7 @@ function splitSqlStatements(sql) {
 
   function getFrozenLeftOffsets() {
     const offsets = [];
-    let left = 46; // checkbox sticky column width
+    let left = 30; // checkbox sticky column width
     const displayedColumns = getDisplayedColumns();
     for (let i = 0; i < Math.min(frozenColumnCount, displayedColumns.length); i++) {
       offsets[i] = left;
@@ -11804,6 +11982,7 @@ function splitSqlStatements(sql) {
     activateResultSet(activeResultIndex);
     bindRenderedTableInteractions();
     renderToolbars();
+    updatePersistentResultHorizontalScrollbar();
   }
 
 
@@ -12017,6 +12196,7 @@ function splitSqlStatements(sql) {
         </div>
       </div>
     `;
+    updatePersistentResultHorizontalScrollbar();
   }
 
   function renderTable() {
@@ -12036,6 +12216,7 @@ function splitSqlStatements(sql) {
 
     tableWrap.innerHTML = buildTableHtml(pageRows);
     bindSingleTableInteractions();
+    updatePersistentResultHorizontalScrollbar();
   }
 
   function bindSingleTableInteractions() {
