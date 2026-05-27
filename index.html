@@ -6662,8 +6662,8 @@ order by</textarea>
     LAST_SETTINGS_EXPORT_AT: "hSQLiteEditorLastSettingsExportAtV1",
     LAST_SEEN_RELEASE_VERSION: "hSQLiteEditorLastSeenReleaseVersionV1"
   };
-  const APP_VERSION = "0.1.1";
-  const RELEASE_NOTES = {
+  let APP_VERSION = "0.1.1";
+  let RELEASE_NOTES = {
     "0.1.1": [
       "Alertas de novos releases."
     ]
@@ -7724,6 +7724,55 @@ order by</textarea>
     return `<ul>${notes.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
   }
 
+  function parseReleaseNotesFromChangelog(version, changelogText) {
+    if (!version || !changelogText) return [];
+    const escapedVersion = version.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const headingRegex = new RegExp(`^##\\s+\\[?v?${escapedVersion}\\]?\\b.*$`, "m");
+    const headingMatch = changelogText.match(headingRegex);
+    if (!headingMatch || typeof headingMatch.index !== "number") return [];
+
+    const startIndex = headingMatch.index + headingMatch[0].length;
+    const rest = changelogText.slice(startIndex);
+    const nextHeadingOffset = rest.search(/^##\s+/m);
+    const section = nextHeadingOffset >= 0 ? rest.slice(0, nextHeadingOffset) : rest;
+
+    const bulletLines = section
+      .split("\n")
+      .map(line => line.trim())
+      .filter(line => /^[-*]\s+/.test(line))
+      .map(line => line.replace(/^[-*]\s+/, "").trim())
+      .filter(Boolean);
+
+    if (!bulletLines.length) return [];
+    return bulletLines.slice(0, 12);
+  }
+
+  async function loadReleaseMetadataFromRepoFiles() {
+    // Local file:// runs block fetch for sibling files in several browsers; keep static fallback there.
+    if (location.protocol === "file:") return;
+    try {
+      const manifestResponse = await fetch("./.release-please-manifest.json", { cache: "no-store" });
+      if (!manifestResponse.ok) return;
+      const manifest = await manifestResponse.json();
+      const resolvedVersion = manifest && typeof manifest["."] === "string" ? manifest["."].trim() : "";
+      if (!resolvedVersion) return;
+
+      APP_VERSION = resolvedVersion;
+      RELEASE_NOTES = { ...RELEASE_NOTES };
+
+      const changelogResponse = await fetch("./CHANGELOG.md", { cache: "no-store" });
+      if (changelogResponse.ok) {
+        const changelogText = await changelogResponse.text();
+        const parsedNotes = parseReleaseNotesFromChangelog(APP_VERSION, changelogText);
+        if (parsedNotes.length) {
+          RELEASE_NOTES[APP_VERSION] = parsedNotes;
+        }
+      }
+    } catch (error) {
+      console.warn("Não foi possível carregar metadados de release automaticamente.", error);
+    }
+  }
+
   function openReleaseNotesModal(markAsSeen = true) {
     if (releaseNotesSummary) {
       releaseNotesSummary.textContent = `Seu editor foi atualizado para a versão ${APP_VERSION}.`;
@@ -7757,8 +7806,9 @@ order by</textarea>
   if (closeAllTabsBtn) closeAllTabsBtn.addEventListener("click", closeAllSqlTabs);
   clearPasteSqlBtn.addEventListener("click", clearAndPasteSql);
 
-  function bootApp() {
+  async function bootApp() {
     storageMigrationController.run();
+    await loadReleaseMetadataFromRepoFiles();
     evaluateReleaseNotesUpdate();
     initTheme();
     initSchemaPanelState();
