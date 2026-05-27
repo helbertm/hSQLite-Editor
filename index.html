@@ -6668,6 +6668,7 @@ order by</textarea>
       "Alertas de novos releases."
     ]
   };
+  let RELEASE_VERSIONS = ["0.1.1"];
   const CURRENT_STORAGE_SCHEMA_VERSION = 2;
   const SHORTCUT_ACTIONS = {
     copy: "F6",
@@ -7724,6 +7725,22 @@ order by</textarea>
     return `<ul>${notes.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
   }
 
+  function parseSemver(version) {
+    const match = String(version || "").trim().match(/^(\d+)\.(\d+)\.(\d+)$/);
+    if (!match) return null;
+    return [Number(match[1]), Number(match[2]), Number(match[3])];
+  }
+
+  function compareSemver(a, b) {
+    const pa = parseSemver(a);
+    const pb = parseSemver(b);
+    if (!pa || !pb) return String(a).localeCompare(String(b));
+    for (let i = 0; i < 3; i++) {
+      if (pa[i] !== pb[i]) return pa[i] - pb[i];
+    }
+    return 0;
+  }
+
   function normalizeReleaseNoteForUsers(rawNote) {
     if (!rawNote) return "";
     let note = String(rawNote).trim();
@@ -7780,6 +7797,74 @@ order by</textarea>
     return bulletLines.slice(0, 12);
   }
 
+  function parseReleaseHistoryFromChangelog(changelogText) {
+    if (!changelogText) return { versions: [], notesByVersion: {} };
+
+    const lines = changelogText.split("\n");
+    const sections = [];
+    let current = null;
+
+    for (const line of lines) {
+      const headingMatch = line.match(/^##\s+\[?v?(\d+\.\d+\.\d+)\]?/i);
+      if (headingMatch) {
+        if (current) sections.push(current);
+        current = { version: headingMatch[1], lines: [] };
+        continue;
+      }
+      if (current) current.lines.push(line);
+    }
+    if (current) sections.push(current);
+
+    const notesByVersion = {};
+    const versions = [];
+
+    sections.forEach((section) => {
+      const bullets = section.lines
+        .map(line => line.trim())
+        .filter(line => /^[-*]\s+/.test(line))
+        .map(line => line.replace(/^[-*]\s+/, "").trim())
+        .map(normalizeReleaseNoteForUsers)
+        .filter(Boolean)
+        .slice(0, 16);
+
+      if (bullets.length) {
+        notesByVersion[section.version] = bullets;
+        versions.push(section.version);
+      }
+    });
+
+    return { versions, notesByVersion };
+  }
+
+  function getReleaseVersionsForModal(currentVersion, seenVersion) {
+    if (!currentVersion) return [];
+    if (!seenVersion || seenVersion === currentVersion) return [currentVersion];
+
+    const available = RELEASE_VERSIONS.length ? RELEASE_VERSIONS : [currentVersion];
+    const currentIndex = available.indexOf(currentVersion);
+    if (currentIndex === -1) return [currentVersion];
+
+    const seenIndex = available.indexOf(seenVersion);
+    if (seenIndex !== -1) {
+      if (seenIndex <= currentIndex) return [currentVersion];
+      return available.slice(currentIndex, seenIndex);
+    }
+
+    // Fallback when seen version is not in changelog history loaded on the page.
+    const filtered = available.filter(v => compareSemver(v, currentVersion) <= 0 && compareSemver(v, seenVersion) > 0);
+    return filtered.length ? filtered : [currentVersion];
+  }
+
+  function buildReleaseNotesHistoryHtml(versions) {
+    const items = versions.filter(Boolean);
+    if (!items.length) return buildReleaseNotesList(APP_VERSION);
+
+    return items.map((version) => {
+      const notes = RELEASE_NOTES[version] || ["Melhorias gerais de estabilidade e usabilidade."];
+      return `<section><h4 style="margin:0 0 6px;">v${escapeHtml(version)}</h4><ul>${notes.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section>`;
+    }).join("");
+  }
+
   async function loadReleaseMetadataFromRepoFiles() {
     // Local file:// runs block fetch for sibling files in several browsers; keep static fallback there.
     if (location.protocol === "file:") return;
@@ -7796,9 +7881,13 @@ order by</textarea>
       const changelogResponse = await fetch("./CHANGELOG.md", { cache: "no-store" });
       if (changelogResponse.ok) {
         const changelogText = await changelogResponse.text();
-        const parsedNotes = parseReleaseNotesFromChangelog(APP_VERSION, changelogText);
-        if (parsedNotes.length) {
-          RELEASE_NOTES[APP_VERSION] = parsedNotes;
+        const history = parseReleaseHistoryFromChangelog(changelogText);
+        if (history.versions.length) {
+          RELEASE_VERSIONS = history.versions;
+          RELEASE_NOTES = { ...RELEASE_NOTES, ...history.notesByVersion };
+        } else {
+          const parsedNotes = parseReleaseNotesFromChangelog(APP_VERSION, changelogText);
+          if (parsedNotes.length) RELEASE_NOTES[APP_VERSION] = parsedNotes;
         }
       }
     } catch (error) {
@@ -7807,11 +7896,18 @@ order by</textarea>
   }
 
   function openReleaseNotesModal(markAsSeen = true) {
+    const seenVersion = storage.get(STORAGE_KEYS.LAST_SEEN_RELEASE_VERSION, "");
+    const versionsToShow = getReleaseVersionsForModal(APP_VERSION, seenVersion);
+
     if (releaseNotesSummary) {
-      releaseNotesSummary.textContent = `Seu editor foi atualizado para a versão ${APP_VERSION}.`;
+      if (!seenVersion || seenVersion === APP_VERSION || versionsToShow.length === 1) {
+        releaseNotesSummary.textContent = `Seu editor foi atualizado para a versão ${APP_VERSION}.`;
+      } else {
+        releaseNotesSummary.textContent = `Seu editor foi atualizado da versão ${seenVersion} para ${APP_VERSION}.`;
+      }
     }
     if (releaseNotesContent) {
-      releaseNotesContent.innerHTML = buildReleaseNotesList(APP_VERSION);
+      releaseNotesContent.innerHTML = buildReleaseNotesHistoryHtml(versionsToShow);
     }
     modalController.open(releaseNotesModal);
     if (markAsSeen) markReleaseVersionAsSeen();
