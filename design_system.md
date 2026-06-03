@@ -37,8 +37,13 @@ Rule:
 
 ## Component Contracts
 - Buttons use one primitive matrix: variant (`primary`, `secondary`, `ghost`, `destructive`, `icon-only`) and size (`sm`, `md`, `lg`).
+- Runtime implementation classes:
+- `ui-button ui-button-primary|ui-button-secondary|ui-button-ghost|ui-button-destructive|ui-button-icon`
+- `ui-button-sm|ui-button-md|ui-button-lg`
 - Button content slots are stable: optional icon/symbol, optional shortcut badge, label. Per-button visual alignment fixes are not allowed unless documented as a component rule.
+- Inline field clear controls use `ui-inline-clear` plus `ui-button ui-button-icon ui-button-sm`; field-specific classes may only position/show the control inside its input wrapper.
 - Segmented theme/session controls are switches, not action buttons. They require `role="switch"`, `aria-checked`, and visible state.
+- Runtime switch implementation classes: `ui-switch`, `ui-switch-segmented`, `ui-switch-option`, `ui-switch-thumb`.
 - Menu triggers implemented with `summary` must match button focus, hover, height, border, and radius behavior.
 - SQL tabs follow the accessible tab pattern: tablist, tab roles, roving `tabindex`, ArrowLeft/ArrowRight navigation, Home/End navigation, active-tab scroll-into-view, and overflow affordance only when content exceeds the strip.
 - Tab close/rename affordances must remain discoverable on keyboard and touch. Hover may emphasize controls, but must not be the only way to discover the capability.
@@ -73,6 +78,21 @@ Rule:
 - Mobile: progressive disclosure for secondary tools.
 - At constrained widths, preserve visibility of SQL tabs, Run, and database-open flow before secondary utilities.
 - Prefer adaptive grouping and overflow menus over uncontrolled toolbar wrapping.
+- Breakpoint contracts:
+- `> 920px`: schema and editor render as two columns.
+- `<= 920px`: schema defaults to collapsed when no saved user preference exists; F4/rail restores it.
+- `<= 720px`: header actions recompose into a grid, database status occupies its own row, editor actions prioritize Run + SQL file actions + overflow trigger.
+- `<= 560px`: result toolbar becomes single-column; tab titles shrink before controls disappear.
+
+## Table And Result Semantics
+- Sortable result headers must emit `aria-sort="none|ascending|descending"`.
+- Multicolumn sort may visually display order badges, but the semantic direction on each sorted header still follows its own state.
+- Pagination and utility controls use `ui-button-icon` or `ui-button-ghost`; they do not define independent button families.
+
+## Primary Workflow Tone
+- Primary workflow states must not use novelty animations, jokes, or mascot-style scenes.
+- Offline, empty-result, and confirmation states use static operational copy and restrained visual hierarchy.
+- Didactic examples may contain personality only inside optional help/onboarding/sample surfaces.
 
 ## Content Voice
 - Operational surfaces: concise and neutral.

@@ -242,25 +242,6 @@
       transform: none;
     }
 
-    button.primary {
-      background: var(--primary);
-      color: var(--primary-foreground);
-      border-color: var(--primary);
-      font-weight: 700;
-      min-height: var(--control-height-primary);
-    }
-
-    button.primary:hover {
-      opacity: 0.92;
-      background: var(--primary);
-    }
-
-    button.danger {
-      background: #7f1d1d;
-      border-color: #ef4444;
-      color: white;
-    }
-
     button:disabled {
       opacity: 0.45;
       cursor: not-allowed;
@@ -486,11 +467,6 @@
       border-right: 1px solid var(--border);
     }
 
-    html[data-theme="light"] .CodeMirror-gutters {
-      background: var(--secondary);
-      border-right: 1px solid var(--border);
-    }
-
     .CodeMirror-linenumber {
       color: var(--mutedText);
     }
@@ -681,10 +657,9 @@
       accent-color: var(--accentLine);
     }
 
-    .action-btn,
-    .editor-action-btn,
-    .file-label.editor-action-btn,
-    .result-actions .editor-action-btn {
+    .ui-button,
+    .file-label.ui-button,
+    .result-actions .ui-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -694,19 +669,73 @@
       border-radius: calc(var(--radius) - 2px);
       line-height: 1;
       white-space: nowrap;
+      text-decoration: none;
+      box-sizing: border-box;
     }
 
-    .action-btn-sm,
-    .editor-more-menu .editor-action-btn,
-    .db-menu-list .editor-action-btn,
-    .query-history-load-btn,
-    .schema-type-filter-btn {
+    .ui-button-sm,
+    .editor-more-menu .ui-button,
+    .db-menu-list .ui-button,
+    .query-history-load-btn {
       min-height: var(--control-height-compact);
       padding: 0 10px;
       font-size: 12px;
     }
 
-    .icon-btn,
+    .ui-button-lg {
+      min-height: 40px;
+      padding: 0 14px;
+      font-size: 14px;
+    }
+
+    .ui-button-primary {
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border-color: color-mix(in srgb, var(--primary) 80%, var(--border));
+      font-weight: 800;
+    }
+
+    .ui-button-secondary {
+      background: var(--background);
+      color: var(--foreground);
+      border-color: var(--border);
+    }
+
+    .ui-button-ghost {
+      background: transparent;
+      color: var(--mutedText);
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    .ui-button-destructive {
+      background: color-mix(in srgb, var(--destructive) 11%, transparent);
+      color: var(--destructive);
+      border-color: color-mix(in srgb, var(--destructive) 35%, var(--border));
+    }
+
+    .ui-button-icon {
+      width: var(--control-height-compact);
+      min-width: var(--control-height-compact);
+      padding: 0;
+      border-radius: 999px;
+    }
+
+    .ui-button:hover {
+      color: var(--foreground);
+    }
+
+    .ui-button-primary:hover {
+      color: var(--primary-foreground);
+      background: color-mix(in srgb, var(--primary) 88%, var(--foreground));
+    }
+
+    .ui-button-destructive:hover {
+      background: color-mix(in srgb, var(--destructive) 16%, var(--accent));
+      border-color: color-mix(in srgb, var(--destructive) 42%, var(--border));
+    }
+
+    .ui-button-icon,
     .clear-filter-btn,
     .clear-schema-search-btn,
     .clear-query-history-search-btn,
@@ -873,7 +902,7 @@
       filter: saturate(0.9);
     }
 
-    .theme-toggle {
+    .ui-switch {
       width: var(--top-switch-track-w);
       height: var(--top-switch-track-h);
       padding: 0;
@@ -887,12 +916,12 @@
       transform: none !important;
     }
 
-    .theme-toggle:hover {
+    .ui-switch:hover {
       background: var(--secondary);
       border-color: var(--ring);
     }
 
-    .theme-toggle-thumb {
+    .ui-switch-thumb {
       position: absolute;
       width: var(--top-switch-thumb);
       height: var(--top-switch-thumb);
@@ -903,15 +932,15 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.28);
     }
 
-    html[data-theme="dark"] .theme-toggle-thumb {
+    html[data-theme="dark"] .ui-switch-thumb {
       transform: translateX(var(--top-switch-shift));
     }
 
-    html[data-theme="light"] .theme-toggle-thumb {
+    html[data-theme="light"] .ui-switch-thumb {
       transform: translateX(0);
     }
 
-    .theme-toggle.seg-switch {
+    .ui-switch.ui-switch-segmented {
       width: var(--seg-switch-w);
       height: var(--seg-switch-h);
       padding: 0;
@@ -919,7 +948,7 @@
       justify-content: space-between;
     }
 
-    .theme-toggle.seg-switch .seg-switch-option {
+    .ui-switch.ui-switch-segmented .ui-switch-option {
       position: relative;
       z-index: 2;
       width: var(--seg-switch-opt-w);
@@ -932,7 +961,7 @@
       pointer-events: none;
     }
 
-    .theme-toggle.seg-switch .seg-switch-center {
+    .ui-switch.ui-switch-segmented .seg-switch-center {
       width: 100%;
       height: 100%;
       display: grid;
@@ -941,12 +970,12 @@
       line-height: 1;
     }
 
-    .theme-toggle.seg-switch .seg-switch-center > * {
+    .ui-switch.ui-switch-segmented .seg-switch-center > * {
       display: block;
       margin: 0 auto;
     }
 
-    .theme-toggle.seg-switch .theme-toggle-option svg {
+    .ui-switch.ui-switch-segmented .ui-switch-option svg {
       width: 15px;
       height: 15px;
       display: block;
@@ -957,7 +986,7 @@
       stroke-linejoin: round;
     }
 
-    .theme-toggle.seg-switch .theme-toggle-thumb {
+    .ui-switch.ui-switch-segmented .ui-switch-thumb {
       width: var(--seg-switch-thumb-w);
       height: var(--seg-switch-thumb-h);
       left: 3px;
@@ -966,20 +995,20 @@
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
     }
 
-    html[data-theme="light"] .theme-toggle.theme-segmented .theme-toggle-thumb {
+    html[data-theme="light"] .ui-switch.theme-segmented .ui-switch-thumb {
       transform: translateX(0);
     }
 
-    html[data-theme="dark"] .theme-toggle.theme-segmented .theme-toggle-thumb {
+    html[data-theme="dark"] .ui-switch.theme-segmented .ui-switch-thumb {
       transform: translateX(var(--seg-switch-shift-on));
     }
 
-    html[data-theme="light"] .theme-toggle.theme-segmented .theme-toggle-option[data-theme-option="light"],
-    html[data-theme="dark"] .theme-toggle.theme-segmented .theme-toggle-option[data-theme-option="dark"] {
+    html[data-theme="light"] .ui-switch.theme-segmented .ui-switch-option[data-theme-option="light"],
+    html[data-theme="dark"] .ui-switch.theme-segmented .ui-switch-option[data-theme-option="dark"] {
       color: var(--background);
     }
 
-    .theme-toggle.theme-segmented .theme-toggle-option[data-theme-option="dark"] svg {
+    .ui-switch.theme-segmented .ui-switch-option[data-theme-option="dark"] svg {
       transform: none;
     }
 
@@ -998,7 +1027,7 @@
       padding-right: 34px;
     }
 
-    .clear-filter-btn {
+    .ui-inline-clear {
       position: absolute;
       right: 6px;
       width: 24px;
@@ -1016,7 +1045,7 @@
       line-height: 1;
     }
 
-    .clear-filter-btn:hover {
+    .ui-inline-clear:hover {
       background: var(--accent);
       color: var(--foreground);
     }
@@ -1025,7 +1054,7 @@
       margin-left: auto;
     }
 
-    .icon-btn {
+    .pagination .ui-button-icon {
       min-width: 34px;
       height: 24px;
       padding: 0 9px;
@@ -1407,27 +1436,10 @@
       flex-wrap: wrap;
     }
 
-    /* Destructive-confirm pattern:
-       destructive action stays low-emphasis (left),
-       safe cancel stays primary (right). */
-    .modal-actions-destructive {
-      justify-content: space-between !important;
+    .modal-actions-split {
+      justify-content: space-between;
       align-items: center;
       gap: 24px;
-      margin-top: 14px;
-    }
-
-    .modal-actions-destructive .modal-action-destructive {
-      background: transparent !important;
-      color: var(--mutedText) !important;
-      border-color: transparent !important;
-      box-shadow: none !important;
-    }
-
-    .modal-actions-destructive .modal-action-destructive:hover {
-      background: color-mix(in srgb, var(--destructive) 10%, var(--accent)) !important;
-      color: var(--foreground) !important;
-      border-color: color-mix(in srgb, var(--destructive) 28%, var(--border)) !important;
     }
 
     /* Light theme targeted overrides */
@@ -1438,9 +1450,7 @@
     }
 
     html[data-theme="light"] .table-wrap,
-    html[data-theme="light"] .schema-list,
-    html[data-theme="light"] .CodeMirror,
-    html[data-theme="light"] .cm-s-eclipse.CodeMirror {
+    html[data-theme="light"] .schema-list {
       background: var(--input-bg);
     }
 
@@ -1855,7 +1865,7 @@
       gap: 6px;
     }
 
-    .editor-more-menu .editor-action-btn {
+    .editor-more-menu .ui-button {
       width: 100%;
       justify-content: flex-start;
       padding: 0 10px;
@@ -1866,7 +1876,7 @@
 
 
     /* v35 typographic action icons */
-    .editor-action-btn .action-icon {
+    .ui-button .action-icon {
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace !important;
       font-size: 13px !important;
       font-weight: 800;
@@ -2077,24 +2087,8 @@
       text-overflow: ellipsis;
     }
 
-    .header-link-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      min-height: 30px;
-      padding: 0 10px;
+    .header-link-action {
       border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--mutedText);
-      font-size: 12px;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .header-link-btn:hover {
-      color: var(--foreground);
-      background: var(--accent);
     }
 
     .release-notes-btn {
@@ -2255,17 +2249,12 @@
       min-width: 12px;
     }
 
-    .primary-file-action {
-      white-space: nowrap;
-      font-weight: 700;
-    }
-
-    .ghost-btn {
+    .ui-button-ghost {
       color: var(--mutedText);
       background: transparent;
     }
 
-    .ghost-btn:hover {
+    .ui-button-ghost:hover {
       color: var(--foreground);
       background: color-mix(in srgb, var(--accent) 75%, transparent);
     }
@@ -2352,6 +2341,77 @@
         white-space: normal;
         border-radius: var(--radius);
       }
+
+      .header-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, auto)) minmax(0, 1fr);
+        gap: 8px;
+      }
+
+      .header-link-action {
+        justify-self: start;
+      }
+
+      .db-pill {
+        grid-column: 1 / -1;
+        justify-self: stretch;
+      }
+
+      .editor-header {
+        align-items: stretch;
+      }
+
+      .editor-actions {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) repeat(3, auto);
+        width: 100%;
+        align-items: stretch;
+      }
+
+      #runBtn {
+        justify-content: center;
+      }
+
+      .editor-more {
+        justify-self: end;
+      }
+
+      .result-toolbar {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) auto auto;
+        align-items: center;
+      }
+
+      .result-toolbar .pagination {
+        grid-column: 1 / -1;
+        margin-left: 0;
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .editor-actions {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+
+      .sql-tabs-header {
+        gap: 6px;
+      }
+
+      .sql-tab {
+        max-width: 180px;
+      }
+
+      .result-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .result-toolbar .ui-button,
+      .result-toolbar select,
+      .result-toolbar .filter-wrap {
+        width: 100%;
+        max-width: none;
+      }
     }
 
 
@@ -2364,13 +2424,6 @@
     .compact-help,
     .toolbar-spacer {
       display: none !important;
-    }
-
-    .primary-file-action {
-      min-height: 34px;
-      gap: 9px;
-      font-weight: 700;
-      white-space: nowrap;
     }
 
     .result-header {
@@ -2395,7 +2448,7 @@
       flex-wrap: wrap;
     }
 
-    .editor-action-btn.primary .shortcut-badge {
+    .ui-button-primary .shortcut-badge {
       color: var(--primary-foreground);
       border-color: color-mix(in srgb, var(--primary-foreground) 32%, transparent);
       background: color-mix(in srgb, var(--primary-foreground) 12%, transparent);
@@ -2498,7 +2551,7 @@
 
 
     /* v51 harmonize result export buttons */
-    .result-actions .editor-action-btn {
+    .result-actions .ui-button {
       min-width: 104px;
       min-height: 30px;
       padding: 0 10px;
@@ -2520,7 +2573,7 @@
       line-height: 1;
     }
 
-    .editor-action-btn:hover .action-symbol {
+    .ui-button:hover .action-symbol {
       color: var(--foreground);
     }
 
@@ -2656,19 +2709,6 @@
       margin-top: 18px;
     }
 
-    .sample-cancel-btn {
-      background: transparent;
-      color: var(--mutedText);
-      border-color: transparent;
-      box-shadow: none;
-    }
-
-    .sample-cancel-btn:hover {
-      background: var(--accent);
-      color: var(--foreground);
-      border-color: var(--border);
-    }
-
     .sample-primary-btn {
       min-width: 132px;
     }
@@ -2703,7 +2743,7 @@
       stroke-linejoin: round;
     }
 
-    .editor-action-btn:hover .book-symbol {
+    .ui-button:hover .book-symbol {
       color: var(--foreground);
     }
 
@@ -2744,27 +2784,10 @@
     }
 
     .clear-schema-search-btn {
-      position: absolute;
       right: 7px;
       top: 50%;
-      width: 24px;
-      height: 24px;
-      padding: 0;
       transform: translateY(-50%) !important;
-      border: 0;
-      border-radius: 999px;
-      background: transparent;
-      color: var(--mutedText);
       display: none;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      line-height: 1;
-    }
-
-    .clear-schema-search-btn:hover {
-      background: var(--accent);
-      color: var(--foreground);
     }
 
     .schema-type-filters {
@@ -2855,8 +2878,7 @@
     }
 
 
-    /* beta fix6: stronger primary execute action */
-    #runBtn.primary {
+    #runBtn.ui-button-primary {
       font-weight: 850;
       letter-spacing: 0.02em;
       padding-inline: 12px;
@@ -2865,11 +2887,11 @@
       justify-content: center;
     }
 
-    #runBtn.primary span:last-child {
+    #runBtn.ui-button-primary span:last-child {
       font-size: 12px;
     }
 
-    #runBtn.primary:not(:disabled) {
+    #runBtn.ui-button-primary:not(:disabled) {
       box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary) 35%, transparent);
     }
 
@@ -2977,19 +2999,6 @@
       align-items: center;
       gap: 24px;
       margin-top: 18px;
-    }
-
-    .export-cancel-btn {
-      background: transparent;
-      color: var(--mutedText);
-      border-color: transparent;
-      box-shadow: none;
-    }
-
-    .export-cancel-btn:hover {
-      background: var(--accent);
-      color: var(--foreground);
-      border-color: var(--border);
     }
 
     .export-primary-btn {
@@ -3111,34 +3120,29 @@
     }
 
 
-    /* v58 visual harmonization pass */
-    .editor-action-btn,
-    .file-label.editor-action-btn,
-    .result-actions .editor-action-btn {
+    /* UI primitive slot rules */
+    .ui-button,
+    .file-label.ui-button,
+    .result-actions .ui-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px !important;
+      gap: 8px;
       min-height: var(--control-height);
       padding: 0 12px;
       line-height: 1;
       white-space: nowrap;
     }
 
-    #runBtn.editor-action-btn.primary {
-      min-height: var(--control-height);
-      padding: 0 12px;
-    }
-
-    .editor-action-btn .shortcut-badge + span,
+    .ui-button .shortcut-badge + span,
     .file-label .shortcut-badge + span {
-      margin-left: 0 !important;
+      margin-left: 0;
     }
 
-    .editor-action-btn .action-symbol,
-    .editor-action-btn .history-symbol,
-    .editor-action-btn .sql-map-symbol,
-    .editor-action-btn > span[aria-hidden="true"]:not(.shortcut-badge) {
+    .ui-button .action-symbol,
+    .ui-button .history-symbol,
+    .ui-button .sql-map-symbol,
+    .ui-button > span[aria-hidden="true"]:not(.shortcut-badge) {
       width: 16px;
       min-width: 16px;
       height: 16px;
@@ -3219,7 +3223,7 @@
       gap: 6px;
     }
 
-    .db-menu-list .editor-action-btn {
+    .db-menu-list .ui-button {
       width: 100%;
       justify-content: flex-start;
       padding: 0 10px;
@@ -3228,7 +3232,7 @@
       border-radius: 8px;
     }
 
-    .db-menu-list .editor-action-btn.dirty {
+    .db-menu-list .ui-button.dirty {
       color: #d97706;
     }
 
@@ -3497,8 +3501,8 @@
     .sql-tab-actions {
       display: inline-flex;
       align-items: center;
-      gap: 2px;
-      margin-left: -5px;
+      gap: 4px;
+      margin-left: 4px;
       margin-right: 4px;
       z-index: 3;
     }
@@ -3513,24 +3517,19 @@
       border-radius: 999px;
       padding: 0;
       margin-left: 2px;
-      background: transparent;
-      color: var(--mutedText);
       font-size: 14px;
       line-height: 1;
       transform: none !important;
       flex: 0 0 auto;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.12s ease;
+      opacity: 0.78;
+      pointer-events: auto;
     }
 
     .sql-tab-item.active .sql-tab-control,
     .sql-tab-item:hover .sql-tab-control,
     .sql-tab-item:focus-within .sql-tab-control {
-      opacity: 0.9;
-      pointer-events: auto;
+      opacity: 1;
     }
-    .sql-tab-control:hover { background: var(--accent); color: var(--foreground); }
     .new-sql-tab-btn {
       width: 34px;
       height: 30px;
@@ -3560,7 +3559,7 @@
       stroke-linecap: round;
       stroke-linejoin: round;
     }
-    .editor-action-btn:hover .history-symbol { color: var(--foreground); }
+    .ui-button:hover .history-symbol { color: var(--foreground); }
     .query-history-modal {
       width: min(880px, 100%);
       max-height: min(86vh, 900px);
@@ -3578,24 +3577,11 @@
       padding-right: 34px;
     }
     .clear-query-history-search-btn {
-      position: absolute;
       right: 7px;
       top: 50%;
-      width: 24px;
-      height: 24px;
-      padding: 0;
       transform: translateY(-50%) !important;
-      border: 0;
-      border-radius: 999px;
-      background: transparent;
-      color: var(--mutedText);
       display: none;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      line-height: 1;
     }
-    .clear-query-history-search-btn:hover { background: var(--accent); color: var(--foreground); }
     .query-history-list {
       min-height: 220px;
       max-height: min(56vh, 560px);
@@ -3708,17 +3694,6 @@
       gap: 24px;
       margin-top: 14px;
     }
-    .history-clear-btn {
-      background: transparent;
-      color: var(--mutedText);
-      border-color: transparent;
-      box-shadow: none;
-    }
-    .history-clear-btn:hover {
-      background: var(--accent);
-      color: var(--foreground);
-      border-color: var(--border);
-    }
     mark.query-history-highlight {
       background: color-mix(in srgb, var(--info) 20%, transparent);
       color: var(--foreground);
@@ -3807,7 +3782,7 @@
       width: 17px; height: 17px; display: block; fill: none; stroke: currentColor;
       stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
     }
-    .editor-action-btn:hover .sql-map-symbol { color: var(--foreground); }
+    .ui-button:hover .sql-map-symbol { color: var(--foreground); }
     .sql-map-backdrop { z-index: 160; padding: 12px; }
     .sql-map-modal {
       width: min(1500px, 100%);
@@ -3884,146 +3859,6 @@
     }
 
 
-    /* beta fix26: SQL tabs visual pattern + rename affordance */
-    .sql-tabs-header {
-      align-items: flex-end !important;
-      gap: 0 !important;
-      margin: -2px -2px 14px !important;
-      padding: 0 0 0 0 !important;
-      border-bottom: 1px solid var(--border) !important;
-      overflow: visible;
-    }
-
-    .sql-tabs {
-      gap: 0 !important;
-      padding-bottom: 0 !important;
-      overflow-x: hidden;
-      overflow-y: hidden;
-      scrollbar-width: none;
-      align-items: flex-end !important;
-    }
-
-    .sql-tabs.is-overflowing {
-      overflow-x: auto;
-      scrollbar-width: thin;
-      scrollbar-gutter: stable;
-    }
-
-    .sql-tab {
-      position: relative;
-      max-width: 240px !important;
-      min-height: 34px;
-      padding: 8px 11px 7px !important;
-      border-radius: 10px 10px 0 0 !important;
-      border: 1px solid var(--border) !important;
-      border-bottom: 0 !important;
-      background: color-mix(in srgb, var(--input-bg) 84%, var(--background)) !important;
-      color: var(--mutedText) !important;
-      margin: 0 3px -1px 0 !important;
-      box-shadow: none !important;
-    }
-
-    .sql-tab-item {
-      margin: 0 3px -1px 0 !important;
-    }
-
-    .sql-tab-item .sql-tab {
-      margin: 0 !important;
-    }
-    .sql-tab.dragging {
-      opacity: 0.62;
-      cursor: grabbing;
-    }
-
-    .sql-tab:hover {
-      background: color-mix(in srgb, var(--accent) 72%, var(--input-bg)) !important;
-      color: var(--foreground) !important;
-      transform: none !important;
-    }
-
-    .sql-tab.active {
-      background: var(--panel) !important;
-      color: var(--foreground) !important;
-      border-color: var(--border) !important;
-      border-bottom: 1px solid var(--panel) !important;
-      z-index: 2;
-      box-shadow: 0 -1px 0 color-mix(in srgb, var(--info) 35%, transparent) inset !important;
-    }
-    .sql-tab.drag-over {
-      border-color: color-mix(in srgb, var(--info) 55%, var(--border)) !important;
-      box-shadow: 0 0 0 1px color-mix(in srgb, var(--info) 35%, transparent) inset !important;
-    }
-
-    .sql-tab.active::before {
-      content: "";
-      position: absolute;
-      left: 10px;
-      right: 10px;
-      top: 0;
-      height: 2px;
-      border-radius: 999px;
-      background: var(--foreground);
-      opacity: 0.42;
-    }
-
-    .sql-tab-title {
-      max-width: 160px;
-      display: inline-block;
-    }
-
-    .sql-tab-title[title] {
-      cursor: text;
-    }
-
-    .sql-tab-title-input {
-      width: 100%;
-      min-width: 90px;
-      max-width: 170px;
-      min-height: 24px;
-      padding: 2px 6px;
-      font-size: 12px;
-      border-radius: 6px;
-      background: var(--input-bg);
-      color: var(--foreground);
-      border: 1px solid color-mix(in srgb, var(--info) 40%, var(--border));
-    }
-
-    .sql-tab-rename-hint {
-      color: var(--mutedText);
-      font-size: 11px;
-      margin-left: -2px;
-    }
-
-    .sql-tab-drag-hint {
-      color: var(--mutedText);
-      opacity: 0;
-      font-size: 10px;
-      margin-left: -2px;
-      transition: opacity 0.12s ease;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .sql-tab:hover .sql-tab-drag-hint {
-      opacity: 0.65;
-    }
-
-    .new-sql-tab-btn {
-      width: 34px !important;
-      height: 34px !important;
-      border-radius: 10px 10px 0 0 !important;
-      margin: 0 0 -1px 3px !important;
-      border-bottom: 0 !important;
-      background: color-mix(in srgb, var(--input-bg) 84%, var(--background)) !important;
-      align-self: flex-end;
-    }
-
-    .new-sql-tab-btn:hover {
-      background: var(--accent) !important;
-      transform: none !important;
-    }
-
-
     /* beta fix27: close tab confirmation */
     .close-tab-confirm-modal {
       width: min(560px, 100%);
@@ -4047,55 +3882,14 @@
     }
 
     .close-tab-confirm-actions {
-      justify-content: space-between !important;
+      justify-content: space-between;
       align-items: center;
       gap: 24px;
       margin-top: 14px;
     }
 
-    .close-tab-cancel-btn {
-      background: transparent;
-      color: var(--mutedText);
-      border-color: transparent;
-      box-shadow: none;
-    }
-
-    .close-tab-cancel-btn:hover {
-      background: var(--accent);
-      color: var(--foreground);
-      border-color: var(--border);
-    }
-
     .close-tab-danger-btn {
       min-width: 132px;
-    }
-
-
-    /* beta fix28: destructive close action is secondary; cancel is the safe primary action */
-    .close-tab-confirm-actions .close-tab-danger-btn {
-      background: transparent !important;
-      color: var(--mutedText) !important;
-      border-color: transparent !important;
-      box-shadow: none !important;
-      min-width: 132px;
-    }
-
-    .close-tab-confirm-actions .close-tab-danger-btn:hover {
-      background: color-mix(in srgb, var(--destructive) 10%, var(--accent)) !important;
-      color: var(--foreground) !important;
-      border-color: color-mix(in srgb, var(--destructive) 28%, var(--border)) !important;
-    }
-
-    .close-tab-confirm-actions .close-tab-cancel-btn.primary {
-      background: var(--primary) !important;
-      color: var(--primary-foreground) !important;
-      border-color: var(--primary) !important;
-      min-width: 112px;
-    }
-
-    .close-tab-confirm-actions .close-tab-cancel-btn.primary:hover {
-      opacity: 0.92;
-      background: var(--primary) !important;
     }
 
 
@@ -4144,15 +3938,15 @@
 
 
     /* beta fix33: align standalone SVG icons with button labels */
-    .editor-action-btn .history-symbol,
-    .editor-action-btn .sql-map-symbol {
+    .ui-button .history-symbol,
+    .ui-button .sql-map-symbol {
       align-self: center;
       position: relative;
       top: 1px;
     }
 
-    .editor-action-btn .history-symbol svg,
-    .editor-action-btn .sql-map-symbol svg {
+    .ui-button .history-symbol svg,
+    .ui-button .sql-map-symbol svg {
       display: block;
       flex-shrink: 0;
     }
@@ -4350,39 +4144,6 @@
     }
 
 
-    /* beta fix39: keep icon action buttons aligned without changing their height */
-    #queryHistoryBtn,
-    #sqlMapBtn {
-      min-height: var(--control-height) !important;
-      height: auto !important;
-      line-height: 1 !important;
-      gap: 8px !important;
-    }
-
-    #queryHistoryBtn > span:last-child,
-    #sqlMapBtn > span:last-child {
-      display: inline-flex !important;
-      align-items: center !important;
-      line-height: 1 !important;
-      position: relative !important;
-      top: 0 !important;
-      font-weight: inherit !important;
-    }
-
-    #queryHistoryBtn .history-symbol,
-    #sqlMapBtn .sql-map-symbol {
-      width: 16px !important;
-      height: 16px !important;
-      top: 0 !important;
-      transform: none;
-    }
-
-    #queryHistoryBtn .history-symbol svg,
-    #sqlMapBtn .sql-map-symbol svg {
-      width: 16px !important;
-      height: 16px !important;
-    }
-
     /* beta fix40: session switch state independent from theme switch */
     .session-toggle {
       background: var(--secondary) !important;
@@ -4400,7 +4161,7 @@
       user-select: none;
     }
 
-    .session-toggle .theme-toggle-thumb {
+    .session-toggle .ui-switch-thumb {
       background: color-mix(in srgb, var(--foreground) 88%, var(--background)) !important;
       width: var(--seg-switch-thumb-w) !important;
       height: var(--seg-switch-thumb-h) !important;
@@ -4409,7 +4170,7 @@
       box-shadow: 0 1px 4px rgba(0, 0, 0, 0.38) !important;
     }
 
-    .session-toggle[aria-checked="true"] .theme-toggle-thumb {
+    .session-toggle[aria-checked="true"] .ui-switch-thumb {
       transform: translateX(var(--seg-switch-shift-on)) !important;
       background: var(--foreground) !important;
     }
@@ -4419,7 +4180,7 @@
       color: var(--background);
     }
 
-    .session-toggle[aria-checked="false"] .theme-toggle-thumb {
+    .session-toggle[aria-checked="false"] .ui-switch-thumb {
       transform: translateX(0) !important;
       background: color-mix(in srgb, var(--foreground) 84%, var(--background)) !important;
     }
@@ -4751,25 +4512,25 @@
       <div class="header-actions">
       <div class="session-switch" title="Ao ativar esta opção, o hSQLite Editor salva localmente no seu navegador: abas abertas, consultas em edição, históricos, instruções favoritas e preferências. Em outro navegador/dispositivo esses dados não aparecem automaticamente. Para migrá-las, utilize Configurações → Exportar/Importar.">
         <span class="session-switch-label">Salvar sessão</span>
-        <button id="sessionToggle" class="theme-toggle seg-switch session-toggle" type="button" role="switch" aria-checked="true" aria-label="Salvar sessão">
-          <span class="session-toggle-option seg-switch-option" data-session-option="off" aria-hidden="true"><span class="seg-switch-center">OFF</span></span>
-          <span class="session-toggle-option seg-switch-option" data-session-option="on" aria-hidden="true"><span class="seg-switch-center">ON</span></span>
-          <span class="theme-toggle-thumb"></span>
+        <button id="sessionToggle" class="ui-switch ui-switch-segmented session-toggle" type="button" role="switch" aria-checked="true" aria-label="Salvar sessão">
+          <span class="session-toggle-option ui-switch-option" data-session-option="off" aria-hidden="true"><span class="seg-switch-center">OFF</span></span>
+          <span class="session-toggle-option ui-switch-option" data-session-option="on" aria-hidden="true"><span class="seg-switch-center">ON</span></span>
+          <span class="ui-switch-thumb"></span>
         </button>
       </div>
       <div class="theme-switch" title="Alternar tema claro/escuro (Shift+F2)">
-        <button id="themeToggle" class="theme-toggle seg-switch theme-segmented" type="button" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro">
-          <span class="theme-toggle-option seg-switch-option" data-theme-option="light" aria-hidden="true"><span class="seg-switch-center"><svg viewBox="0 0 24 24" role="img" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"></path></svg></span></span>
-          <span class="theme-toggle-option seg-switch-option" data-theme-option="dark" aria-hidden="true"><span class="seg-switch-center"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M21 14.4A7.5 7.5 0 0 1 9.6 3a8.5 8.5 0 1 0 11.4 11.4Z"></path></svg></span></span>
-          <span class="theme-toggle-thumb"></span>
+        <button id="themeToggle" class="ui-switch ui-switch-segmented theme-segmented" type="button" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro">
+          <span class="theme-toggle-option ui-switch-option" data-theme-option="light" aria-hidden="true"><span class="seg-switch-center"><svg viewBox="0 0 24 24" role="img" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"></path></svg></span></span>
+          <span class="theme-toggle-option ui-switch-option" data-theme-option="dark" aria-hidden="true"><span class="seg-switch-center"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M21 14.4A7.5 7.5 0 0 1 9.6 3a8.5 8.5 0 1 0 11.4 11.4Z"></path></svg></span></span>
+          <span class="ui-switch-thumb"></span>
         </button>
       </div>
-      <button id="releaseNotesBtn" class="header-link-btn release-notes-btn" type="button" title="Novidades da versão">
+      <button id="releaseNotesBtn" class="ui-button ui-button-ghost ui-button-sm header-link-action release-notes-btn" type="button" title="Novidades da versão">
         Novidades
         <span id="releaseNotesBadge" class="release-badge" aria-hidden="true" style="display:none;"></span>
       </button>
-      <button id="helpBtn" class="header-link-btn" type="button" title="Ajuda geral do Editor">? Ajuda</button>
-      <a id="bugReportBtn" class="header-link-btn" href="https://github.com/helbertm/hSQLite-Editor/issues" target="_blank" rel="noopener noreferrer" title="Reportar erros no GitHub Issues">
+      <button id="helpBtn" class="ui-button ui-button-ghost ui-button-sm header-link-action" type="button" title="Ajuda geral do Editor">? Ajuda</button>
+      <a id="bugReportBtn" class="ui-button ui-button-ghost ui-button-sm header-link-action" href="https://github.com/helbertm/hSQLite-Editor/issues" target="_blank" rel="noopener noreferrer" title="Reportar erros no GitHub Issues">
         <span class="bug-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" role="img" focusable="false">
             <path d="M8.4 4.8a1 1 0 0 1 1.4 0L12 7l2.2-2.2a1 1 0 0 1 1.4 1.4l-1.9 1.9c2.6.7 4.5 3.1 4.5 6v1.9l1.9 1.9a1 1 0 1 1-1.4 1.4l-1.2-1.2a6.8 6.8 0 0 1-2.5 1.7V21a1 1 0 1 1-2 0v-1.1c-.3 0-.7.1-1 .1s-.7 0-1-.1V21a1 1 0 1 1-2 0v-1.2a6.8 6.8 0 0 1-2.5-1.7l-1.2 1.2a1 1 0 1 1-1.4-1.4l1.9-1.9V14c0-2.9 1.9-5.3 4.5-6L8.4 6.2a1 1 0 0 1 0-1.4ZM12 9.4c-2.5 0-4.5 2-4.5 4.5v1c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5v-1c0-2.5-2-4.5-4.5-4.5Zm0 1.5a.8.8 0 0 1 .8.8v5.8a.8.8 0 0 1-1.6 0v-5.8a.8.8 0 0 1 .8-.8Z"></path>
@@ -4785,21 +4546,21 @@
     <div class="toolbar top-command-bar">
       <div class="toolbar-group db-picker-group" aria-label="Banco SQLite">
         <details class="db-menu" id="databaseMenu">
-          <summary id="databaseMenuSummary" class="editor-action-btn" aria-label="Ações de arquivo de dados">
+          <summary id="databaseMenuSummary" class="ui-button ui-button-secondary ui-button-md" aria-label="Ações de arquivo de dados">
             <span>Arquivo de dados</span>
             <span class="database-menu-alert" id="databaseMenuAlert" aria-hidden="true" style="display:none;">⚠</span>
           </summary>
           <div class="db-menu-list">
-            <button id="openRecentDbBtn" class="editor-action-btn" type="button" title="Abrir lista de bancos recentes">
+            <button id="openRecentDbBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Abrir lista de bancos recentes">
               <span class="db-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M12 7v5l3 2"></path><path d="M4.2 10.2A8 8 0 1 1 5.7 16"></path><path d="M4 6v4h4"></path></svg></span><span>Recentes</span>
             </button>
-            <button id="openDbMenuBtn" class="editor-action-btn" type="button" title="Escolher arquivo SQLite (F3)">
+            <button id="openDbMenuBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Escolher arquivo SQLite (F3)">
               <span class="db-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6H10l2 2h6.5A1.5 1.5 0 0 1 20 9.5v8A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-10Z"></path></svg></span><span>Abrir</span>
             </button>
-            <button id="newDbBtn" class="editor-action-btn" type="button" title="Criar novo banco vazio">
+            <button id="newDbBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Criar novo banco vazio">
               <span class="db-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" focusable="false"><ellipse cx="12" cy="6" rx="7" ry="3"></ellipse><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"></path><path d="M12 9.5v4.5M9.8 11.8h4.4"></path></svg></span><span>Novo</span>
             </button>
-            <button id="saveDbBtn" class="editor-action-btn" type="button" title="Salvar o banco atual (.db)" disabled>
+            <button id="saveDbBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Salvar o banco atual (.db)" disabled>
               <span class="db-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M5 4h11l3 3v13H5z"></path><path d="M8 4v6h8V4M8 19h8"></path></svg></span><span>Salvar</span>
             </button>
           </div>
@@ -4807,8 +4568,8 @@
         <input type="file" id="dbFile" accept=".db,.sqlite,.sqlite3,.db3,.s3db,.sl3,.sqlite.db,application/x-sqlite3,application/octet-stream" style="display:none" />
         <input type="file" id="sqlFileInput" accept=".sql,.txt,text/plain,application/sql" style="display:none" />
 
-        <button id="clearRecentDbBtn" class="editor-action-btn ghost-btn" type="button" title="Limpar lista de bancos recentes">Limpar lista</button>
-        <button id="sampleDbBtn" class="editor-action-btn" type="button" title="Recurso temporariamente desativado" disabled>
+        <button id="clearRecentDbBtn" class="ui-button ui-button-ghost ui-button-md" type="button" title="Limpar lista de bancos recentes">Limpar lista</button>
+        <button id="sampleDbBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Recurso temporariamente desativado" disabled>
           <span class="action-symbol book-symbol" aria-hidden="true">
             <svg viewBox="0 0 24 24" role="img" focusable="false">
               <path d="M5 5.5A2.5 2.5 0 0 1 7.5 3H20v16H7.5A2.5 2.5 0 0 0 5 21.5V5.5Z"></path>
@@ -4821,27 +4582,27 @@
     </div>
 
     <div class="layout" id="mainLayout">
-      <button id="schemaToggleRail" class="schema-toggle-rail" type="button" title="Mostrar Schema (F4)" aria-label="Mostrar Schema">☰</button>
+      <button id="schemaToggleRail" class="ui-button ui-button-icon ui-button-sm schema-toggle-rail" type="button" title="Mostrar Schema (F4)" aria-label="Mostrar Schema">☰</button>
       <aside class="card schema-panel" id="schemaPanel">
         <div class="schema-header">
           <h2>Schema</h2>
-          <button id="schemaCollapseBtn" class="schema-collapse-btn" type="button" title="Ocultar/mostrar Schema (F4)" aria-label="Ocultar/mostrar Schema">
+          <button id="schemaCollapseBtn" class="ui-button ui-button-icon ui-button-sm schema-collapse-btn" type="button" title="Ocultar/mostrar Schema (F4)" aria-label="Ocultar/mostrar Schema">
             <span class="schema-menu-icon" aria-hidden="true">☰</span>
           </button>
         </div>
         <div class="schema-search-wrap">
           <input class="schema-search" id="schemaSearch" placeholder="Filtrar objetos do schema..." />
-          <button id="clearSchemaSearchBtn" class="clear-schema-search-btn" title="Limpar filtro do schema" type="button">×</button>
+          <button id="clearSchemaSearchBtn" class="ui-button ui-button-icon ui-button-sm ui-inline-clear clear-schema-search-btn" title="Limpar filtro do schema" type="button">×</button>
         </div>
         <div class="schema-type-filters" id="schemaTypeFilters" aria-label="Filtro por tipo de objeto do schema">
-          <button type="button" class="schema-type-filter-btn" id="schemaTypeAllBtn">ALL</button>
-          <button type="button" class="schema-type-filter-btn" id="schemaTypeTableBtn">TABLE</button>
-          <button type="button" class="schema-type-filter-btn" id="schemaTypeViewBtn">VIEW</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeAllBtn">ALL</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeTableBtn">TABLE</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeViewBtn">VIEW</button>
           <div class="schema-other-filter">
-            <button type="button" class="schema-type-filter-btn" id="schemaTypeOtherBtn">Outros</button>
+            <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeOtherBtn">Outros</button>
             <div class="schema-other-menu" id="schemaOtherMenu"></div>
           </div>
-          <button type="button" class="schema-type-filter-btn schema-clear-filters-btn" id="clearSchemaFiltersBtn">Limpar filtros</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn schema-clear-filters-btn" id="clearSchemaFiltersBtn">Limpar filtros</button>
         </div>
         <div class="schema-list" id="schemaList">
           <div class="empty">Nenhum arquivo carregado.</div>
@@ -4872,22 +4633,22 @@
       <main class="card">
         <div class="sql-tabs-header">
           <div class="sql-tabs" id="sqlTabs" role="tablist" aria-label="Abas de instruções SQL"></div>
-          <button id="newSqlTabBtn" class="new-sql-tab-btn" type="button" title="Nova aba (Ctrl/Cmd+T)">+</button>
+          <button id="newSqlTabBtn" class="ui-button ui-button-icon ui-button-sm new-sql-tab-btn" type="button" title="Nova aba (Ctrl/Cmd+T)">+</button>
         </div>
         <div id="sqlTabPanel" role="tabpanel" aria-labelledby="" tabindex="0">
         <div class="editor-header">
           <h2 id="sqlEditorTitle">Instruções SQL</h2>
           <div class="editor-actions" aria-label="Ações da consulta e exportação">
-            <button id="runBtn" class="editor-action-btn primary" type="button" title="Executar instruções SQL (F5)" disabled>
+            <button id="runBtn" class="ui-button ui-button-primary ui-button-md" type="button" title="Executar instruções SQL (F5)" disabled>
               <span class="shortcut-badge" aria-hidden="true">F5</span><span>EXECUTAR</span>
             </button>
-            <button id="openSqlBtn" class="editor-action-btn" type="button" title="Abrir arquivo .sql ou .txt no editor (Ctrl/Cmd+O)">
+            <button id="openSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Abrir arquivo .sql ou .txt no editor (Ctrl/Cmd+O)">
               <span>Abrir .sql</span>
             </button>
-            <button id="saveSqlBtn" class="editor-action-btn" type="button" title="Salvar a consulta atual em arquivo .sql (Ctrl/Cmd+S)">
+            <button id="saveSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Salvar a consulta atual em arquivo .sql (Ctrl/Cmd+S)">
               <span>Salvar .sql</span>
             </button>
-            <button id="queryHistoryBtn" class="editor-action-btn" type="button" title="Histórico das últimas consultas executadas">
+            <button id="queryHistoryBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Histórico das últimas consultas executadas">
               <span class="history-symbol" aria-hidden="true">
                 <svg viewBox="0 0 24 24" role="img" focusable="false">
                   <path d="M12 7v5l3 2"></path>
@@ -4898,36 +4659,36 @@
             </button>
 
             <details class="editor-more" id="editorMoreActions">
-              <summary class="editor-action-btn" aria-label="Mais ações">Mais</summary>
+              <summary class="ui-button ui-button-secondary ui-button-md" aria-label="Mais ações">Mais</summary>
               <div class="editor-more-menu">
-                <button id="openRunSqlBtn" class="editor-action-btn" type="button" title="Abrir arquivo .sql ou .txt e executar em seguida (Ctrl/Cmd+Shift+O)">
+                <button id="openRunSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Abrir arquivo .sql ou .txt e executar em seguida (Ctrl/Cmd+Shift+O)">
                   <span class="shortcut-badge" aria-hidden="true">⌘/Ctrl+Shift+O</span><span>Abrir e executar</span>
                 </button>
-                <button id="copySqlBtn" class="editor-action-btn" type="button" title="Copiar a consulta inteira para a área de transferência (F6)">
+                <button id="copySqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Copiar a consulta inteira para a área de transferência (F6)">
                   <span class="shortcut-badge" aria-hidden="true">F6</span><span>Copiar</span>
                 </button>
-                <button id="clearSqlBtn" class="editor-action-btn" type="button" title="Limpar o editor de consulta (F7)">
+                <button id="clearSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Limpar o editor de consulta (F7)">
                   <span class="shortcut-badge" aria-hidden="true">F7</span><span>Limpar</span>
                 </button>
-                <button id="closeAllTabsBtn" class="editor-action-btn" type="button" title="Fechar todas as abas SQL e abrir uma nova">
+                <button id="closeAllTabsBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Fechar todas as abas SQL e abrir uma nova">
                   <span>Fechar todas as abas</span>
                 </button>
-                <button id="clearPasteSqlBtn" class="editor-action-btn" type="button" title="Limpar o editor e colar o conteúdo da área de transferência (F8)">
+                <button id="clearPasteSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Limpar o editor e colar o conteúdo da área de transferência (F8)">
                   <span class="shortcut-badge" aria-hidden="true">F8</span><span>Limpar e colar</span>
                 </button>
-                <button id="exportSchemaBtn" class="editor-action-btn" type="button" title="Exportar script da estrutura do banco (sem dados)" disabled>
+                <button id="exportSchemaBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Exportar script da estrutura do banco (sem dados)" disabled>
                   <span>Exportar estrutura (.sql)</span>
                 </button>
-                <button id="favoritesBtn" class="editor-action-btn" type="button" title="Consultas favoritas">
+                <button id="favoritesBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Consultas favoritas">
                   <span aria-hidden="true">★</span><span>Favoritas</span>
                 </button>
-                <button id="settingsTransferBtn" class="editor-action-btn" type="button" title="Configurações do editor">
+                <button id="settingsTransferBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Configurações do editor">
                   <span aria-hidden="true">⇄</span><span>Config</span>
                 </button>
-                <button id="shortcutsHelpBtn" class="editor-action-btn" type="button" title="Ver atalhos principais">
+                <button id="shortcutsHelpBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Ver atalhos principais">
                   <span aria-hidden="true">⌨</span><span>Atalhos</span>
                 </button>
-                <button id="sqlMapBtn" class="editor-action-btn" type="button" title="Abrir Mapa SQL / DER interativo">
+                <button id="sqlMapBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Abrir Mapa SQL / DER interativo">
                   <span class="sql-map-symbol" aria-hidden="true">
                     <svg viewBox="0 0 24 24" role="img" focusable="false">
                       <rect x="3" y="4" width="7" height="5" rx="1.2"></rect>
@@ -4958,15 +4719,15 @@ order by</textarea>
             <div class="sql-find-row">
               <input id="sqlFindInput" type="search" placeholder="Localizar..." autocomplete="off" spellcheck="false">
               <span id="sqlFindCount" class="sql-find-count">0/0</span>
-              <button id="sqlFindPrevBtn" type="button" title="Ocorrência anterior">↑</button>
-              <button id="sqlFindNextBtn" type="button" title="Próxima ocorrência">↓</button>
-              <button id="sqlFindToggleReplaceBtn" type="button" title="Mostrar substituir">Substituir</button>
-              <button id="sqlFindCloseBtn" type="button" title="Fechar">×</button>
+              <button id="sqlFindPrevBtn" class="ui-button ui-button-icon ui-button-sm" type="button" title="Ocorrência anterior">↑</button>
+              <button id="sqlFindNextBtn" class="ui-button ui-button-icon ui-button-sm" type="button" title="Próxima ocorrência">↓</button>
+              <button id="sqlFindToggleReplaceBtn" class="ui-button ui-button-secondary ui-button-sm" type="button" title="Mostrar substituir">Substituir</button>
+              <button id="sqlFindCloseBtn" class="ui-button ui-button-icon ui-button-sm" type="button" title="Fechar">×</button>
             </div>
             <div class="sql-find-row sql-replace-row" id="sqlReplaceRow">
               <input id="sqlReplaceInput" type="text" placeholder="Substituir por..." autocomplete="off" spellcheck="false">
-              <button id="sqlReplaceOneBtn" type="button">Substituir</button>
-              <button id="sqlReplaceAllBtn" type="button">Substituir tudo</button>
+              <button id="sqlReplaceOneBtn" class="ui-button ui-button-secondary ui-button-sm" type="button">Substituir</button>
+              <button id="sqlReplaceAllBtn" class="ui-button ui-button-secondary ui-button-sm" type="button">Substituir tudo</button>
             </div>
           </div>
           <div class="autocomplete" id="autocomplete"></div>
@@ -4980,7 +4741,7 @@ order by</textarea>
           <span id="sqlRunningText">Executando consulta...</span>
           <span class="sql-running-separator">·</span>
           <span id="sqlBusyElapsed">Tempo decorrido: 0s</span>
-          <button id="cancelSqlBtn" class="danger sql-cancel-btn" type="button">Parar execução</button>
+          <button id="cancelSqlBtn" class="ui-button ui-button-destructive ui-button-sm sql-cancel-btn" type="button">Parar execução</button>
         </div>
         <div id="sqlErrorBox" class="sql-error-box">
           <div class="sql-error-title">Erro SQL</div>
@@ -4993,10 +4754,10 @@ order by</textarea>
           <div class="result-header">
             <h2>Resultados</h2>
             <div class="result-actions" aria-label="Exportação de resultados">
-              <button id="exportCsvBtn" class="editor-action-btn" type="button" title="Exportar resultado em CSV (F9)" disabled>
+              <button id="exportCsvBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Exportar resultado em CSV (F9)" disabled>
                 <span class="shortcut-badge" aria-hidden="true">F9</span><span>CSV</span>
               </button>
-              <button id="exportJsonBtn" class="editor-action-btn" type="button" title="Exportar resultado em JSON (F10)" disabled>
+              <button id="exportJsonBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Exportar resultado em JSON (F10)" disabled>
                 <span class="shortcut-badge" aria-hidden="true">F10</span><span>JSON</span>
               </button>
             </div>
@@ -5109,7 +4870,7 @@ order by</textarea>
       </div>
 
       <div class="modal-actions first-run-actions">
-        <button id="firstRunContinueBtn" class="primary" type="button" data-modal-confirm="true" data-modal-initial="true">Continuar</button>
+        <button id="firstRunContinueBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-confirm="true" data-modal-initial="true">Continuar</button>
       </div>
     </div>
   </div>
@@ -5119,9 +4880,9 @@ order by</textarea>
       <h3 id="closeTabTitle">Fechar aba?</h3>
       <p id="closeTabConfirmText">Há uma consulta em edição e o seu conteúdo será perdido ao fechar a aba.</p>
       <div class="close-tab-preview" id="closeTabPreview"></div>
-      <div class="modal-actions modal-actions-destructive close-tab-confirm-actions">
-        <button id="confirmCloseTabBtn" class="close-tab-danger-btn modal-action-destructive" type="button" data-modal-confirm="true">Fechar aba</button>
-        <button id="cancelCloseTabBtn" class="primary close-tab-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
+      <div class="modal-actions modal-actions-split close-tab-confirm-actions">
+        <button id="confirmCloseTabBtn" class="ui-button ui-button-destructive ui-button-md close-tab-danger-btn" type="button" data-modal-confirm="true">Fechar aba</button>
+        <button id="cancelCloseTabBtn" class="ui-button ui-button-primary ui-button-md close-tab-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
       </div>
     </div>
   </div>
@@ -5136,9 +4897,9 @@ order by</textarea>
         </div>
         <div class="sql-map-header-actions">
           <input id="sqlMapSearch" type="search" placeholder="Buscar tabela/campo..." spellcheck="false" autocomplete="off">
-          <button id="sqlMapAutoLayoutBtn" type="button">Reorganizar</button>
-          <button id="sqlMapExportPngBtn" type="button">Exportar PNG</button>
-          <button id="sqlMapCloseBtn" type="button">Fechar</button>
+          <button id="sqlMapAutoLayoutBtn" class="ui-button ui-button-secondary ui-button-sm" type="button">Reorganizar</button>
+          <button id="sqlMapExportPngBtn" class="ui-button ui-button-secondary ui-button-sm" type="button">Exportar PNG</button>
+          <button id="sqlMapCloseBtn" class="ui-button ui-button-secondary ui-button-sm" type="button">Fechar</button>
         </div>
       </div>
       <div class="sql-map-body">
@@ -5156,10 +4917,10 @@ order by</textarea>
             <pre id="sqlMapSqlPreview" class="sql-map-sql-preview">-- selecione tabelas/campos no mapa</pre>
           </div>
           <div class="sql-map-actions">
-            <button id="sqlMapCopySqlBtn" type="button">Copiar</button>
-            <button id="sqlMapPasteSqlBtn" class="primary" type="button">Colar no editor</button>
-            <button id="sqlMapClearPasteSqlBtn" class="primary" type="button">Limpar e colar no editor</button>
-            <button id="sqlMapClearSelectionBtn" type="button">Limpar seleção</button>
+            <button id="sqlMapCopySqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button">Copiar</button>
+            <button id="sqlMapPasteSqlBtn" class="ui-button ui-button-primary ui-button-md" type="button">Colar no editor</button>
+            <button id="sqlMapClearPasteSqlBtn" class="ui-button ui-button-primary ui-button-md" type="button">Limpar e colar no editor</button>
+            <button id="sqlMapClearSelectionBtn" class="ui-button ui-button-ghost ui-button-md" type="button">Limpar seleção</button>
           </div>
           <div class="hint">
             Tabelas sem caminho por FK declarada ficam bloqueadas quando há seleção ativa.
@@ -5178,16 +4939,16 @@ order by</textarea>
 
       <div class="query-history-search-wrap">
         <input id="queryHistorySearch" type="search" placeholder="Pesquisar no histórico..." autocomplete="off" spellcheck="false">
-        <button id="clearQueryHistorySearchBtn" class="clear-query-history-search-btn" title="Limpar pesquisa" type="button">×</button>
+        <button id="clearQueryHistorySearchBtn" class="ui-button ui-button-icon ui-button-sm ui-inline-clear clear-query-history-search-btn" title="Limpar pesquisa" type="button">×</button>
       </div>
 
       <div id="queryHistoryList" class="query-history-list">
         <div class="query-history-empty">Nenhuma consulta no histórico.</div>
       </div>
 
-      <div class="modal-actions modal-actions-destructive query-history-actions">
-        <button id="clearQueryHistoryBtn" class="history-clear-btn modal-action-destructive" type="button">Limpar histórico</button>
-        <button id="closeQueryHistoryBtn" class="primary" type="button" data-modal-cancel="true" data-modal-initial="true">Fechar</button>
+      <div class="modal-actions modal-actions-split query-history-actions">
+        <button id="clearQueryHistoryBtn" class="ui-button ui-button-destructive ui-button-sm modal-action-destructive" type="button">Limpar histórico</button>
+        <button id="closeQueryHistoryBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true">Fechar</button>
       </div>
     </div>
   </div>
@@ -5199,7 +4960,7 @@ order by</textarea>
         <div class="query-history-empty">Nenhum banco recente.</div>
       </div>
       <div class="modal-actions query-history-actions">
-        <button id="closeRecentDbBtn" class="primary" type="button" data-modal-cancel="true" data-modal-initial="true">Fechar</button>
+        <button id="closeRecentDbBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true">Fechar</button>
       </div>
     </div>
   </div>
@@ -5210,9 +4971,9 @@ order by</textarea>
       <div id="favoritesList" class="query-history-list">
         <div class="query-history-empty">Nenhuma favorita salva.</div>
       </div>
-      <div class="modal-actions modal-actions-destructive query-history-actions">
-        <button id="clearFavoritesBtn" class="history-clear-btn modal-action-destructive" type="button">Limpar favoritas</button>
-        <button id="closeFavoritesBtn" class="primary" type="button" data-modal-cancel="true">Fechar</button>
+      <div class="modal-actions modal-actions-split query-history-actions">
+        <button id="clearFavoritesBtn" class="ui-button ui-button-destructive ui-button-sm modal-action-destructive" type="button">Limpar favoritas</button>
+        <button id="closeFavoritesBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true">Fechar</button>
       </div>
     </div>
   </div>
@@ -5268,14 +5029,14 @@ order by</textarea>
       </div>
       <div class="modal-actions settings-transfer-actions">
         <div class="settings-transfer-actions-left">
-          <label id="importSettingsTrigger" class="file-label settings-import-label">
+          <label id="importSettingsTrigger" class="ui-button ui-button-secondary ui-button-md file-label settings-import-label">
             <span>Importar</span>
             <input type="file" id="importSettingsInput" accept="application/json,.json" />
           </label>
-          <button id="closeSettingsTransferBtn" type="button" data-modal-cancel="true">Fechar</button>
+          <button id="closeSettingsTransferBtn" class="ui-button ui-button-secondary ui-button-md" type="button" data-modal-cancel="true">Fechar</button>
         </div>
         <div class="settings-transfer-actions-right">
-          <button id="exportSettingsBtn" class="primary" type="button">Exportar</button>
+          <button id="exportSettingsBtn" class="ui-button ui-button-primary ui-button-md" type="button">Exportar</button>
         </div>
       </div>
     </div>
@@ -5285,9 +5046,9 @@ order by</textarea>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="importSettingsConfirmTitle" aria-describedby="importSettingsConfirmDescription">
       <h3 id="importSettingsConfirmTitle">Confirmar importação</h3>
       <p id="importSettingsConfirmDescription">Ao importar, as configurações atuais selecionadas serão substituídas.</p>
-      <div class="modal-actions modal-actions-destructive">
-        <button id="confirmImportSettingsBtn" class="modal-action-destructive" type="button" data-modal-confirm="true">Continuar</button>
-        <button id="cancelImportSettingsBtn" class="primary" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
+      <div class="modal-actions modal-actions-split">
+        <button id="confirmImportSettingsBtn" class="ui-button ui-button-destructive ui-button-md" type="button" data-modal-confirm="true">Continuar</button>
+        <button id="cancelImportSettingsBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
       </div>
     </div>
   </div>
@@ -5306,7 +5067,7 @@ order by</textarea>
         <div><span class="kbd">Ctrl/Cmd+H</span> Histórico rápido</div>
       </div>
       <div class="modal-actions">
-        <button id="closeShortcutsHelpBtn" data-modal-cancel="true">Fechar</button>
+        <button id="closeShortcutsHelpBtn" class="ui-button ui-button-primary ui-button-md" data-modal-cancel="true">Fechar</button>
       </div>
     </div>
   </div>
@@ -5347,7 +5108,7 @@ order by</textarea>
         </section>
       </div>
       <div class="modal-actions">
-        <button id="closeHelpBtn" class="primary" type="button" data-modal-cancel="true" data-modal-initial="true">Fechar</button>
+        <button id="closeHelpBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true">Fechar</button>
       </div>
     </div>
   </div>
@@ -5358,7 +5119,7 @@ order by</textarea>
       <p id="releaseNotesSummary">Seu editor foi atualizado.</p>
       <div id="releaseNotesContent" class="hint-content"></div>
       <div class="modal-actions">
-        <button id="closeReleaseNotesBtn" class="primary" type="button" data-modal-cancel="true" data-modal-initial="true">Fechar</button>
+        <button id="closeReleaseNotesBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true">Fechar</button>
       </div>
     </div>
   </div>
@@ -5408,8 +5169,8 @@ order by</textarea>
       </div>
 
       <div class="modal-actions sample-modal-actions">
-        <button id="cancelSampleDbBtn" class="sample-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
-        <button id="confirmSampleDbBtn" class="primary sample-primary-btn" type="button" data-modal-confirm="true">Continuar</button>
+        <button id="cancelSampleDbBtn" class="ui-button ui-button-secondary ui-button-md sample-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
+        <button id="confirmSampleDbBtn" class="ui-button ui-button-primary ui-button-md sample-primary-btn" type="button" data-modal-confirm="true">Continuar</button>
       </div>
     </div>
   </div>
@@ -5425,8 +5186,8 @@ order by</textarea>
         </label>
       </div>
       <div class="modal-actions">
-        <button id="cancelNewDbBtn" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
-        <button id="confirmNewDbBtn" class="primary" type="button" data-modal-confirm="true">Criar .db</button>
+        <button id="cancelNewDbBtn" class="ui-button ui-button-secondary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
+        <button id="confirmNewDbBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-confirm="true">Criar .db</button>
       </div>
     </div>
   </div>
@@ -5451,8 +5212,8 @@ order by</textarea>
         <div id="exportEmptyMessage" class="export-empty-message">Não há registros disponíveis para serem exportados.</div>
       </div>
       <div class="modal-actions export-modal-actions">
-        <button id="cancelExportBtn" class="export-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
-        <button id="confirmExportBtn" class="primary export-primary-btn" type="button" data-modal-confirm="true">Exportar</button>
+        <button id="cancelExportBtn" class="ui-button ui-button-secondary ui-button-md export-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
+        <button id="confirmExportBtn" class="ui-button ui-button-primary ui-button-md export-primary-btn" type="button" data-modal-confirm="true">Exportar</button>
       </div>
     </div>
   </div>
@@ -6227,7 +5988,9 @@ order by</textarea>
       }
     },
     init() {
-      this.setCollapsed(storage.get(STORAGE_KEYS.SCHEMA_COLLAPSED, "0") === "1");
+      const saved = storage.get(STORAGE_KEYS.SCHEMA_COLLAPSED, null);
+      const prefersCompactSchema = window.matchMedia && window.matchMedia("(max-width: 920px)").matches;
+      this.setCollapsed(saved === null ? prefersCompactSchema : saved === "1");
     },
     toggle() {
       this.setCollapsed(!isSchemaCollapsed);
@@ -6533,7 +6296,7 @@ order by</textarea>
     if (!editorMoreActions) return;
     editorMoreActions.addEventListener("toggle", () => {
       if (!editorMoreActions.open) return;
-      const firstAction = editorMoreActions.querySelector(".editor-more-menu .editor-action-btn");
+      const firstAction = editorMoreActions.querySelector(".editor-more-menu .ui-button");
       if (firstAction && typeof firstAction.focus === "function") firstAction.focus();
     });
 
@@ -6542,7 +6305,7 @@ order by</textarea>
       if (!editorMoreActions.contains(event.target)) closeEditorMoreActions();
     });
 
-    editorMoreActions.querySelectorAll(".editor-more-menu .editor-action-btn").forEach((button) => {
+    editorMoreActions.querySelectorAll(".editor-more-menu .ui-button").forEach((button) => {
       button.addEventListener("click", () => closeEditorMoreActions());
     });
   }
@@ -6551,7 +6314,7 @@ order by</textarea>
     if (!databaseMenu) return;
     databaseMenu.addEventListener("toggle", () => {
       if (!databaseMenu.open) return;
-      const firstAction = databaseMenu.querySelector(".db-menu-list .editor-action-btn");
+      const firstAction = databaseMenu.querySelector(".db-menu-list .ui-button");
       if (firstAction && typeof firstAction.focus === "function") firstAction.focus();
     });
 
@@ -7080,7 +6843,7 @@ order by</textarea>
         <div class="toast-title">${escapeHtml(title)}</div>
         <div class="toast-message">${escapeHtml(message)}</div>
       </div>
-      <button class="toast-close" title="Fechar" type="button">×</button>
+      <button class="ui-button ui-button-icon ui-button-sm toast-close" title="Fechar" type="button">×</button>
     `;
     toast.querySelector(".toast-close").addEventListener("click", () => toast.remove());
     toastContainer.appendChild(toast);
@@ -7495,10 +7258,10 @@ order by</textarea>
             </div>
             <div class="query-history-item-actions">
               ${item.status === "success"
-                ? `<button class="query-history-load-btn" type="button" data-history-fav="${escapeHtml(item.id)}">${isFav ? "★" : "☆"}</button>`
+                ? `<button class="ui-button ui-button-secondary ui-button-sm query-history-load-btn" type="button" data-history-fav="${escapeHtml(item.id)}">${isFav ? "★" : "☆"}</button>`
                 : `<span class="query-history-action-placeholder" aria-hidden="true"></span>`
               }
-              <button class="query-history-load-btn" type="button" data-history-load="${escapeHtml(item.id)}">Carregar</button>
+              <button class="ui-button ui-button-secondary ui-button-sm query-history-load-btn" type="button" data-history-load="${escapeHtml(item.id)}">Carregar</button>
             </div>
           </div>
         `;
@@ -7579,8 +7342,8 @@ order by</textarea>
             <pre class="query-history-sql">${escapeHtml(item.sql)}</pre>
           </div>
           <div class="query-history-inline-actions">
-            <button class="query-history-load-btn" type="button" data-favorite-remove="${escapeHtml(item.id)}">Remover</button>
-            <button class="query-history-load-btn" type="button" data-favorite-load="${escapeHtml(item.id)}">Carregar</button>
+            <button class="ui-button ui-button-secondary ui-button-sm query-history-load-btn" type="button" data-favorite-remove="${escapeHtml(item.id)}">Remover</button>
+            <button class="ui-button ui-button-secondary ui-button-sm query-history-load-btn" type="button" data-favorite-load="${escapeHtml(item.id)}">Carregar</button>
           </div>
         </div>
       `).join("");
@@ -8019,8 +7782,8 @@ order by</textarea>
       actions.className = "sql-tab-actions";
       actions.innerHTML = `
         ${isEditing ? `<input class="sql-tab-title-input" data-tab-input-id="${escapeHtml(tab.id)}" maxlength="50" value="${escapeHtml(tab.title)}" aria-label="Renomear aba">` : ""}
-        <button class="sql-tab-control sql-tab-rename-hint" data-tab-rename="${escapeHtml(tab.id)}" type="button" title="Renomear aba" aria-label="Renomear aba">✎</button>
-        ${sqlTabs.length > 1 ? '<button class="sql-tab-control sql-tab-close" type="button" title="Fechar aba" aria-label="Fechar aba">×</button>' : ""}
+        <button class="ui-button ui-button-icon ui-button-sm sql-tab-control sql-tab-rename-hint" data-tab-rename="${escapeHtml(tab.id)}" type="button" title="Renomear aba" aria-label="Renomear aba">✎</button>
+        ${sqlTabs.length > 1 ? '<button class="ui-button ui-button-icon ui-button-sm sql-tab-control sql-tab-close" type="button" title="Fechar aba" aria-label="Fechar aba">×</button>' : ""}
       `;
       const input = actions.querySelector(".sql-tab-title-input");
       if (input) {
@@ -8683,7 +8446,7 @@ order by</textarea>
             <div class="query-history-meta"><span>${escapeHtml(item.name)}</span></div>
             <pre class="query-history-sql">${escapeHtml(secondary || "Arquivo recente")}</pre>
           </div>
-          <button class="query-history-load-btn" type="button" data-recent-open="${escapeHtml(item.id)}">Abrir</button>
+          <button class="ui-button ui-button-secondary ui-button-sm query-history-load-btn" type="button" data-recent-open="${escapeHtml(item.id)}">Abrir</button>
         </div>
       `;
     }).join("");
@@ -10703,21 +10466,21 @@ function splitSqlStatements(sql) {
       const toolbarHtml = `
         <div class="filter-wrap">
           <input class="filterInput" placeholder="Filtrar resultados..." aria-label="Filtrar resultados" ${columns.length ? "" : "disabled"} value="${escapeHtml(getFilterValue())}" />
-          <button class="clear-filter-btn" title="Limpar filtro" aria-label="Limpar filtro" type="button">×</button>
+          <button class="ui-button ui-button-icon ui-button-sm ui-inline-clear clear-filter-btn" title="Limpar filtro" aria-label="Limpar filtro" type="button">×</button>
         </div>
         <select class="pageSizeSelect" aria-label="Registros por página" ${columns.length ? "" : "disabled"}>
           ${[50,75,100,125,150,175,200].map(n => `<option value="${n}" ${pageSize === n ? "selected" : ""}>${n} por página</option>`).join("")}
         </select>
-        <button class="sort-clear-btn" title="Limpar ordenação (Shift+F5)" type="button" ${sortStates.length ? "" : "disabled"}>Limpar ordenação</button>
-        <button class="selection-clear-btn" title="Limpar seleção (Shift+F3)" type="button" ${selectedKeys.size ? "" : "disabled"}>Limpar seleção</button>
-        <button class="freeze-clear-btn" title="Descongelar colunas" type="button" ${frozenColumnCount ? "" : "disabled"}>Descongelar</button>
+        <button class="ui-button ui-button-ghost ui-button-sm sort-clear-btn" title="Limpar ordenação (Shift+F5)" type="button" ${sortStates.length ? "" : "disabled"}>Limpar ordenação</button>
+        <button class="ui-button ui-button-ghost ui-button-sm selection-clear-btn" title="Limpar seleção (Shift+F3)" type="button" ${selectedKeys.size ? "" : "disabled"}>Limpar seleção</button>
+        <button class="ui-button ui-button-ghost ui-button-sm freeze-clear-btn" title="Descongelar colunas" type="button" ${frozenColumnCount ? "" : "disabled"}>Descongelar</button>
         <span class="pill selectedCount">${selectedKeys.size} selecionado(s)</span>
         <div class="pagination" aria-label="Paginação dos resultados">
-          <button class="firstPageBtn icon-btn" title="Primeira página" aria-label="Primeira página" type="button" ${currentPage <= 1 ? "disabled" : ""}>⏮</button>
-          <button class="prevPageBtn icon-btn" title="Página anterior" aria-label="Página anterior" type="button" ${currentPage <= 1 ? "disabled" : ""}>◀</button>
+          <button class="ui-button ui-button-icon ui-button-sm firstPageBtn" title="Primeira página" aria-label="Primeira página" type="button" ${currentPage <= 1 ? "disabled" : ""}>⏮</button>
+          <button class="ui-button ui-button-icon ui-button-sm prevPageBtn" title="Página anterior" aria-label="Página anterior" type="button" ${currentPage <= 1 ? "disabled" : ""}>◀</button>
           <span class="pageInfo">${getPageInfoText()}</span>
-          <button class="nextPageBtn icon-btn" title="Próxima página" aria-label="Próxima página" type="button" ${currentPage >= getTotalPages() ? "disabled" : ""}>▶</button>
-          <button class="lastPageBtn icon-btn" title="Última página" aria-label="Última página" type="button" ${currentPage >= getTotalPages() ? "disabled" : ""}>⏭</button>
+          <button class="ui-button ui-button-icon ui-button-sm nextPageBtn" title="Próxima página" aria-label="Próxima página" type="button" ${currentPage >= getTotalPages() ? "disabled" : ""}>▶</button>
+          <button class="ui-button ui-button-icon ui-button-sm lastPageBtn" title="Última página" aria-label="Última página" type="button" ${currentPage >= getTotalPages() ? "disabled" : ""}>⏭</button>
         </div>
       `;
 
