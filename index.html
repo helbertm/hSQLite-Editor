@@ -189,6 +189,7 @@
 
     select:focus-visible, input:focus-visible,
     button:focus-visible, .file-label:focus-visible,
+    summary:focus-visible,
     [role="button"]:focus-visible {
       border-color: var(--ring);
       box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
@@ -365,6 +366,37 @@
     .CodeMirror .cm-comment {
       font-style: italic;
       opacity: 0.82;
+    }
+
+    .empty-state {
+      min-height: 220px;
+      display: grid;
+      place-items: center;
+      padding: 28px 18px;
+      color: var(--mutedText);
+      text-align: center;
+    }
+
+    .empty-state-card {
+      width: min(420px, 100%);
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+    }
+
+    .empty-state-title {
+      margin: 0;
+      color: var(--foreground);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .empty-state-description {
+      margin: 0;
+      color: var(--mutedText);
+      font-size: 13px;
+      line-height: 1.45;
     }
 
 
@@ -661,6 +693,44 @@
       width: 100%;
       margin: 0;
       accent-color: var(--accentLine);
+    }
+
+    .action-btn,
+    .editor-action-btn,
+    .file-label.editor-action-btn,
+    .result-actions .editor-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: var(--control-height);
+      padding: 0 12px;
+      border-radius: calc(var(--radius) - 2px);
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .action-btn-sm,
+    .editor-more-menu .editor-action-btn,
+    .db-menu-list .editor-action-btn,
+    .query-history-load-btn,
+    .schema-type-filter-btn {
+      min-height: var(--control-height-compact);
+      padding: 0 10px;
+      font-size: 12px;
+    }
+
+    .icon-btn,
+    .clear-filter-btn,
+    .clear-schema-search-btn,
+    .clear-query-history-search-btn,
+    .toast-close,
+    .sql-tab-close,
+    .new-sql-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
     }
 
     table {
@@ -2554,6 +2624,24 @@
       border: 1.5px solid var(--panel);
       box-shadow: 0 0 0 1px color-mix(in srgb, var(--destructive) 35%, transparent);
       pointer-events: none;
+      animation: releaseBadgePulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes releaseBadgePulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.9;
+      }
+      50% {
+        transform: scale(1.16);
+        opacity: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .release-badge {
+        animation: none;
+      }
     }
 
     .bug-icon {
@@ -3348,12 +3436,6 @@
       }
     }
 
-    .offline-card p::after {
-      content: " A tomada também não está colaborando.";
-      color: var(--mutedText);
-    }
-
-
     /* beta fix2: didactic bases book icon */
     .book-symbol {
       width: 17px;
@@ -4073,9 +4155,56 @@
       gap: 6px;
       flex: 1 1 auto;
       min-width: 0;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+
+    .sql-tabs.is-overflowing {
       overflow-x: auto;
       scrollbar-width: thin;
-      padding-bottom: 2px;
+      scrollbar-gutter: stable;
+    }
+
+    .sql-tabs::-webkit-scrollbar {
+      height: 0;
+    }
+
+    .sql-tabs.is-overflowing::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .sql-tabs-header {
+      position: relative;
+    }
+
+    .sql-tabs-header::before,
+    .sql-tabs-header::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 1px;
+      width: 22px;
+      pointer-events: none;
+      z-index: 4;
+      opacity: 0;
+      transition: opacity 0.12s ease;
+    }
+
+    .sql-tabs-header::before {
+      left: 0;
+      background: linear-gradient(to right, var(--panel), transparent);
+    }
+
+    .sql-tabs-header::after {
+      right: 38px;
+      background: linear-gradient(to left, var(--panel), transparent);
+    }
+
+    .sql-tabs-header.can-scroll-left::before,
+    .sql-tabs-header.can-scroll-right::after {
+      opacity: 1;
     }
     .sql-tab {
       display: inline-flex;
@@ -4500,8 +4629,16 @@
     .sql-tabs {
       gap: 0 !important;
       padding-bottom: 0 !important;
-      overflow-x: auto;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      scrollbar-width: none;
       align-items: flex-end !important;
+    }
+
+    .sql-tabs.is-overflowing {
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-gutter: stable;
     }
 
     .sql-tab {
@@ -5825,6 +5962,17 @@
       font-weight: 850;
     }
 
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
   </style>
 </head>
 
@@ -5856,7 +6004,7 @@
         Novidades
         <span id="releaseNotesBadge" class="release-badge" aria-hidden="true" style="display:none;"></span>
       </button>
-      <button id="helpBtn" class="header-link-btn" type="button" title="Ajuda geral do Editor">? Help</button>
+      <button id="helpBtn" class="header-link-btn" type="button" title="Ajuda geral do Editor">? Ajuda</button>
       <a id="bugReportBtn" class="header-link-btn" href="https://github.com/helbertm/hSQLite-Editor/issues" target="_blank" rel="noopener noreferrer" title="Reportar erros no GitHub Issues">
         <span class="bug-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" role="img" focusable="false">
@@ -6091,20 +6239,13 @@ order by</textarea>
           <div class="result-toolbar" id="topResultToolbar"></div>
 
           <div class="table-wrap" id="tableWrap">
-            <div class="sleep-empty" aria-label="Sem resultados">
-              <div class="sleep-scene">
-                <div class="window">
-                  <div class="moon"></div>
-                  <div class="horizon"></div>
-                  <div class="fence"><div class="rail r1"></div><div class="rail r2"></div></div>
-                  <div class="sheep s1"><div class="sheep-body"></div><div class="sheep-head"></div><div class="leg l1"></div><div class="leg l2"></div><div class="leg l3"></div><div class="leg l4"></div></div>
-                  <div class="sheep s2"><div class="sheep-body"></div><div class="sheep-head"></div><div class="leg l1"></div><div class="leg l2"></div><div class="leg l3"></div><div class="leg l4"></div></div>
-                  <div class="sheep s3"><div class="sheep-body"></div><div class="sheep-head"></div><div class="leg l1"></div><div class="leg l2"></div><div class="leg l3"></div><div class="leg l4"></div></div>
-                </div>
-                <div class="sql-dream" aria-hidden="true"><span class="kw">select</span><span class="fn">count(*)</span><span class="kw">from</span><span class="tbl">sheep;</span></div>
-                <div class="sleeper"><div class="bed"></div><div class="pillow"></div><div class="head"></div><div class="blanket"></div></div>
+            <div class="empty-state" aria-label="Sem resultados">
+              <div class="empty-state-card">
+                <p class="empty-state-title">Nenhum resultado para exibir</p>
+                <p class="empty-state-description">Abra um banco SQLite, escreva uma consulta e execute com F5.</p>
               </div>
-            </div></div>
+            </div>
+          </div>
           <div class="result-hscroll" id="resultHScroll" aria-hidden="true">
             <span>↔</span>
             <input id="resultHScrollRange" type="range" min="0" max="0" value="0" step="1" aria-label="Rolagem horizontal da tabela de resultados">
@@ -7479,14 +7620,6 @@ order by</textarea>
   }
 
 
-  function closeLightThemeConfirm() {
-    modalController.close(lightThemeConfirmModal);
-  }
-
-  function confirmLightTheme() {
-    setTheme("light");
-  }
-
   function toggleTheme() {
     themeController.toggle();
   }
@@ -7502,6 +7635,7 @@ order by</textarea>
     const clickX = event.clientX - rect.left;
     const targetTheme = clickX >= rect.width / 2 ? "dark" : "light";
     setTheme(targetTheme);
+    setStatus(`Tema ${targetTheme === "dark" ? "escuro" : "claro"} aplicado.`, "ok");
   }
 
 
@@ -7541,11 +7675,6 @@ order by</textarea>
   }
   sessionToggle.addEventListener("click", toggleSessionPersistence);
   themeToggle.addEventListener("click", handleThemeSwitchClick);
-  cancelLightThemeBtn.addEventListener("click", closeLightThemeConfirm);
-  confirmLightThemeBtn.addEventListener("click", confirmLightTheme);
-  lightThemeConfirmModal.addEventListener("click", (event) => {
-    if (modalController.isBackdropClick(event, lightThemeConfirmModal)) closeLightThemeConfirm();
-  });
 
   function normalizeShortcutKey(key) {
     if (!key) return "";
@@ -7925,6 +8054,8 @@ order by</textarea>
   schemaToggleRail.addEventListener("click", toggleSchemaPanel);
 
   newSqlTabBtn.addEventListener("click", addSqlTab);
+  sqlTabsEl.addEventListener("scroll", updateSqlTabsOverflow, { passive: true });
+  window.addEventListener("resize", updateSqlTabsOverflow);
   openSqlBtn.addEventListener("click", () => openSqlFilePicker(false));
   openRunSqlBtn.addEventListener("click", () => openSqlFilePicker(true));
   sqlFileInput.addEventListener("change", (event) => {
@@ -9065,7 +9196,8 @@ order by</textarea>
 
   function renderSqlTabs() {
     sqlTabsEl.innerHTML = "";
-    for (const tab of sqlTabs) {
+    for (let tabIndex = 0; tabIndex < sqlTabs.length; tabIndex += 1) {
+      const tab = sqlTabs[tabIndex];
       const hasResult = tab.resultSets && tab.resultSets.some(rs => rs.columns && rs.columns.length);
       const button = document.createElement("button");
       button.type = "button";
@@ -9073,7 +9205,10 @@ order by</textarea>
       button.className = `sql-tab ${tab.id === activeTabId ? "active" : ""} ${hasResult ? "has-result" : ""}`;
       button.setAttribute("role", "tab");
       button.setAttribute("aria-selected", tab.id === activeTabId ? "true" : "false");
+      button.setAttribute("aria-controls", "sqlEditor");
+      button.setAttribute("tabindex", tab.id === activeTabId ? "0" : "-1");
       button.dataset.tabId = tab.id;
+      button.dataset.tabIndex = String(tabIndex);
       button.title = `${tab.title}${hasResult ? " · possui resultado" : ""}\nClique no lápis para renomear`;
       const isEditing = editingTabId === tab.id;
       button.innerHTML = `
@@ -9093,6 +9228,33 @@ order by</textarea>
           return;
         }
         switchSqlTab(tab.id);
+      });
+      button.addEventListener("keydown", (event) => {
+        const currentIndex = Number(button.dataset.tabIndex || 0);
+        const moveToTab = (nextIndex) => {
+          const normalizedIndex = (nextIndex + sqlTabs.length) % sqlTabs.length;
+          const nextTab = sqlTabs[normalizedIndex];
+          if (!nextTab) return;
+          event.preventDefault();
+          switchSqlTab(nextTab.id);
+          requestAnimationFrame(() => {
+            const nextButton = sqlTabsEl.querySelector(`[data-tab-id="${cssEscape(nextTab.id)}"]`);
+            if (nextButton) nextButton.focus();
+          });
+        };
+
+        if (event.key === "ArrowRight") {
+          moveToTab(currentIndex + 1);
+        } else if (event.key === "ArrowLeft") {
+          moveToTab(currentIndex - 1);
+        } else if (event.key === "Home") {
+          moveToTab(0);
+        } else if (event.key === "End") {
+          moveToTab(sqlTabs.length - 1);
+        } else if (event.key === "Delete" && sqlTabs.length > 1) {
+          event.preventDefault();
+          requestCloseSqlTab(tab.id);
+        }
       });
       button.querySelectorAll("[data-tab-rename]").forEach((renameEl) => {
         renameEl.addEventListener("click", (event) => {
@@ -9152,6 +9314,24 @@ order by</textarea>
     }
     newSqlTabBtn.disabled = sqlTabs.length >= MAX_SQL_TABS;
     newSqlTabBtn.title = sqlTabs.length >= MAX_SQL_TABS ? `Limite de ${MAX_SQL_TABS} abas atingido` : "Nova aba (Ctrl/Cmd+T)";
+    updateSqlTabsOverflow();
+    requestAnimationFrame(() => {
+      const activeTab = sqlTabsEl.querySelector(".sql-tab.active");
+      if (activeTab) activeTab.scrollIntoView({ inline: "nearest", block: "nearest" });
+      updateSqlTabsOverflow();
+    });
+  }
+
+  function updateSqlTabsOverflow() {
+    if (!sqlTabsEl) return;
+    const header = sqlTabsEl.closest(".sql-tabs-header");
+    const hasOverflow = sqlTabsEl.scrollWidth > sqlTabsEl.clientWidth + 1;
+    sqlTabsEl.classList.toggle("is-overflowing", hasOverflow);
+    if (!header) return;
+    const canScrollLeft = hasOverflow && sqlTabsEl.scrollLeft > 1;
+    const canScrollRight = hasOverflow && sqlTabsEl.scrollLeft + sqlTabsEl.clientWidth < sqlTabsEl.scrollWidth - 1;
+    header.classList.toggle("can-scroll-left", canScrollLeft);
+    header.classList.toggle("can-scroll-right", canScrollRight);
   }
 
   function moveSqlTabOrder(sourceId, targetId) {
@@ -11773,22 +11953,22 @@ function splitSqlStatements(sql) {
     render() {
       const toolbarHtml = `
         <div class="filter-wrap">
-          <input class="filterInput" placeholder="Filtrar resultados..." ${columns.length ? "" : "disabled"} value="${escapeHtml(getFilterValue())}" />
-          <button class="clear-filter-btn" title="Limpar filtro" type="button">×</button>
+          <input class="filterInput" placeholder="Filtrar resultados..." aria-label="Filtrar resultados" ${columns.length ? "" : "disabled"} value="${escapeHtml(getFilterValue())}" />
+          <button class="clear-filter-btn" title="Limpar filtro" aria-label="Limpar filtro" type="button">×</button>
         </div>
-        <select class="pageSizeSelect" ${columns.length ? "" : "disabled"}>
+        <select class="pageSizeSelect" aria-label="Registros por página" ${columns.length ? "" : "disabled"}>
           ${[50,75,100,125,150,175,200].map(n => `<option value="${n}" ${pageSize === n ? "selected" : ""}>${n} por página</option>`).join("")}
         </select>
         <button class="sort-clear-btn" title="Limpar ordenação (Shift+F5)" type="button" ${sortStates.length ? "" : "disabled"}>Limpar ordenação</button>
         <button class="selection-clear-btn" title="Limpar seleção (Shift+F3)" type="button" ${selectedKeys.size ? "" : "disabled"}>Limpar seleção</button>
         <button class="freeze-clear-btn" title="Descongelar colunas" type="button" ${frozenColumnCount ? "" : "disabled"}>Descongelar</button>
         <span class="pill selectedCount">${selectedKeys.size} selecionado(s)</span>
-        <div class="pagination">
-          <button class="firstPageBtn icon-btn" title="Primeira página" ${currentPage <= 1 ? "disabled" : ""}>⏮</button>
-          <button class="prevPageBtn icon-btn" title="Página anterior" ${currentPage <= 1 ? "disabled" : ""}>◀</button>
+        <div class="pagination" aria-label="Paginação dos resultados">
+          <button class="firstPageBtn icon-btn" title="Primeira página" aria-label="Primeira página" type="button" ${currentPage <= 1 ? "disabled" : ""}>⏮</button>
+          <button class="prevPageBtn icon-btn" title="Página anterior" aria-label="Página anterior" type="button" ${currentPage <= 1 ? "disabled" : ""}>◀</button>
           <span class="pageInfo">${getPageInfoText()}</span>
-          <button class="nextPageBtn icon-btn" title="Próxima página" ${currentPage >= getTotalPages() ? "disabled" : ""}>▶</button>
-          <button class="lastPageBtn icon-btn" title="Última página" ${currentPage >= getTotalPages() ? "disabled" : ""}>⏭</button>
+          <button class="nextPageBtn icon-btn" title="Próxima página" aria-label="Próxima página" type="button" ${currentPage >= getTotalPages() ? "disabled" : ""}>▶</button>
+          <button class="lastPageBtn icon-btn" title="Última página" aria-label="Última página" type="button" ${currentPage >= getTotalPages() ? "disabled" : ""}>⏭</button>
         </div>
       `;
 
@@ -12212,10 +12392,11 @@ function splitSqlStatements(sql) {
     for (const col of displayedColumns) {
       const sort = getSortState(col);
       const indicator = sort ? `<span class="sort-indicator">${sort.direction === "asc" ? "▲" : "▼"}</span><span class="sort-badge">${sort.index}</span>` : "";
+      const ariaSort = sort ? (sort.direction === "asc" ? "ascending" : "descending") : "none";
       const meta = getColumnHint(col);
       const title = meta ? escapeHtml(meta + "\nCtrl/Cmd+clique congela da primeira coluna até esta.") : "Clique para ordenar. Shift+clique adiciona critério ORDER BY. Ctrl/Cmd+clique congela da primeira coluna até esta.";
       const widthStyle = columnWidths[col] ? ` style="width:${columnWidths[col]}px;min-width:${columnWidths[col]}px;max-width:${columnWidths[col]}px"` : "";
-      output += `<th class="sortable resizable column-draggable" draggable="true" data-col="${escapeHtml(col)}" title="${title}\nArraste o cabeçalho para mover a coluna."${widthStyle}><span class="column-title">${escapeHtml(col)}</span>${indicator}<span class="column-drag-handle" aria-hidden="true" title="Arraste para mover a coluna"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M12 3v18M12 3 8.5 6.5M12 3l3.5 3.5M12 21l-3.5-3.5M12 21l3.5-3.5M3 12h18M3 12l3.5-3.5M3 12l3.5 3.5M21 12l-3.5-3.5M21 12l-3.5 3.5"/></svg></span><span class="col-resizer" data-col="${escapeHtml(col)}" title="Arraste para aumentar/diminuir a coluna"></span></th>`;
+      output += `<th class="sortable resizable column-draggable" draggable="true" data-col="${escapeHtml(col)}" aria-sort="${ariaSort}" title="${title}\nArraste o cabeçalho para mover a coluna."${widthStyle}><span class="column-title">${escapeHtml(col)}</span>${indicator}<span class="column-drag-handle" aria-hidden="true" title="Arraste para mover a coluna"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M12 3v18M12 3 8.5 6.5M12 3l3.5 3.5M12 21l-3.5-3.5M12 21l3.5-3.5M3 12h18M3 12l3.5-3.5M3 12l3.5 3.5M21 12l-3.5-3.5M21 12l-3.5 3.5"/></svg></span><span class="col-resizer" data-col="${escapeHtml(col)}" title="Arraste para aumentar/diminuir a coluna"></span></th>`;
     }
 
     output += "</tr></thead><tbody>";
@@ -12323,55 +12504,10 @@ function splitSqlStatements(sql) {
 
   function renderSleepEmptyState() {
     tableWrap.innerHTML = `
-      <div class="sleep-empty" aria-label="Sem resultados">
-        <div class="sleep-scene">
-          <div class="window">
-            <div class="moon"></div>
-            <div class="horizon"></div>
-            <div class="fence">
-              <div class="rail r1"></div>
-              <div class="rail r2"></div>
-            </div>
-
-            <div class="sheep s1">
-              <div class="sheep-body"></div>
-              <div class="sheep-head"></div>
-              <div class="leg l1"></div>
-              <div class="leg l2"></div>
-              <div class="leg l3"></div>
-              <div class="leg l4"></div>
-            </div>
-            <div class="sheep s2">
-              <div class="sheep-body"></div>
-              <div class="sheep-head"></div>
-              <div class="leg l1"></div>
-              <div class="leg l2"></div>
-              <div class="leg l3"></div>
-              <div class="leg l4"></div>
-            </div>
-            <div class="sheep s3">
-              <div class="sheep-body"></div>
-              <div class="sheep-head"></div>
-              <div class="leg l1"></div>
-              <div class="leg l2"></div>
-              <div class="leg l3"></div>
-              <div class="leg l4"></div>
-            </div>
-          </div>
-
-          <div class="sql-dream" aria-hidden="true">
-            <span class="kw">select</span>
-            <span class="fn">count(*)</span>
-            <span class="kw">from</span>
-            <span class="tbl">sheep;</span>
-          </div>
-
-          <div class="sleeper">
-            <div class="bed"></div>
-            <div class="pillow"></div>
-            <div class="head"></div>
-            <div class="blanket"></div>
-          </div>
+      <div class="empty-state" aria-label="Sem resultados">
+        <div class="empty-state-card">
+          <p class="empty-state-title">Nenhum resultado para exibir</p>
+          <p class="empty-state-description">Abra um banco SQLite, escreva uma consulta e execute com F5.</p>
         </div>
       </div>
     `;
