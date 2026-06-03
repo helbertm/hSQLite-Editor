@@ -48,6 +48,22 @@
       --rowHover: rgba(177, 186, 196, 0.09);
       --selected: rgba(56, 139, 253, 0.18);
       --shadow: 0 8px 20px rgba(1, 4, 9, 0.22);
+      --editor-bg: var(--input-bg);
+      --editor-fg: var(--foreground);
+      --editor-gutter-bg: var(--input-bg);
+      --editor-gutter-border: var(--border);
+      --editor-line-number: var(--mutedText);
+      --editor-cursor: var(--foreground);
+      --editor-selection: var(--selected);
+      --editor-active-line: color-mix(in srgb, var(--info) 9%, transparent);
+      --editor-keyword: #c084fc;
+      --editor-operator: #f472b6;
+      --editor-variable: #e5e7eb;
+      --editor-string: #86efac;
+      --editor-number: #fbbf24;
+      --editor-comment: #94a3b8;
+      --editor-match-bg: color-mix(in srgb, var(--warning) 22%, transparent);
+      --editor-match-outline: var(--warning);
     }
 
     html[data-theme="light"] {
@@ -77,6 +93,22 @@
       --rowHover: rgba(42, 49, 58, 0.055);
       --selected: rgba(47, 111, 235, 0.16);
       --shadow: 0 8px 20px rgba(42, 49, 58, 0.08);
+      --editor-bg: #ffffff;
+      --editor-fg: #1f2937;
+      --editor-gutter-bg: #eef2f7;
+      --editor-gutter-border: #c7d0dd;
+      --editor-line-number: #526071;
+      --editor-cursor: #111827;
+      --editor-selection: #9fc5ff;
+      --editor-active-line: #edf4ff;
+      --editor-keyword: #5b21b6;
+      --editor-operator: #be123c;
+      --editor-variable: #111827;
+      --editor-string: #166534;
+      --editor-number: #b45309;
+      --editor-comment: #64748b;
+      --editor-match-bg: #fde68a;
+      --editor-match-outline: #d97706;
     }
 
     :root {
@@ -190,6 +222,7 @@
     select:focus-visible, input:focus-visible,
     button:focus-visible, .file-label:focus-visible,
     summary:focus-visible,
+    [role="tab"]:focus-visible,
     [role="button"]:focus-visible {
       border-color: var(--ring);
       box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
@@ -446,53 +479,6 @@
 
     html[data-theme="dark"] .CodeMirror .cm-property {
       color: #67e8f9;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-keyword {
-      color: #7c3aed;
-      font-weight: 700;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-builtin {
-      color: #1d4ed8;
-      font-weight: 650;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-variable,
-    html[data-theme="light"] .CodeMirror .cm-variable-2 {
-      color: #1f2937;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-def {
-      color: #2563eb;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-string {
-      color: #15803d;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-number {
-      color: #b45309;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-operator {
-      color: #be185d;
-      font-weight: 650;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-atom {
-      color: #be123c;
-      font-weight: 650;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-comment {
-      color: #64748b;
-      font-style: italic;
-      opacity: 0.92;
-    }
-
-    html[data-theme="light"] .CodeMirror .cm-property {
-      color: #0e7490;
     }
 
     html[data-theme="dark"] .CodeMirror-gutters {
@@ -1133,455 +1119,6 @@
       font-size: 12px;
     }
 
-
-
-
-    .sleep-empty {
-      min-height: 245px;
-      display: grid;
-      place-items: center;
-      padding: 28px;
-      color: var(--mutedText);
-      overflow: hidden;
-      position: relative;
-      background: transparent;
-    }
-
-    .sleep-scene {
-      width: min(476px, 100%);
-      height: 212px;
-      position: relative;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
-      overflow: hidden;
-      filter: saturate(0);
-    }
-
-    .window {
-      position: absolute;
-      right: 38px;
-      top: 30px;
-      width: 232px;
-      height: 106px;
-      border-radius: 18px;
-      border: 7px solid color-mix(in srgb, var(--foreground) 14%, var(--secondary));
-      background:
-        linear-gradient(180deg,
-          color-mix(in srgb, var(--foreground) 8%, transparent),
-          color-mix(in srgb, var(--background) 68%, transparent));
-      overflow: hidden;
-      perspective: 520px;
-      box-shadow:
-        inset 0 0 34px rgba(0,0,0,0.10),
-        0 8px 18px rgba(0,0,0,0.08);
-    }
-
-    .window::before,
-    .window::after {
-      content: "";
-      position: absolute;
-      background: color-mix(in srgb, var(--foreground) 12%, var(--secondary));
-      z-index: 6;
-    }
-
-    .window::before {
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 8px;
-      transform: translateX(-50%);
-    }
-
-    .window::after {
-      top: 50%;
-      left: 0;
-      right: 0;
-      height: 8px;
-      transform: translateY(-50%);
-    }
-
-    .horizon {
-      position: absolute;
-      left: -20px;
-      right: -20px;
-      bottom: 34px;
-      height: 1px;
-      background: color-mix(in srgb, var(--foreground) 16%, transparent);
-      transform: rotateX(64deg);
-      transform-origin: bottom center;
-      opacity: 0.75;
-    }
-
-    .moon {
-      position: absolute;
-      top: 15px;
-      right: 30px;
-      width: 21px;
-      height: 21px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 16%, transparent);
-      box-shadow: 0 0 22px color-mix(in srgb, var(--foreground) 10%, transparent);
-      opacity: 0.8;
-    }
-
-    .moon::after {
-      content: "";
-      position: absolute;
-      top: -3px;
-      left: 10px;
-      width: 21px;
-      height: 21px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--background) 90%, transparent);
-    }
-
-    .sql-dream {
-      position: absolute;
-      left: 112px;
-      top: 66px;
-      display: inline-flex;
-      gap: 6px;
-      align-items: center;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      font-size: 11px;
-      font-weight: 800;
-      color: color-mix(in srgb, var(--foreground) 34%, transparent);
-      opacity: 0;
-      animation: sqlDreamFloat 5.2s infinite ease-in-out;
-      white-space: nowrap;
-      letter-spacing: -0.03em;
-    }
-
-    .sql-dream span {
-      opacity: 0;
-      animation: sqlDreamToken 5.2s infinite ease-in-out;
-    }
-
-    .sql-dream span:nth-child(1) { animation-delay: 0.15s; }
-    .sql-dream span:nth-child(2) { animation-delay: 0.55s; }
-    .sql-dream span:nth-child(3) { animation-delay: 0.95s; }
-    .sql-dream span:nth-child(4) { animation-delay: 1.35s; }
-
-    .sql-dream .kw {
-      color: color-mix(in srgb, var(--info) 62%, var(--foreground));
-    }
-
-    .sql-dream .fn {
-      color: color-mix(in srgb, var(--success) 55%, var(--foreground));
-    }
-
-    .sql-dream .tbl {
-      color: color-mix(in srgb, var(--warning) 48%, var(--foreground));
-    }
-
-    .sleeper {
-      position: absolute;
-      left: 42px;
-      bottom: 38px;
-      width: 154px;
-      height: 76px;
-      z-index: 10;
-      filter: drop-shadow(0 16px 18px rgba(0,0,0,0.16));
-    }
-
-    .bed {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 153px;
-      height: 30px;
-      border-radius: 18px 18px 14px 14px;
-      background: color-mix(in srgb, var(--foreground) 10%, var(--secondary));
-      border: 1px solid var(--border);
-    }
-
-    .bed::after {
-      content: "";
-      position: absolute;
-      left: 6px;
-      right: 6px;
-      bottom: -10px;
-      height: 10px;
-      border-radius: 0 0 12px 12px;
-      background: color-mix(in srgb, var(--foreground) 7%, var(--background));
-      opacity: 0.8;
-    }
-
-    .pillow {
-      position: absolute;
-      left: 13px;
-      bottom: 22px;
-      width: 49px;
-      height: 24px;
-      border-radius: 16px;
-      background: color-mix(in srgb, var(--foreground) 14%, var(--secondary));
-      border: 1px solid var(--border);
-      transform: rotate(-5deg);
-    }
-
-    .head {
-      position: absolute;
-      left: 43px;
-      bottom: 32px;
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 22%, var(--secondary));
-      border: 1px solid var(--border);
-      animation: breathing 2.8s infinite ease-in-out;
-    }
-
-    .head::before {
-      content: "";
-      position: absolute;
-      top: 13px;
-      left: 12px;
-      width: 6px;
-      height: 2px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 70%, transparent);
-      box-shadow: 14px 0 0 color-mix(in srgb, var(--foreground) 70%, transparent);
-      opacity: 0.68;
-    }
-
-    .blanket {
-      position: absolute;
-      left: 55px;
-      bottom: 13px;
-      width: 91px;
-      height: 25px;
-      border-radius: 32px 20px 16px 16px;
-      background: color-mix(in srgb, var(--foreground) 12%, var(--secondary));
-      border: 1px solid color-mix(in srgb, var(--foreground) 12%, var(--border));
-      animation: blanketBreath 2.8s infinite ease-in-out;
-    }
-
-    .fence {
-      position: absolute;
-      left: 64px;
-      bottom: 18px;
-      width: 67px;
-      height: 38px;
-      z-index: 3;
-      transform: rotateX(58deg) rotateZ(-3deg) scale(0.72);
-      transform-origin: bottom center;
-      opacity: 0.72;
-    }
-
-    .fence::before,
-    .fence::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      width: 8px;
-      height: 38px;
-      border-radius: 5px 5px 0 0;
-      background: color-mix(in srgb, var(--foreground) 20%, var(--secondary));
-      border: 1px solid color-mix(in srgb, var(--foreground) 12%, var(--border));
-    }
-
-    .fence::before { left: 20px; }
-    .fence::after { right: 20px; }
-
-    .rail {
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 5px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 18%, var(--secondary));
-      border: 1px solid color-mix(in srgb, var(--foreground) 10%, var(--border));
-    }
-
-    .rail.r1 { top: 11px; }
-    .rail.r2 { top: 25px; }
-
-
-
-    .sheep {
-      position: absolute;
-      left: 238px;
-      bottom: 20px;
-      width: 58px;
-      height: 42px;
-      z-index: 4;
-      transform-style: preserve-3d;
-      animation: sheepWindowJump 4.9s infinite linear;
-      opacity: 0.86;
-    }
-
-    .sheep.s2 {
-      animation-delay: 1.6s;
-      opacity: 0.70;
-      filter: blur(0.08px);
-    }
-
-    .sheep.s3 {
-      animation-delay: 3.2s;
-      opacity: 0.56;
-      filter: blur(0.16px);
-    }
-
-
-    .sheep-body {
-      position: absolute;
-      left: 17px;
-      top: 9px;
-      width: 34px;
-      height: 23px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 40%, var(--secondary));
-      border: 1px solid color-mix(in srgb, var(--foreground) 15%, var(--border));
-      box-shadow:
-        -7px 5px 0 -2px color-mix(in srgb, var(--foreground) 34%, var(--secondary)),
-        0 -7px 0 -4px color-mix(in srgb, var(--foreground) 36%, var(--secondary)),
-        9px -6px 0 -5px color-mix(in srgb, var(--foreground) 34%, var(--secondary)),
-        13px 4px 0 -6px color-mix(in srgb, var(--foreground) 32%, var(--secondary));
-    }
-
-    .sheep-head {
-      position: absolute;
-      left: 1px;
-      top: 12px;
-      width: 18px;
-      height: 19px;
-      border-radius: 48% 48% 55% 55%;
-      background: color-mix(in srgb, var(--foreground) 58%, var(--background));
-      border: 1px solid color-mix(in srgb, var(--foreground) 18%, var(--border));
-      transform: rotate(-4deg);
-      z-index: 3;
-    }
-
-    .sheep-head::before {
-      content: "";
-      position: absolute;
-      left: 1px;
-      top: -5px;
-      width: 7px;
-      height: 8px;
-      border-radius: 80% 80% 40% 40%;
-      background: color-mix(in srgb, var(--foreground) 52%, var(--background));
-      transform: rotate(-18deg);
-      box-shadow: 9px 2px 0 -1px color-mix(in srgb, var(--foreground) 50%, var(--background));
-      opacity: 0.95;
-    }
-
-    .sheep-head::after {
-      content: "";
-      position: absolute;
-      left: 3px;
-      top: 7px;
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--background) 70%, var(--foreground));
-      box-shadow:
-        9px 6px 0 -1px color-mix(in srgb, var(--foreground) 40%, var(--background));
-      opacity: 0.95;
-    }
-
-    .leg {
-      position: absolute;
-      bottom: 2px;
-      width: 4px;
-      height: 13px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 48%, var(--background));
-      transform-origin: top center;
-      animation: sheepRunLegs 0.36s infinite ease-in-out;
-      z-index: 1;
-    }
-
-    .leg.l1 { left: 19px; }
-    .leg.l2 { left: 28px; animation-delay: 0.12s; }
-    .leg.l3 { left: 38px; animation-delay: 0.20s; }
-    .leg.l4 { left: 47px; animation-delay: 0.30s; }
-
-    @keyframes sheepWindowJump {
-      /* Grounded run -> crouch/takeoff -> single clean hop over fence -> landing.
-         Horizontal speed stays steady; vertical motion uses a clear arc. */
-      0% {
-        left: 248px;
-        bottom: 17px;
-        transform: translateZ(-150px) scale(0.34) rotateY(10deg) rotateZ(0deg);
-      }
-      18% {
-        left: 190px;
-        bottom: 17px;
-        transform: translateZ(-125px) scale(0.39) rotateY(-8deg) rotateZ(0deg);
-      }
-      28% {
-        left: 158px;
-        bottom: 16px;
-        transform: translateZ(-102px) scale(0.45) rotateY(5deg) rotateZ(0deg) scaleY(0.92);
-      }
-      34% {
-        left: 139px;
-        bottom: 26px;
-        transform: translateZ(-88px) scale(0.50) rotateY(3deg) rotateZ(-5deg);
-      }
-      44% {
-        left: 108px;
-        bottom: 69px;
-        transform: translateZ(-66px) scale(0.57) rotateY(0deg) rotateZ(-8deg);
-      }
-      52% {
-        left: 83px;
-        bottom: 82px;
-        transform: translateZ(-58px) scale(0.60) rotateY(0deg) rotateZ(-2deg);
-      }
-      60% {
-        left: 58px;
-        bottom: 60px;
-        transform: translateZ(-70px) scale(0.55) rotateY(-4deg) rotateZ(6deg);
-      }
-      69% {
-        left: 30px;
-        bottom: 18px;
-        transform: translateZ(-96px) scale(0.47) rotateY(-8deg) rotateZ(3deg);
-      }
-      82% {
-        left: -10px;
-        bottom: 17px;
-        transform: translateZ(-126px) scale(0.39) rotateY(-12deg) rotateZ(0deg);
-      }
-      100% {
-        left: -68px;
-        bottom: 17px;
-        transform: translateZ(-170px) scale(0.31) rotateY(-16deg) rotateZ(0deg);
-      }
-    }
-
-    @keyframes sheepRunLegs {
-      0%, 100% { transform: rotate(16deg) translateY(0); }
-      50% { transform: rotate(-22deg) translateY(1px); }
-    }
-
-    @keyframes sqlDreamFloat {
-      0% { opacity: 0; transform: translateY(10px) scale(0.92); }
-      18% { opacity: 0.76; }
-      72% { opacity: 0.68; }
-      100% { opacity: 0; transform: translateY(-22px) scale(1.04); }
-    }
-
-    @keyframes sqlDreamToken {
-      0%, 8% { opacity: 0; transform: translateY(4px); }
-      18%, 78% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(-2px); }
-    }
-
-    @keyframes breathing {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(2px); }
-    }
-
-    @keyframes blanketBreath {
-      0%, 100% { transform: translateY(0) scaleY(1); }
-      50% { transform: translateY(2px) scaleY(0.97); }
-    }
-
     th.frozen-col,
     td.frozen-col {
       position: sticky;
@@ -1741,48 +1278,6 @@
       background: var(--selected) !important;
     }
 
-
-    /* Stronger SQL IntelliSense/editor colors */
-    html[data-theme="dark"] .CodeMirror .cm-keyword,
-    html[data-theme="dark"] .CodeMirror .cm-builtin,
-    html[data-theme="dark"] .CodeMirror .cm-variable,
-    html[data-theme="dark"] .CodeMirror .cm-variable-2,
-    html[data-theme="dark"] .CodeMirror .cm-def,
-    html[data-theme="dark"] .CodeMirror .cm-string,
-    html[data-theme="dark"] .CodeMirror .cm-number,
-    html[data-theme="dark"] .CodeMirror .cm-operator,
-    html[data-theme="dark"] .CodeMirror .cm-atom,
-    html[data-theme="dark"] .CodeMirror .cm-comment,
-    html[data-theme="dark"] .CodeMirror .cm-property,
-    html[data-theme="dark"] .CodeMirror .cm-sql-special {
-      text-shadow: none !important;
-    }
-
-    html[data-theme="dark"] .CodeMirror .cm-keyword { color: #c084fc !important; font-weight: 800 !important; }
-    html[data-theme="dark"] .CodeMirror .cm-builtin { color: #60a5fa !important; font-weight: 700 !important; }
-    html[data-theme="dark"] .CodeMirror .cm-variable,
-    html[data-theme="dark"] .CodeMirror .cm-variable-2 { color: #e5e7eb !important; }
-    html[data-theme="dark"] .CodeMirror .cm-def { color: #93c5fd !important; }
-    html[data-theme="dark"] .CodeMirror .cm-string { color: #86efac !important; }
-    html[data-theme="dark"] .CodeMirror .cm-number { color: #fbbf24 !important; font-weight: 650 !important; }
-    html[data-theme="dark"] .CodeMirror .cm-operator,
-    html[data-theme="dark"] .CodeMirror .cm-sql-special { color: #f472b6 !important; font-weight: 800 !important; }
-    html[data-theme="dark"] .CodeMirror .cm-atom { color: #fb7185 !important; font-weight: 700 !important; }
-    html[data-theme="dark"] .CodeMirror .cm-comment { color: #94a3b8 !important; font-style: italic !important; opacity: 0.88 !important; }
-    html[data-theme="dark"] .CodeMirror .cm-property { color: #67e8f9 !important; }
-
-    html[data-theme="light"] .CodeMirror .cm-keyword { color: #6d28d9 !important; font-weight: 800 !important; }
-    html[data-theme="light"] .CodeMirror .cm-builtin { color: #1d4ed8 !important; font-weight: 700 !important; }
-    html[data-theme="light"] .CodeMirror .cm-variable,
-    html[data-theme="light"] .CodeMirror .cm-variable-2 { color: #1f2937 !important; }
-    html[data-theme="light"] .CodeMirror .cm-def { color: #2563eb !important; }
-    html[data-theme="light"] .CodeMirror .cm-string { color: #15803d !important; }
-    html[data-theme="light"] .CodeMirror .cm-number { color: #a16207 !important; font-weight: 650 !important; }
-    html[data-theme="light"] .CodeMirror .cm-operator,
-    html[data-theme="light"] .CodeMirror .cm-sql-special { color: #be185d !important; font-weight: 800 !important; }
-    html[data-theme="light"] .CodeMirror .cm-atom { color: #be123c !important; font-weight: 700 !important; }
-    html[data-theme="light"] .CodeMirror .cm-comment { color: #64748b !important; font-style: italic !important; opacity: 0.94 !important; }
-    html[data-theme="light"] .CodeMirror .cm-property { color: #0e7490 !important; }
 
     .toast-container {
       position: fixed;
@@ -1957,12 +1452,6 @@
       background: var(--input-bg);
     }
 
-    html[data-theme="light"] .sleep-empty,
-    html[data-theme="light"] .sleep-scene {
-      background: transparent;
-    }
-
-
     /* v24 definitive frozen-columns isolation.
        Sticky cells + border-collapse: collapse can paint scrolled cells underneath.
        The fix is:
@@ -2083,14 +1572,14 @@
 
     html[data-theme="light"] th.checkbox,
     html[data-theme="light"] th.frozen-col {
-      background-color: #c2c7d0 !important;
+      background-color: var(--secondary) !important;
     }
 
     html[data-theme="light"] td.checkbox,
     html[data-theme="light"] td.frozen-col,
     html[data-theme="light"] tbody tr:hover td.frozen-col,
     html[data-theme="light"] tbody tr:hover td.checkbox {
-      background-color: #d2d6de !important;
+      background-color: var(--input-bg) !important;
     }
 
     html[data-theme="dark"] th.checkbox,
@@ -3084,6 +2573,32 @@
       line-height: 1.5;
     }
 
+    .offline-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border: 1px solid color-mix(in srgb, var(--warning) 35%, var(--border));
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--warning) 9%, var(--panel));
+      color: var(--foreground);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .offline-status-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--warning);
+      color: var(--background);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
     .offline-guide {
       width: min(760px, 100%);
       text-align: left;
@@ -3122,204 +2637,6 @@
       margin: 8px 0 8px 18px;
       padding: 0;
     }
-
-    .offline-animation {
-      position: relative;
-      width: min(420px, 82vw);
-      height: 230px;
-      filter: saturate(0);
-    }
-
-    .wall-plate {
-      position: absolute;
-      right: 44px;
-      top: 44px;
-      width: 126px;
-      height: 142px;
-      border-radius: 24px;
-      border: 2px solid color-mix(in srgb, var(--foreground) 18%, var(--border));
-      background:
-        linear-gradient(180deg,
-          color-mix(in srgb, var(--foreground) 12%, var(--secondary)),
-          color-mix(in srgb, var(--foreground) 5%, var(--background)));
-      box-shadow:
-        inset 0 0 0 1px color-mix(in srgb, var(--foreground) 6%, transparent),
-        0 22px 46px rgba(0,0,0,0.22);
-    }
-
-    .wall-plate::before,
-    .wall-plate::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      transform: translateX(-50%);
-      background: color-mix(in srgb, var(--foreground) 22%, var(--background));
-      box-shadow: inset 0 1px 2px rgba(0,0,0,0.28);
-    }
-
-    .wall-plate::before { top: 14px; }
-    .wall-plate::after { bottom: 14px; }
-
-    .rj45-port {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 72px;
-      height: 48px;
-      transform: translate(-50%, -50%);
-      border-radius: 8px 8px 14px 14px;
-      border: 3px solid color-mix(in srgb, var(--foreground) 24%, var(--border));
-      background:
-        linear-gradient(180deg,
-          color-mix(in srgb, var(--background) 75%, var(--foreground)),
-          color-mix(in srgb, var(--background) 92%, var(--foreground)));
-      box-shadow: inset 0 10px 16px rgba(0,0,0,0.28);
-    }
-
-    .rj45-port::before {
-      content: "";
-      position: absolute;
-      left: 13px;
-      right: 13px;
-      top: -3px;
-      height: 13px;
-      border-radius: 0 0 7px 7px;
-      background: color-mix(in srgb, var(--foreground) 14%, var(--background));
-    }
-
-    .pin {
-      position: absolute;
-      top: 8px;
-      width: 4px;
-      height: 12px;
-      border-radius: 99px;
-      background: color-mix(in srgb, var(--foreground) 34%, var(--warning));
-      opacity: 0.65;
-    }
-
-    .pin.p1 { left: 20px; }
-    .pin.p2 { left: 29px; }
-    .pin.p3 { left: 38px; }
-    .pin.p4 { left: 47px; }
-
-    .network-cable {
-      position: absolute;
-      left: 16px;
-      top: 93px;
-      width: 250px;
-      height: 58px;
-      animation: missPlug 2.4s infinite ease-in-out;
-      transform-origin: right center;
-    }
-
-    .cable-line {
-      position: absolute;
-      left: 0;
-      top: 25px;
-      width: 206px;
-      height: 11px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 20%, var(--secondary));
-      box-shadow:
-        inset 0 2px 2px rgba(255,255,255,0.06),
-        inset 0 -2px 2px rgba(0,0,0,0.22);
-    }
-
-    .cable-line::before {
-      content: "";
-      position: absolute;
-      left: -46px;
-      top: -18px;
-      width: 72px;
-      height: 46px;
-      border-radius: 0 0 0 30px;
-      border-left: 11px solid color-mix(in srgb, var(--foreground) 20%, var(--secondary));
-      border-bottom: 11px solid color-mix(in srgb, var(--foreground) 20%, var(--secondary));
-      opacity: 0.9;
-    }
-
-    .rj45-plug {
-      position: absolute;
-      right: 0;
-      top: 8px;
-      width: 58px;
-      height: 42px;
-      border-radius: 7px 12px 12px 7px;
-      border: 2px solid color-mix(in srgb, var(--foreground) 22%, var(--border));
-      background:
-        linear-gradient(90deg,
-          color-mix(in srgb, var(--foreground) 18%, var(--secondary)),
-          color-mix(in srgb, var(--foreground) 30%, var(--secondary)));
-      box-shadow:
-        inset 0 0 0 1px color-mix(in srgb, var(--foreground) 8%, transparent),
-        0 12px 22px rgba(0,0,0,0.18);
-    }
-
-    .rj45-plug::before {
-      content: "";
-      position: absolute;
-      right: -12px;
-      top: 9px;
-      width: 12px;
-      height: 24px;
-      border-radius: 0 6px 6px 0;
-      background: color-mix(in srgb, var(--foreground) 24%, var(--secondary));
-      border: 2px solid color-mix(in srgb, var(--foreground) 20%, var(--border));
-      border-left: 0;
-    }
-
-    .clip {
-      position: absolute;
-      left: 8px;
-      top: -10px;
-      width: 35px;
-      height: 12px;
-      border-radius: 6px 6px 0 0;
-      border: 2px solid color-mix(in srgb, var(--foreground) 18%, var(--border));
-      border-bottom: 0;
-      transform: rotate(-6deg);
-      opacity: 0.9;
-    }
-
-    .contact {
-      position: absolute;
-      right: 6px;
-      top: 8px;
-      width: 5px;
-      height: 7px;
-      border-radius: 1px;
-      background: color-mix(in srgb, var(--foreground) 52%, var(--warning));
-    }
-
-    .contact.c1 { top: 7px; }
-    .contact.c2 { top: 15px; }
-    .contact.c3 { top: 23px; }
-    .contact.c4 { top: 31px; }
-
-    @keyframes missPlug {
-      0% {
-        transform: translateX(0) translateY(18px) rotate(-4deg);
-      }
-      34% {
-        transform: translateX(98px) translateY(18px) rotate(-4deg);
-      }
-      48% {
-        transform: translateX(118px) translateY(-13px) rotate(-13deg);
-      }
-      58% {
-        transform: translateX(126px) translateY(-13px) rotate(-13deg);
-      }
-      70% {
-        transform: translateX(92px) translateY(22px) rotate(5deg);
-      }
-      100% {
-        transform: translateX(0) translateY(18px) rotate(-4deg);
-      }
-    }
-
 
     /* v57 didactic modal UX refinement */
     .sample-index-status {
@@ -3367,74 +2684,6 @@
       }
     }
 
-
-    /* v58 humorous offline animation: the outlet dodges the cable */
-    .wall-plate {
-      animation: outletDodge 2.4s infinite ease-in-out;
-    }
-
-    .rj45-port {
-      animation: portBlink 2.4s infinite ease-in-out;
-    }
-
-    @keyframes outletDodge {
-      0%, 28% {
-        transform: translateX(0) translateY(0) rotate(0deg);
-      }
-      42% {
-        transform: translateX(0) translateY(0) rotate(0deg);
-      }
-      50% {
-        transform: translateX(28px) translateY(-8px) rotate(2deg);
-      }
-      62% {
-        transform: translateX(28px) translateY(-8px) rotate(2deg);
-      }
-      76% {
-        transform: translateX(-10px) translateY(5px) rotate(-1deg);
-      }
-      100% {
-        transform: translateX(0) translateY(0) rotate(0deg);
-      }
-    }
-
-    @keyframes portBlink {
-      0%, 38%, 100% {
-        box-shadow: inset 0 10px 16px rgba(0,0,0,0.28);
-      }
-      48%, 58% {
-        box-shadow:
-          inset 0 10px 16px rgba(0,0,0,0.28),
-          0 0 0 4px color-mix(in srgb, var(--warning) 18%, transparent);
-      }
-    }
-
-    @keyframes missPlug {
-      0% {
-        transform: translateX(0) translateY(18px) rotate(-4deg);
-      }
-      30% {
-        transform: translateX(88px) translateY(18px) rotate(-4deg);
-      }
-      42% {
-        transform: translateX(112px) translateY(2px) rotate(-7deg);
-      }
-      50% {
-        transform: translateX(122px) translateY(-4px) rotate(-7deg);
-      }
-      58% {
-        transform: translateX(126px) translateY(-4px) rotate(-7deg);
-      }
-      68% {
-        transform: translateX(104px) translateY(24px) rotate(6deg);
-      }
-      82% {
-        transform: translateX(56px) translateY(19px) rotate(-2deg);
-      }
-      100% {
-        transform: translateX(0) translateY(18px) rotate(-4deg);
-      }
-    }
 
     /* beta fix2: didactic bases book icon */
     .book-symbol {
@@ -4222,6 +3471,13 @@
       white-space: nowrap;
       transform: none !important;
     }
+    .sql-tab-item {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex: 0 0 auto;
+      max-width: 270px;
+    }
     .sql-tab:hover { color: var(--foreground); background: var(--accent); }
     .sql-tab.active {
       color: var(--foreground);
@@ -4238,7 +3494,16 @@
       flex: 0 0 auto;
     }
     .sql-tab.has-result .sql-tab-status-dot { opacity: 0.9; background: var(--foreground); }
-    .sql-tab-close {
+    .sql-tab-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      margin-left: -5px;
+      margin-right: 4px;
+      z-index: 3;
+    }
+
+    .sql-tab-control {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -4258,11 +3523,14 @@
       pointer-events: none;
       transition: opacity 0.12s ease;
     }
-    .sql-tab:hover .sql-tab-close {
+
+    .sql-tab-item.active .sql-tab-control,
+    .sql-tab-item:hover .sql-tab-control,
+    .sql-tab-item:focus-within .sql-tab-control {
       opacity: 0.9;
       pointer-events: auto;
     }
-    .sql-tab-close:hover { background: var(--accent); color: var(--foreground); }
+    .sql-tab-control:hover { background: var(--accent); color: var(--foreground); }
     .new-sql-tab-btn {
       width: 34px;
       height: 30px;
@@ -4654,6 +3922,14 @@
       margin: 0 3px -1px 0 !important;
       box-shadow: none !important;
     }
+
+    .sql-tab-item {
+      margin: 0 3px -1px 0 !important;
+    }
+
+    .sql-tab-item .sql-tab {
+      margin: 0 !important;
+    }
     .sql-tab.dragging {
       opacity: 0.62;
       cursor: grabbing;
@@ -4714,14 +3990,8 @@
 
     .sql-tab-rename-hint {
       color: var(--mutedText);
-      opacity: 0;
       font-size: 11px;
       margin-left: -2px;
-      transition: opacity 0.12s ease;
-    }
-
-    .sql-tab:hover .sql-tab-rename-hint {
-      opacity: 0.7;
     }
 
     .sql-tab-drag-hint {
@@ -5080,319 +4350,6 @@
     }
 
 
-    /* beta fix35: confirm light theme with wake-up animation */
-    .light-theme-confirm-modal {
-      width: min(480px, 100%);
-      text-align: center;
-    }
-
-    .light-theme-confirm-modal h3 {
-      margin-top: 12px;
-      margin-bottom: 18px;
-      line-height: 1.25;
-    }
-
-    .wake-up-animation {
-      position: relative;
-      width: 150px;
-      height: 96px;
-      margin: 4px auto 6px;
-      border-radius: 20px;
-      background: color-mix(in srgb, var(--input-bg) 78%, var(--panel));
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .wake-bed {
-      position: absolute;
-      left: 18px;
-      right: 18px;
-      bottom: 18px;
-      height: 18px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 20%, transparent);
-    }
-
-    .wake-body {
-      position: absolute;
-      left: 48px;
-      bottom: 28px;
-      width: 54px;
-      height: 34px;
-      border-radius: 24px 24px 12px 12px;
-      background: color-mix(in srgb, var(--foreground) 28%, transparent);
-      transform-origin: bottom center;
-      animation: wakeBody 1.15s ease-in-out infinite;
-    }
-
-    .wake-head {
-      position: absolute;
-      left: 57px;
-      bottom: 55px;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: color-mix(in srgb, var(--foreground) 35%, transparent);
-      transform-origin: bottom center;
-      animation: wakeHead 1.15s ease-in-out infinite;
-    }
-
-    .wake-eye {
-      position: absolute;
-      top: 16px;
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: var(--foreground);
-      opacity: 0;
-      animation: wakeEyes 1.15s ease-in-out infinite;
-    }
-
-    .wake-eye.left {
-      left: 10px;
-    }
-
-    .wake-eye.right {
-      right: 10px;
-    }
-
-    .wake-alert {
-      position: absolute;
-      right: 33px;
-      top: 15px;
-      width: 22px;
-      height: 22px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      color: var(--foreground);
-      font-weight: 900;
-      opacity: 0;
-      transform: scale(0.7);
-      animation: wakeAlert 1.15s ease-in-out infinite;
-    }
-
-    .light-theme-confirm-actions {
-      justify-content: space-between !important;
-      gap: 24px;
-      margin-top: 14px;
-    }
-
-    .light-theme-continue-btn {
-      background: transparent;
-      color: var(--mutedText);
-      border-color: transparent;
-      box-shadow: none;
-    }
-
-    .light-theme-continue-btn:hover {
-      background: var(--accent);
-      color: var(--foreground);
-      border-color: var(--border);
-    }
-
-    .light-theme-cancel-btn.primary {
-      min-width: 110px;
-    }
-
-    @keyframes wakeBody {
-      0%, 44% { transform: rotate(0deg) translateY(7px); }
-      58%, 100% { transform: rotate(-9deg) translateY(0); }
-    }
-
-    @keyframes wakeHead {
-      0%, 44% { transform: translateY(8px) rotate(0deg); }
-      58%, 100% { transform: translateY(0) rotate(-13deg); }
-    }
-
-    @keyframes wakeEyes {
-      0%, 44% { opacity: 0; transform: scaleY(0.2); }
-      58%, 100% { opacity: 1; transform: scaleY(1); }
-    }
-
-    @keyframes wakeAlert {
-      0%, 52% { opacity: 0; transform: scale(0.55) translateY(6px); }
-      65%, 100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-
-    /* beta fix36: clearer lying-down-to-startled-wake animation */
-    .wake-up-animation {
-      width: 172px !important;
-      height: 112px !important;
-      border-radius: 22px !important;
-      background:
-        linear-gradient(180deg, color-mix(in srgb, var(--input-bg) 88%, var(--panel)), color-mix(in srgb, var(--background) 74%, var(--panel))) !important;
-    }
-
-    .wake-window {
-      position: absolute;
-      left: 18px;
-      top: 13px;
-      width: 54px;
-      height: 34px;
-      border: 2px solid color-mix(in srgb, var(--foreground) 20%, transparent);
-      border-radius: 7px;
-      opacity: 0.5;
-    }
-
-    .wake-window::before,
-    .wake-window::after {
-      content: "";
-      position: absolute;
-      background: color-mix(in srgb, var(--foreground) 16%, transparent);
-    }
-
-    .wake-window::before {
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-    }
-
-    .wake-window::after {
-      left: 0;
-      right: 0;
-      top: 50%;
-      height: 2px;
-    }
-
-    .wake-light {
-      position: absolute;
-      right: 18px;
-      top: 18px;
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 18%, transparent);
-      opacity: 0;
-      animation: wakeLight 1.6s ease-in-out infinite;
-    }
-
-    .wake-bed {
-      left: 18px !important;
-      right: 18px !important;
-      bottom: 20px !important;
-      height: 18px !important;
-      border-radius: 999px !important;
-      background: color-mix(in srgb, var(--foreground) 24%, transparent) !important;
-    }
-
-    .wake-pillow {
-      position: absolute;
-      left: 33px;
-      bottom: 38px;
-      width: 42px;
-      height: 20px;
-      border-radius: 14px;
-      background: color-mix(in srgb, var(--foreground) 15%, transparent);
-      transform: rotate(-3deg);
-    }
-
-    .wake-person {
-      position: absolute;
-      left: 50px;
-      bottom: 38px;
-      width: 72px;
-      height: 48px;
-      transform-origin: 12px 38px;
-      transform: rotate(0deg) translateY(15px);
-      animation: wakePersonRise 1.6s cubic-bezier(.2,.85,.22,1.25) infinite;
-    }
-
-    .wake-body {
-      left: 20px !important;
-      bottom: 0 !important;
-      width: 58px !important;
-      height: 25px !important;
-      border-radius: 999px 999px 13px 13px !important;
-      transform-origin: 8px 18px !important;
-      transform: rotate(0deg) !important;
-      background: color-mix(in srgb, var(--foreground) 30%, transparent) !important;
-      animation: wakeBodyStartle 1.6s cubic-bezier(.2,.85,.22,1.25) infinite !important;
-    }
-
-    .wake-head {
-      left: -2px !important;
-      bottom: 8px !important;
-      width: 34px !important;
-      height: 34px !important;
-      transform-origin: 22px 24px !important;
-      transform: rotate(0deg) !important;
-      background: color-mix(in srgb, var(--foreground) 38%, transparent) !important;
-      animation: wakeHeadStartle 1.6s cubic-bezier(.2,.85,.22,1.25) infinite !important;
-    }
-
-    .wake-arm {
-      position: absolute;
-      left: 86px;
-      bottom: 46px;
-      width: 28px;
-      height: 8px;
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--foreground) 28%, transparent);
-      transform-origin: left center;
-      transform: rotate(5deg) scaleX(0.85);
-      opacity: 0.5;
-      animation: wakeArmStartle 1.6s cubic-bezier(.2,.85,.22,1.25) infinite;
-    }
-
-    .wake-eye {
-      top: 15px !important;
-      width: 4px !important;
-      height: 4px !important;
-      opacity: 0 !important;
-      animation: wakeEyesOpen 1.6s ease-in-out infinite !important;
-    }
-
-    .wake-alert {
-      right: 43px !important;
-      top: 13px !important;
-      animation: wakeAlertPop 1.6s ease-in-out infinite !important;
-    }
-
-    @keyframes wakePersonRise {
-      0%, 34% { transform: rotate(0deg) translateY(15px); }
-      48% { transform: rotate(-58deg) translate(-2px, -4px); }
-      62%, 100% { transform: rotate(-47deg) translate(-1px, -2px); }
-    }
-
-    @keyframes wakeBodyStartle {
-      0%, 34% { transform: rotate(0deg); }
-      48% { transform: rotate(6deg); }
-      62%, 100% { transform: rotate(2deg); }
-    }
-
-    @keyframes wakeHeadStartle {
-      0%, 34% { transform: rotate(0deg) translateX(0); }
-      48% { transform: rotate(-12deg) translateX(-1px); }
-      62%, 100% { transform: rotate(-7deg) translateX(0); }
-    }
-
-    @keyframes wakeArmStartle {
-      0%, 34% { transform: rotate(5deg) scaleX(0.85); opacity: 0.45; }
-      48% { transform: rotate(-78deg) scaleX(1); opacity: 0.85; }
-      62%, 100% { transform: rotate(-55deg) scaleX(0.95); opacity: 0.75; }
-    }
-
-    @keyframes wakeEyesOpen {
-      0%, 37% { opacity: 0; transform: scaleY(0.2); }
-      48%, 100% { opacity: 1; transform: scaleY(1); }
-    }
-
-    @keyframes wakeAlertPop {
-      0%, 43% { opacity: 0; transform: scale(0.45) translateY(8px); }
-      51% { opacity: 1; transform: scale(1.2) translateY(-2px); }
-      65%, 100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    @keyframes wakeLight {
-      0%, 42% { opacity: 0; transform: scale(0.8); }
-      52%, 100% { opacity: 0.7; transform: scale(1); }
-    }
-
-
     /* beta fix39: keep icon action buttons aligned without changing their height */
     #queryHistoryBtn,
     #sqlMapBtn {
@@ -5425,199 +4382,6 @@
       width: 16px !important;
       height: 16px !important;
     }
-
-    /* beta fix39: simplified light-theme warning animation */
-    .wake-up-animation {
-      width: 190px !important;
-      height: 140px !important;
-      border-radius: 24px !important;
-      background:
-        linear-gradient(180deg, color-mix(in srgb, var(--input-bg) 88%, var(--panel)), color-mix(in srgb, var(--background) 72%, var(--panel))) !important;
-      overflow: hidden;
-    }
-
-    .wake-window {
-      position: absolute;
-      left: 27px;
-      top: 16px;
-      width: 136px;
-      height: 58px;
-      border: 2px solid color-mix(in srgb, var(--foreground) 22%, transparent);
-      border-radius: 14px;
-      background: color-mix(in srgb, #000 72%, var(--input-bg));
-      overflow: hidden;
-    }
-
-    .wake-window::before,
-    .wake-window::after {
-      content: "";
-      position: absolute;
-      background: color-mix(in srgb, var(--foreground) 20%, transparent);
-      z-index: 4;
-    }
-
-    .wake-window::before {
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-    }
-
-    .wake-window::after {
-      left: 0;
-      right: 0;
-      top: 50%;
-      height: 2px;
-    }
-
-    .wake-moon,
-    .wake-sun {
-      position: absolute;
-      left: 53px;
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      z-index: 2;
-    }
-
-    .wake-moon {
-      top: 14px;
-      background: color-mix(in srgb, var(--foreground) 64%, transparent);
-      box-shadow: inset -8px -2px 0 color-mix(in srgb, #000 74%, transparent);
-      animation: moonLeaves 1.75s ease-in-out infinite;
-    }
-
-    .wake-sun {
-      top: 74px;
-      background: color-mix(in srgb, var(--foreground) 55%, transparent);
-      box-shadow: 0 0 0 8px color-mix(in srgb, var(--foreground) 11%, transparent);
-      animation: sunRises 1.75s ease-in-out infinite;
-    }
-
-    .wake-face {
-      position: absolute;
-      left: 59px;
-      bottom: 17px;
-      width: 72px;
-      height: 58px;
-      border-radius: 999px 999px 34px 34px;
-      background: color-mix(in srgb, var(--foreground) 31%, transparent);
-      transform: translateY(12px) scale(0.96);
-      animation: faceStartle 1.75s cubic-bezier(.2,.85,.22,1.2) infinite;
-    }
-
-    .wake-eye {
-      position: absolute;
-      top: 27px !important;
-      width: 6px !important;
-      height: 6px !important;
-      border-radius: 999px;
-      background: var(--foreground);
-      opacity: 0;
-      animation: faceEyesOpen 1.75s ease-in-out infinite !important;
-    }
-
-    .wake-eye.left {
-      left: 21px !important;
-    }
-
-    .wake-eye.right {
-      right: 21px !important;
-    }
-
-    .wake-brow {
-      position: absolute;
-      top: 19px;
-      width: 17px;
-      height: 3px;
-      border-radius: 999px;
-      background: var(--foreground);
-      opacity: 0;
-      animation: browsStartle 1.75s ease-in-out infinite;
-    }
-
-    .wake-brow.left {
-      left: 16px;
-      transform: rotate(20deg);
-    }
-
-    .wake-brow.right {
-      right: 16px;
-      transform: rotate(-20deg);
-    }
-
-    .wake-mouth {
-      position: absolute;
-      left: 31px;
-      top: 39px;
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      border: 2px solid var(--foreground);
-      opacity: 0;
-      animation: mouthStartle 1.75s ease-in-out infinite;
-    }
-
-    .wake-zzz {
-      position: absolute;
-      left: 128px;
-      top: 83px;
-      color: var(--mutedText);
-      font-weight: 900;
-      font-size: 16px;
-      letter-spacing: 1px;
-      opacity: 1;
-      animation: zzzFade 1.75s ease-in-out infinite;
-    }
-
-    .wake-bed,
-    .wake-pillow,
-    .wake-person,
-    .wake-body,
-    .wake-head,
-    .wake-arm,
-    .wake-alert,
-    .wake-light {
-      display: none !important;
-    }
-
-    @keyframes moonLeaves {
-      0%, 34% { transform: translateY(0); opacity: 1; }
-      49%, 100% { transform: translateY(-68px); opacity: 0; }
-    }
-
-    @keyframes sunRises {
-      0%, 36% { transform: translateY(0); opacity: 0; }
-      54%, 100% { transform: translateY(-60px); opacity: 1; }
-    }
-
-    @keyframes faceStartle {
-      0%, 38% { transform: translateY(12px) scale(0.96); }
-      52% { transform: translateY(-4px) scale(1.08); }
-      65%, 100% { transform: translateY(0) scale(1); }
-    }
-
-    @keyframes faceEyesOpen {
-      0%, 42% { opacity: 0; transform: scaleY(0.1); }
-      52%, 100% { opacity: 1; transform: scaleY(1); }
-    }
-
-    @keyframes browsStartle {
-      0%, 45% { opacity: 0; }
-      53%, 100% { opacity: 1; }
-    }
-
-    @keyframes mouthStartle {
-      0%, 45% { opacity: 0; transform: scale(0.3); }
-      54% { opacity: 1; transform: scale(1.25); }
-      65%, 100% { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes zzzFade {
-      0%, 34% { opacity: 1; transform: translateY(0); }
-      48%, 100% { opacity: 0; transform: translateY(-18px); }
-    }
-
 
     /* beta fix40: session switch state independent from theme switch */
     .session-toggle {
@@ -5879,77 +4643,77 @@
 
     /* beta fix45: improve SQL editor contrast in light theme */
     html[data-theme="light"] .CodeMirror {
-      background: #ffffff !important;
-      color: #1f2937 !important;
+      background: var(--editor-bg) !important;
+      color: var(--editor-fg) !important;
     }
 
     html[data-theme="light"] .CodeMirror-gutters {
-      background: #eef2f7 !important;
-      border-right: 1px solid #c7d0dd !important;
+      background: var(--editor-gutter-bg) !important;
+      border-right: 1px solid var(--editor-gutter-border) !important;
     }
 
     html[data-theme="light"] .CodeMirror-linenumber {
-      color: #526071 !important;
+      color: var(--editor-line-number) !important;
     }
 
     html[data-theme="light"] .CodeMirror-cursor {
-      border-left: 2px solid #111827 !important;
+      border-left: 2px solid var(--editor-cursor) !important;
     }
 
     html[data-theme="light"] .CodeMirror-selected,
     html[data-theme="light"] .CodeMirror-focused .CodeMirror-selected {
-      background: #9fc5ff !important;
+      background: var(--editor-selection) !important;
     }
 
     html[data-theme="light"] .CodeMirror-line::selection,
     html[data-theme="light"] .CodeMirror-line > span::selection,
     html[data-theme="light"] .CodeMirror-line > span > span::selection {
-      background: #9fc5ff !important;
+      background: var(--editor-selection) !important;
     }
 
     html[data-theme="light"] .CodeMirror-line::-moz-selection,
     html[data-theme="light"] .CodeMirror-line > span::-moz-selection,
     html[data-theme="light"] .CodeMirror-line > span > span::-moz-selection {
-      background: #9fc5ff !important;
+      background: var(--editor-selection) !important;
     }
 
     html[data-theme="light"] .CodeMirror-activeline-background {
-      background: #edf4ff !important;
+      background: var(--editor-active-line) !important;
     }
 
     html[data-theme="light"] .cm-keyword {
-      color: #5b21b6 !important;
+      color: var(--editor-keyword) !important;
       font-weight: 800;
     }
 
     html[data-theme="light"] .cm-operator {
-      color: #be123c !important;
+      color: var(--editor-operator) !important;
       font-weight: 800;
     }
 
     html[data-theme="light"] .cm-variable,
     html[data-theme="light"] .cm-variable-2,
     html[data-theme="light"] .cm-property {
-      color: #111827 !important;
+      color: var(--editor-variable) !important;
     }
 
     html[data-theme="light"] .cm-string {
-      color: #166534 !important;
+      color: var(--editor-string) !important;
     }
 
     html[data-theme="light"] .cm-number {
-      color: #b45309 !important;
+      color: var(--editor-number) !important;
     }
 
     html[data-theme="light"] .cm-comment {
-      color: #64748b !important;
+      color: var(--editor-comment) !important;
       font-style: italic;
     }
 
     html[data-theme="light"] .CodeMirror-matchingbracket {
-      background: #fde68a !important;
-      color: #111827 !important;
-      outline: 1px solid #d97706;
+      background: var(--editor-match-bg) !important;
+      color: var(--editor-variable) !important;
+      outline: 1px solid var(--editor-match-outline);
     }
 
 
@@ -6110,6 +4874,7 @@
           <div class="sql-tabs" id="sqlTabs" role="tablist" aria-label="Abas de instruções SQL"></div>
           <button id="newSqlTabBtn" class="new-sql-tab-btn" type="button" title="Nova aba (Ctrl/Cmd+T)">+</button>
         </div>
+        <div id="sqlTabPanel" role="tabpanel" aria-labelledby="" tabindex="0">
         <div class="editor-header">
           <h2 id="sqlEditorTitle">Instruções SQL</h2>
           <div class="editor-actions" aria-label="Ações da consulta e exportação">
@@ -6253,6 +5018,7 @@ order by</textarea>
 
           <div class="result-toolbar" id="bottomResultToolbar" style="margin-top:12px;"></div>
         </section>
+        </div>
       </main>
     </div>
     <footer class="app-footer">
@@ -6347,32 +5113,6 @@ order by</textarea>
       </div>
     </div>
   </div>
-
-
-  <div class="modal-backdrop" id="lightThemeConfirmModal">
-    <div class="modal light-theme-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="lightThemeConfirmTitle">
-      <div class="wake-up-animation" aria-hidden="true">
-        <div class="wake-window">
-          <div class="wake-moon"></div>
-          <div class="wake-sun"></div>
-        </div>
-        <div class="wake-face">
-          <span class="wake-brow left"></span>
-          <span class="wake-brow right"></span>
-          <span class="wake-eye left"></span>
-          <span class="wake-eye right"></span>
-          <span class="wake-mouth"></span>
-        </div>
-        <div class="wake-zzz">zzz</div>
-      </div>
-      <h3 id="lightThemeConfirmTitle">Você está habilitando o tema claro, tem certeza?</h3>
-      <div class="modal-actions light-theme-confirm-actions">
-        <button id="cancelLightThemeBtn" class="light-theme-cancel-btn primary" type="button" data-modal-cancel="true" data-modal-initial="true">Cancelar</button>
-        <button id="confirmLightThemeBtn" class="light-theme-continue-btn" type="button" data-modal-confirm="true">Continuar</button>
-      </div>
-    </div>
-  </div>
-
 
   <div class="modal-backdrop" id="closeTabConfirmModal">
     <div class="modal close-tab-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="closeTabTitle" aria-describedby="closeTabConfirmText">
@@ -6721,19 +5461,9 @@ order by</textarea>
 
   <div id="offlineScreen" class="offline-screen" aria-live="polite">
     <div class="offline-card">
-      <div class="offline-animation" aria-hidden="true">
-        <div class="wall-plate">
-          <div class="rj45-port">
-            <span class="pin p1"></span><span class="pin p2"></span><span class="pin p3"></span><span class="pin p4"></span>
-          </div>
-        </div>
-        <div class="network-cable">
-          <div class="cable-line"></div>
-          <div class="rj45-plug">
-            <span class="clip"></span>
-            <span class="contact c1"></span><span class="contact c2"></span><span class="contact c3"></span><span class="contact c4"></span>
-          </div>
-        </div>
+      <div class="offline-status" aria-hidden="true">
+        <span class="offline-status-icon">!</span>
+        <span>Recursos online indisponíveis</span>
       </div>
       <h1>Sem conexão com a internet</h1>
       <p>Este editor ainda depende de recursos online para carregar o SQLite e o editor de código.</p>
@@ -7346,9 +6076,6 @@ order by</textarea>
   const firstRunTabNamePresetSelect = document.getElementById("firstRunTabNamePresetSelect");
   const themeToggle = document.getElementById("themeToggle");
   const tabNamePresetSelect = document.getElementById("tabNamePresetSelect");
-  const lightThemeConfirmModal = document.getElementById("lightThemeConfirmModal");
-  const cancelLightThemeBtn = document.getElementById("cancelLightThemeBtn");
-  const confirmLightThemeBtn = document.getElementById("confirmLightThemeBtn");
   const sessionToggle = document.getElementById("sessionToggle");
   const exportModal = document.getElementById("exportModal");
   const sqlErrorBox = document.getElementById("sqlErrorBox");
@@ -9199,32 +7926,32 @@ order by</textarea>
     for (let tabIndex = 0; tabIndex < sqlTabs.length; tabIndex += 1) {
       const tab = sqlTabs[tabIndex];
       const hasResult = tab.resultSets && tab.resultSets.some(rs => rs.columns && rs.columns.length);
-      const button = document.createElement("button");
-      button.type = "button";
+      const isActive = tab.id === activeTabId;
+      const tabElementId = `sql-tab-${tab.id}`;
+      const item = document.createElement("div");
+      item.className = `sql-tab-item ${isActive ? "active" : ""} ${hasResult ? "has-result" : ""}`;
+      item.dataset.tabId = tab.id;
+      item.dataset.tabIndex = String(tabIndex);
+
+      const button = document.createElement("div");
       button.draggable = true;
-      button.className = `sql-tab ${tab.id === activeTabId ? "active" : ""} ${hasResult ? "has-result" : ""}`;
+      button.id = tabElementId;
+      button.className = `sql-tab ${isActive ? "active" : ""} ${hasResult ? "has-result" : ""}`;
       button.setAttribute("role", "tab");
-      button.setAttribute("aria-selected", tab.id === activeTabId ? "true" : "false");
-      button.setAttribute("aria-controls", "sqlEditor");
-      button.setAttribute("tabindex", tab.id === activeTabId ? "0" : "-1");
+      button.setAttribute("aria-selected", isActive ? "true" : "false");
+      button.setAttribute("aria-controls", "sqlTabPanel");
+      button.setAttribute("tabindex", isActive ? "0" : "-1");
       button.dataset.tabId = tab.id;
       button.dataset.tabIndex = String(tabIndex);
       button.title = `${tab.title}${hasResult ? " · possui resultado" : ""}\nClique no lápis para renomear`;
       const isEditing = editingTabId === tab.id;
       button.innerHTML = `
         <span class="sql-tab-status-dot" aria-hidden="true"></span>
-        ${isEditing
-          ? `<input class="sql-tab-title-input" data-tab-input-id="${escapeHtml(tab.id)}" maxlength="50" value="${escapeHtml(tab.title)}" aria-label="Renomear aba">`
-          : `<span class="sql-tab-title" title="Clique no lápis para renomear">${escapeHtml(tab.title)}</span>`
-        }
+        <span class="sql-tab-title" title="Clique no lápis para renomear">${escapeHtml(tab.title)}</span>
         <span class="sql-tab-drag-hint" aria-hidden="true" title="Arraste lateralmente para mover a aba">↔</span>
-        <span class="sql-tab-rename-hint" data-tab-rename="${escapeHtml(tab.id)}" title="Renomear aba" aria-label="Renomear aba">✎</span>
-        ${sqlTabs.length > 1 ? '<span class="sql-tab-close" title="Fechar aba" aria-label="Fechar aba">×</span>' : ""}
       `;
       button.addEventListener("click", (event) => {
-        if (event.target.classList.contains("sql-tab-close")) {
-          event.stopPropagation();
-          requestCloseSqlTab(tab.id);
+        if (event.target.closest(".sql-tab-title-input")) {
           return;
         }
         switchSqlTab(tab.id);
@@ -9254,35 +7981,11 @@ order by</textarea>
         } else if (event.key === "Delete" && sqlTabs.length > 1) {
           event.preventDefault();
           requestCloseSqlTab(tab.id);
-        }
-      });
-      button.querySelectorAll("[data-tab-rename]").forEach((renameEl) => {
-        renameEl.addEventListener("click", (event) => {
+        } else if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          event.stopPropagation();
-          startInlineTabRename(tab.id);
-        });
-      });
-      if (isEditing) {
-        const input = button.querySelector(".sql-tab-title-input");
-        if (input) {
-          input.addEventListener("click", (event) => {
-            event.stopPropagation();
-          });
-          input.addEventListener("keydown", (event) => {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              finishInlineTabRename(tab.id, input.value);
-            } else if (event.key === "Escape") {
-              event.preventDefault();
-              cancelInlineTabRename();
-            }
-          });
-          input.addEventListener("blur", () => {
-            finishInlineTabRename(tab.id, input.value);
-          });
+          switchSqlTab(tab.id);
         }
-      }
+      });
       button.addEventListener("dragstart", (event) => {
         button.classList.add("dragging");
         if (event.dataTransfer) {
@@ -9292,28 +7995,74 @@ order by</textarea>
       });
       button.addEventListener("dragend", () => {
         button.classList.remove("dragging");
-        sqlTabsEl.querySelectorAll(".sql-tab.drag-over").forEach(el => el.classList.remove("drag-over"));
+        item.classList.remove("dragging");
+        sqlTabsEl.querySelectorAll(".sql-tab-item.drag-over").forEach(el => el.classList.remove("drag-over"));
       });
-      button.addEventListener("dragover", (event) => {
+      item.addEventListener("dragover", (event) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = "move";
-        button.classList.add("drag-over");
+        item.classList.add("drag-over");
       });
-      button.addEventListener("dragleave", () => {
-        button.classList.remove("drag-over");
+      item.addEventListener("dragleave", () => {
+        item.classList.remove("drag-over");
       });
-      button.addEventListener("drop", (event) => {
+      item.addEventListener("drop", (event) => {
         event.preventDefault();
-        button.classList.remove("drag-over");
+        item.classList.remove("drag-over");
         const sourceId = event.dataTransfer?.getData("text/plain");
         const targetId = tab.id;
         if (!sourceId || sourceId === targetId) return;
         moveSqlTabOrder(sourceId, targetId);
       });
-      sqlTabsEl.appendChild(button);
+
+      const actions = document.createElement("div");
+      actions.className = "sql-tab-actions";
+      actions.innerHTML = `
+        ${isEditing ? `<input class="sql-tab-title-input" data-tab-input-id="${escapeHtml(tab.id)}" maxlength="50" value="${escapeHtml(tab.title)}" aria-label="Renomear aba">` : ""}
+        <button class="sql-tab-control sql-tab-rename-hint" data-tab-rename="${escapeHtml(tab.id)}" type="button" title="Renomear aba" aria-label="Renomear aba">✎</button>
+        ${sqlTabs.length > 1 ? '<button class="sql-tab-control sql-tab-close" type="button" title="Fechar aba" aria-label="Fechar aba">×</button>' : ""}
+      `;
+      const input = actions.querySelector(".sql-tab-title-input");
+      if (input) {
+        input.addEventListener("click", (event) => {
+          event.stopPropagation();
+        });
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            finishInlineTabRename(tab.id, input.value);
+          } else if (event.key === "Escape") {
+            event.preventDefault();
+            cancelInlineTabRename();
+          }
+        });
+        input.addEventListener("blur", () => {
+          finishInlineTabRename(tab.id, input.value);
+        });
+      }
+      actions.querySelectorAll("[data-tab-rename]").forEach((renameEl) => {
+        renameEl.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          startInlineTabRename(tab.id);
+        });
+      });
+      actions.querySelectorAll(".sql-tab-close").forEach((closeEl) => {
+        closeEl.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          requestCloseSqlTab(tab.id);
+        });
+      });
+
+      item.appendChild(button);
+      item.appendChild(actions);
+      sqlTabsEl.appendChild(item);
     }
     newSqlTabBtn.disabled = sqlTabs.length >= MAX_SQL_TABS;
     newSqlTabBtn.title = sqlTabs.length >= MAX_SQL_TABS ? `Limite de ${MAX_SQL_TABS} abas atingido` : "Nova aba (Ctrl/Cmd+T)";
+    const panel = document.getElementById("sqlTabPanel");
+    if (panel) panel.setAttribute("aria-labelledby", `sql-tab-${activeTabId}`);
     updateSqlTabsOverflow();
     requestAnimationFrame(() => {
       const activeTab = sqlTabsEl.querySelector(".sql-tab.active");
