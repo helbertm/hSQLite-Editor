@@ -1,0 +1,1265 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "hSQLite Editor 0.3.143 SBOM",
+  "documentNamespace": "https://github.com/helbertm/hSQLite-Editor/releases/tag/hsqlite-editor-v0.3.143/sbom.spdx.json",
+  "creationInfo": {
+    "created": "2026-06-12T00:00:00Z",
+    "creators": [
+      "Tool: hSQLite Editor repo-owned SBOM generator@0.3.143"
+    ]
+  },
+  "packages": [
+    {
+      "name": "hSQLite Editor",
+      "SPDXID": "SPDXRef-Package-hSQLite-Editor",
+      "versionInfo": "0.3.143",
+      "downloadLocation": "https://github.com/helbertm/hSQLite-Editor",
+      "filesAnalyzed": false,
+      "primaryPackagePurpose": "APPLICATION",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "Copyright (c) 2026 hSQLite Editor contributors"
+    },
+    {
+      "name": "@axe-core/playwright",
+      "SPDXID": "SPDXRef-Package--axe-core-playwright-4.12.1",
+      "versionInfo": "4.12.1",
+      "downloadLocation": "https://registry.npmjs.org/@axe-core/playwright/-/playwright-4.12.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40axe-core/playwright@4.12.1"
+        }
+      ]
+    },
+    {
+      "name": "@codemirror/autocomplete",
+      "SPDXID": "SPDXRef-Package--codemirror-autocomplete-6.20.3",
+      "versionInfo": "6.20.3",
+      "downloadLocation": "https://registry.npmjs.org/@codemirror/autocomplete/-/autocomplete-6.20.3.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40codemirror/autocomplete@6.20.3"
+        }
+      ]
+    },
+    {
+      "name": "@codemirror/commands",
+      "SPDXID": "SPDXRef-Package--codemirror-commands-6.10.4",
+      "versionInfo": "6.10.4",
+      "downloadLocation": "https://registry.npmjs.org/@codemirror/commands/-/commands-6.10.4.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40codemirror/commands@6.10.4"
+        }
+      ]
+    },
+    {
+      "name": "@codemirror/lang-sql",
+      "SPDXID": "SPDXRef-Package--codemirror-lang-sql-6.10.0",
+      "versionInfo": "6.10.0",
+      "downloadLocation": "https://registry.npmjs.org/@codemirror/lang-sql/-/lang-sql-6.10.0.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40codemirror/lang-sql@6.10.0"
+        }
+      ]
+    },
+    {
+      "name": "@codemirror/language",
+      "SPDXID": "SPDXRef-Package--codemirror-language-6.12.4",
+      "versionInfo": "6.12.4",
+      "downloadLocation": "https://registry.npmjs.org/@codemirror/language/-/language-6.12.4.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40codemirror/language@6.12.4"
+        }
+      ]
+    },
+    {
+      "name": "@codemirror/state",
+      "SPDXID": "SPDXRef-Package--codemirror-state-6.7.1",
+      "versionInfo": "6.7.1",
+      "downloadLocation": "https://registry.npmjs.org/@codemirror/state/-/state-6.7.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40codemirror/state@6.7.1"
+        }
+      ]
+    },
+    {
+      "name": "@codemirror/view",
+      "SPDXID": "SPDXRef-Package--codemirror-view-6.43.6",
+      "versionInfo": "6.43.6",
+      "downloadLocation": "https://registry.npmjs.org/@codemirror/view/-/view-6.43.6.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40codemirror/view@6.43.6"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/aix-ppc64",
+      "SPDXID": "SPDXRef-Package--esbuild-aix-ppc64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/aix-ppc64/-/aix-ppc64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/aix-ppc64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/android-arm",
+      "SPDXID": "SPDXRef-Package--esbuild-android-arm-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/android-arm/-/android-arm-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/android-arm@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/android-arm64",
+      "SPDXID": "SPDXRef-Package--esbuild-android-arm64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/android-arm64/-/android-arm64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/android-arm64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/android-x64",
+      "SPDXID": "SPDXRef-Package--esbuild-android-x64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/android-x64/-/android-x64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/android-x64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/darwin-arm64",
+      "SPDXID": "SPDXRef-Package--esbuild-darwin-arm64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/darwin-arm64/-/darwin-arm64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/darwin-arm64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/darwin-x64",
+      "SPDXID": "SPDXRef-Package--esbuild-darwin-x64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/darwin-x64/-/darwin-x64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/darwin-x64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/freebsd-arm64",
+      "SPDXID": "SPDXRef-Package--esbuild-freebsd-arm64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/freebsd-arm64/-/freebsd-arm64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/freebsd-arm64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/freebsd-x64",
+      "SPDXID": "SPDXRef-Package--esbuild-freebsd-x64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/freebsd-x64/-/freebsd-x64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/freebsd-x64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-arm",
+      "SPDXID": "SPDXRef-Package--esbuild-linux-arm-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-arm/-/linux-arm-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-arm@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-arm64",
+      "SPDXID": "SPDXRef-Package--esbuild-linux-arm64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-arm64/-/linux-arm64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-arm64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-ia32",
+      "SPDXID": "SPDXRef-Package--esbuild-linux-ia32-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-ia32/-/linux-ia32-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-ia32@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-loong64",
+      "SPDXID": "SPDXRef-Package--esbuild-linux-loong64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-loong64/-/linux-loong64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-loong64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-mips64el",
+      "SPDXID": "SPDXRef-Package--esbuild-linux-mips64el-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-mips64el/-/linux-mips64el-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-mips64el@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-ppc64",
+      "SPDXID": "SPDXRef-Package--esbuild-linux-ppc64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-ppc64/-/linux-ppc64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-ppc64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-riscv64",
+      "SPDXID": "SPDXRef-Package--esbuild-linux-riscv64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-riscv64/-/linux-riscv64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-riscv64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-s390x",
+      "SPDXID": "SPDXRef-Package--esbuild-linux-s390x-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-s390x/-/linux-s390x-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-s390x@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/linux-x64",
+      "SPDXID": "SPDXRef-Package--esbuild-linux-x64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/linux-x64/-/linux-x64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/linux-x64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/netbsd-arm64",
+      "SPDXID": "SPDXRef-Package--esbuild-netbsd-arm64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/netbsd-arm64/-/netbsd-arm64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/netbsd-arm64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/netbsd-x64",
+      "SPDXID": "SPDXRef-Package--esbuild-netbsd-x64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/netbsd-x64/-/netbsd-x64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/netbsd-x64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/openbsd-arm64",
+      "SPDXID": "SPDXRef-Package--esbuild-openbsd-arm64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/openbsd-arm64/-/openbsd-arm64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/openbsd-arm64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/openbsd-x64",
+      "SPDXID": "SPDXRef-Package--esbuild-openbsd-x64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/openbsd-x64/-/openbsd-x64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/openbsd-x64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/openharmony-arm64",
+      "SPDXID": "SPDXRef-Package--esbuild-openharmony-arm64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/openharmony-arm64/-/openharmony-arm64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/openharmony-arm64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/sunos-x64",
+      "SPDXID": "SPDXRef-Package--esbuild-sunos-x64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/sunos-x64/-/sunos-x64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/sunos-x64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/win32-arm64",
+      "SPDXID": "SPDXRef-Package--esbuild-win32-arm64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/win32-arm64/-/win32-arm64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/win32-arm64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/win32-ia32",
+      "SPDXID": "SPDXRef-Package--esbuild-win32-ia32-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/win32-ia32/-/win32-ia32-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/win32-ia32@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@esbuild/win32-x64",
+      "SPDXID": "SPDXRef-Package--esbuild-win32-x64-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40esbuild/win32-x64@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "@lezer/common",
+      "SPDXID": "SPDXRef-Package--lezer-common-1.5.2",
+      "versionInfo": "1.5.2",
+      "downloadLocation": "https://registry.npmjs.org/@lezer/common/-/common-1.5.2.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40lezer/common@1.5.2"
+        }
+      ]
+    },
+    {
+      "name": "@lezer/highlight",
+      "SPDXID": "SPDXRef-Package--lezer-highlight-1.2.3",
+      "versionInfo": "1.2.3",
+      "downloadLocation": "https://registry.npmjs.org/@lezer/highlight/-/highlight-1.2.3.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40lezer/highlight@1.2.3"
+        }
+      ]
+    },
+    {
+      "name": "@lezer/lr",
+      "SPDXID": "SPDXRef-Package--lezer-lr-1.4.10",
+      "versionInfo": "1.4.10",
+      "downloadLocation": "https://registry.npmjs.org/@lezer/lr/-/lr-1.4.10.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40lezer/lr@1.4.10"
+        }
+      ]
+    },
+    {
+      "name": "@marijn/find-cluster-break",
+      "SPDXID": "SPDXRef-Package--marijn-find-cluster-break-1.0.3",
+      "versionInfo": "1.0.3",
+      "downloadLocation": "https://registry.npmjs.org/@marijn/find-cluster-break/-/find-cluster-break-1.0.3.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40marijn/find-cluster-break@1.0.3"
+        }
+      ]
+    },
+    {
+      "name": "@playwright/test",
+      "SPDXID": "SPDXRef-Package--playwright-test-1.61.1",
+      "versionInfo": "1.61.1",
+      "downloadLocation": "https://registry.npmjs.org/@playwright/test/-/test-1.61.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/%40playwright/test@1.61.1"
+        }
+      ]
+    },
+    {
+      "name": "acorn",
+      "SPDXID": "SPDXRef-Package-acorn-8.17.0",
+      "versionInfo": "8.17.0",
+      "downloadLocation": "https://registry.npmjs.org/acorn/-/acorn-8.17.0.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/acorn@8.17.0"
+        }
+      ]
+    },
+    {
+      "name": "axe-core",
+      "SPDXID": "SPDXRef-Package-axe-core-4.12.1",
+      "versionInfo": "4.12.1",
+      "downloadLocation": "https://registry.npmjs.org/axe-core/-/axe-core-4.12.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/axe-core@4.12.1"
+        }
+      ]
+    },
+    {
+      "name": "crelt",
+      "SPDXID": "SPDXRef-Package-crelt-1.0.7",
+      "versionInfo": "1.0.7",
+      "downloadLocation": "https://registry.npmjs.org/crelt/-/crelt-1.0.7.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/crelt@1.0.7"
+        }
+      ]
+    },
+    {
+      "name": "esbuild",
+      "SPDXID": "SPDXRef-Package-esbuild-0.28.1",
+      "versionInfo": "0.28.1",
+      "downloadLocation": "https://registry.npmjs.org/esbuild/-/esbuild-0.28.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/esbuild@0.28.1"
+        }
+      ]
+    },
+    {
+      "name": "fsevents",
+      "SPDXID": "SPDXRef-Package-fsevents-2.3.2",
+      "versionInfo": "2.3.2",
+      "downloadLocation": "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/fsevents@2.3.2"
+        }
+      ]
+    },
+    {
+      "name": "playwright",
+      "SPDXID": "SPDXRef-Package-playwright-1.61.1",
+      "versionInfo": "1.61.1",
+      "downloadLocation": "https://registry.npmjs.org/playwright/-/playwright-1.61.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/playwright@1.61.1"
+        }
+      ]
+    },
+    {
+      "name": "playwright-core",
+      "SPDXID": "SPDXRef-Package-playwright-core-1.61.1",
+      "versionInfo": "1.61.1",
+      "downloadLocation": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.61.1.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/playwright-core@1.61.1"
+        }
+      ]
+    },
+    {
+      "name": "sql.js",
+      "SPDXID": "SPDXRef-Package-sql.js-1.14.1",
+      "versionInfo": "1.14.1",
+      "downloadLocation": "https://registry.npmjs.org/sql.js/-/sql.js-1.14.1.tgz",
+      "filesAnalyzed": false,
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "77d6435bac506af0e3c59636dce9d22b1b14156348bc327f41a1577f3212360f"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "438c88f666dc054ce4e9395f80fe9db4218b1a3c379960454880f048a7898aed"
+        }
+      ],
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/sql.js@1.14.1"
+        }
+      ]
+    },
+    {
+      "name": "style-mod",
+      "SPDXID": "SPDXRef-Package-style-mod-4.1.3",
+      "versionInfo": "4.1.3",
+      "downloadLocation": "https://registry.npmjs.org/style-mod/-/style-mod-4.1.3.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/style-mod@4.1.3"
+        }
+      ]
+    },
+    {
+      "name": "w3c-keyname",
+      "SPDXID": "SPDXRef-Package-w3c-keyname-2.2.8",
+      "versionInfo": "2.2.8",
+      "downloadLocation": "https://registry.npmjs.org/w3c-keyname/-/w3c-keyname-2.2.8.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Bundled runtime dependency. Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/w3c-keyname@2.2.8"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--axe-core-playwright-4.12.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--codemirror-autocomplete-6.20.3"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--codemirror-autocomplete-6.20.3",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--codemirror-commands-6.10.4"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--codemirror-commands-6.10.4",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--codemirror-lang-sql-6.10.0"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--codemirror-lang-sql-6.10.0",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--codemirror-language-6.12.4"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--codemirror-language-6.12.4",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--codemirror-state-6.7.1"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--codemirror-state-6.7.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--codemirror-view-6.43.6"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--codemirror-view-6.43.6",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-aix-ppc64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-android-arm-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-android-arm64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-android-x64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-darwin-arm64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-darwin-x64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-freebsd-arm64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-freebsd-x64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-linux-arm-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-linux-arm64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-linux-ia32-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-linux-loong64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-linux-mips64el-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-linux-ppc64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-linux-riscv64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-linux-s390x-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-linux-x64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-netbsd-arm64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-netbsd-x64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-openbsd-arm64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-openbsd-x64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-openharmony-arm64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-sunos-x64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-win32-arm64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-win32-ia32-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--esbuild-win32-x64-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--lezer-common-1.5.2"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--lezer-common-1.5.2",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--lezer-highlight-1.2.3"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--lezer-highlight-1.2.3",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--lezer-lr-1.4.10"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--lezer-lr-1.4.10",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package--marijn-find-cluster-break-1.0.3"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--marijn-find-cluster-break-1.0.3",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package--playwright-test-1.61.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-acorn-8.17.0",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-axe-core-4.12.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-crelt-1.0.7"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-crelt-1.0.7",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-esbuild-0.28.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-fsevents-2.3.2",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-playwright-1.61.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-playwright-core-1.61.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-sql.js-1.14.1"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-sql.js-1.14.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-style-mod-4.1.3"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-style-mod-4.1.3",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-hSQLite-Editor",
+      "relationshipType": "DEPENDS_ON",
+      "relatedSpdxElement": "SPDXRef-Package-w3c-keyname-2.2.8"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-w3c-keyname-2.2.8",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    }
+  ]
+}

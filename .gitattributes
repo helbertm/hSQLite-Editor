@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+*.db binary
+*.db3 binary
+*.s3db binary
+*.sqlite binary
+*.sqlite3 binary
+*.wasm binary

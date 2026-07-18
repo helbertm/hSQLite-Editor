@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inline Badge Examples</title>
+  <link rel="stylesheet" href="./inline-badge.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #11161d;
+      color: #e6edf3;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+    }
+
+    p {
+      margin: 0 0 24px;
+      color: #9da7b3;
+    }
+
+    .example-grid {
+      display: grid;
+      gap: 16px;
+      max-width: 720px;
+    }
+
+    .example-card {
+      border: 1px solid #37414c;
+      border-radius: 14px;
+      background: #1a2028;
+      padding: 16px;
+    }
+
+    .example-card h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    .demo-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      min-height: 36px;
+      padding: 0 12px;
+      border: 1px solid #37414c;
+      border-radius: 999px;
+      background: transparent;
+      color: #e6edf3;
+      text-decoration: none;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <h1>Inline Badge</h1>
+  <p>Exemplos independentes do componente portátil.</p>
+
+  <div class="example-grid">
+    <section class="example-card">
+      <h2>Dot / Danger</h2>
+      <button class="demo-action" type="button">
+        <span>Novidades</span>
+        <span id="badgeDot" class="inline-badge" aria-hidden="true" style="display:none;"></span>
+      </button>
+    </section>
+
+    <section class="example-card">
+      <h2>Count / Danger</h2>
+      <button class="demo-action" type="button" aria-label="Notificações (3 pendências)">
+        <span>Notificações</span>
+        <span id="badgeCount" class="inline-badge" aria-hidden="true" style="display:none;"></span>
+      </button>
+    </section>
+
+    <section class="example-card">
+      <h2>Count / Warning / 99+</h2>
+      <button class="demo-action" type="button" aria-label="Alertas (99 ou mais)">
+        <span>Alertas</span>
+        <span id="badgeMax" class="inline-badge" aria-hidden="true" style="display:none;"></span>
+      </button>
+    </section>
+
+    <section class="example-card">
+      <h2>Compact Notification Count</h2>
+      <button class="demo-action" type="button" aria-label="Novidades (3 versões novas)">
+        <span>Novidades</span>
+        <span id="badgeCompact" class="inline-badge inline-badge-count-compact" aria-hidden="true" style="display:none;"></span>
+      </button>
+    </section>
+  </div>
+
+  <script src="./inline-badge.js"></script>
+  <script>
+    setInlineBadge(document.getElementById("badgeDot"), {
+      visible: true,
+      mode: "dot",
+      tone: "danger"
+    });
+
+    setInlineBadge(document.getElementById("badgeCount"), {
+      visible: true,
+      mode: "count",
+      tone: "danger",
+      count: 3
+    });
+
+    setInlineBadge(document.getElementById("badgeMax"), {
+      visible: true,
+      mode: "count",
+      tone: "warning",
+      count: 132,
+      max: 99
+    });
+
+    setInlineBadge(document.getElementById("badgeCompact"), {
+      visible: true,
+      mode: "count",
+      tone: "danger",
+      count: 3
+    });
+  </script>
+</body>
+</html>

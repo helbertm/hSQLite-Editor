@@ -1,0 +1,299 @@
+/* Schema ownership */
+.schema-search {
+width: 100%;
+      margin-bottom: 10px;
+      background: var(--input-bg);
+}
+
+.schema-list {
+max-height: 600px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--input-bg);
+}
+
+.schema-list > details {
+border-bottom: 1px solid var(--border);
+}
+
+.schema-list > details:last-child {
+border-bottom: 0;
+}
+
+.schema-list > details > summary {
+cursor: pointer;
+      padding: 9px 10px;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 650;
+      user-select: none;
+}
+
+.field:hover, .schema-list > details > summary:hover {
+background: var(--rowHover);
+      color: var(--accentLine);
+}
+
+.schema-object-actions {
+display: flex;
+      justify-content: flex-end;
+      padding: 4px 10px 6px 26px;
+}
+
+.schema-populate-table-btn {
+min-height: 28px;
+}
+
+.ui-button-icon,
+    .clear-filter-btn,
+    .clear-schema-search-btn,
+    .clear-query-history-search-btn,
+    .toast-close,
+    .sql-tab-header-action,
+    .new-sql-tab-btn {
+display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+}
+
+html[data-theme="light"] .table-wrap,
+    html[data-theme="light"] .schema-list {
+background: var(--input-bg);
+}
+
+.layout > .schema-toggle-rail {
+grid-column: 1;
+      grid-row: 1;
+}
+
+.layout > .schema-panel {
+grid-column: 1;
+      grid-row: 1;
+}
+
+.layout.schema-collapsed {
+grid-template-columns: 42px minmax(0, 1fr);
+}
+
+.schema-panel {
+transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.layout.schema-collapsed .schema-panel {
+display: none;
+}
+
+.schema-toggle-rail {
+display: none;
+      width: 42px;
+      min-height: 160px;
+      align-self: stretch;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 12px 0;
+      border-radius: calc(var(--radius) + 4px);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--mutedText);
+      box-shadow: var(--shadow);
+      font-size: 18px;
+      line-height: 1;
+      transform: none !important;
+}
+
+.layout.schema-collapsed .schema-toggle-rail {
+display: inline-flex;
+}
+
+.layout.schema-collapsed > .schema-panel {
+grid-column: 1;
+}
+
+.layout.schema-collapsed > main.card {
+grid-column: 2;
+      grid-row: 1;
+}
+
+.schema-toggle-rail:hover {
+color: var(--info);
+      background: var(--accent);
+}
+
+.schema-header {
+display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+}
+
+.schema-header h2 {
+margin: 0;
+}
+
+.schema-collapse-btn {
+display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 8px;
+      font-size: 12px;
+      border-radius: 9px;
+}
+
+@media (max-width: 920px) {
+.layout.schema-collapsed {
+grid-template-columns: 42px minmax(0, 1fr);
+}
+
+.layout > .schema-toggle-rail,
+      .layout > .schema-panel,
+      .layout > main.card,
+      .layout.schema-collapsed > .schema-panel,
+      .layout.schema-collapsed > main.card {
+grid-column: auto;
+        grid-row: auto;
+}
+}
+
+.schema-menu-icon {
+display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      font-size: 14px;
+      line-height: 1;
+      color: var(--mutedText);
+}
+
+.schema-collapse-btn:hover .schema-menu-icon {
+color: var(--foreground);
+}
+
+.schema-search-wrap {
+position: relative;
+      width: 100%;
+      margin-bottom: 10px;
+}
+
+.schema-search-wrap .schema-search {
+width: 100%;
+      margin-bottom: 0;
+      padding-right: 34px;
+}
+
+.clear-schema-search-btn {
+right: 7px;
+      top: 50%;
+      transform: translateY(-50%) !important;
+      display: none;
+}
+
+.schema-type-filters {
+display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+      align-items: center;
+}
+
+.schema-type-filter-btn {
+min-height: 26px;
+      padding: 0 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: var(--mutedText);
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+}
+
+.schema-type-filter-btn.active {
+color: var(--foreground);
+      border-color: color-mix(in srgb, var(--info) 40%, var(--border));
+      background: color-mix(in srgb, var(--info) 14%, transparent);
+}
+
+.schema-clear-filters-btn {
+margin-left: 2px;
+}
+
+.schema-other-filter {
+position: relative;
+}
+
+.schema-other-menu {
+display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      z-index: 60;
+      width: min(300px, calc(100vw - 48px));
+      max-height: 280px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--popover);
+      box-shadow: var(--shadow);
+      padding: 8px;
+}
+
+.schema-other-menu.open {
+display: grid;
+      gap: 6px;
+}
+
+.schema-other-option {
+display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--foreground);
+      padding: 4px 2px;
+}
+
+.schema-other-option input {
+min-height: auto;
+      margin: 0;
+      width: auto;
+      max-width: none;
+      accent-color: var(--primary);
+}
+
+.schema-empty {
+display: grid;
+      gap: 8px;
+      place-items: center;
+      min-height: 132px;
+      font-size: 18px;
+      line-height: 1.25;
+}
+
+.schema-empty-face {
+font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 24px;
+      color: var(--mutedText);
+      letter-spacing: 0;
+      opacity: 0.9;
+}
+
+.schema-highlight {
+background: color-mix(in srgb, var(--info) 24%, transparent);
+      color: var(--foreground);
+      border-radius: 4px;
+      padding: 0 2px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+}
+
+.schema-object-type,
+    .schema-field-meta {
+color: var(--mutedText);
+      font-weight: inherit;
+}
+
+summary:hover .schema-highlight,
+    .field:hover .schema-highlight {
+background: color-mix(in srgb, var(--info) 34%, transparent);
+      color: var(--foreground);
+}

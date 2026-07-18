@@ -1,0 +1,60 @@
+name: Bug report
+description: Report a reproducible product defect
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include confidential database contents. Report vulnerabilities through the private security process.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Provide the smallest reliable sequence.
+      placeholder: "1. Open ...\n2. Run ...\n3. Observe ..."
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: hSQLite Editor version
+      placeholder: 0.3.143
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser and operating system
+      placeholder: Safari 19 on macOS 16
+    validations:
+      required: true
+  - type: dropdown
+    id: launch
+    attributes:
+      label: Launch mode
+      options:
+        - file:// standalone artifact
+        - GitHub Pages
+        - Local loopback server
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Sanitized screenshots, console output, or a synthetic database.
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmation
+      options:
+        - label: I reproduced this on the latest release and removed confidential data.
+          required: true

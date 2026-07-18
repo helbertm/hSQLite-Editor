@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.helbertm.hsqlite-editor</id>
+  <metadata_license>MIT</metadata_license>
+  <project_license>MIT</project_license>
+  <developer id="io.github.helbertm">
+    <name>hSQLite Editor contributors</name>
+  </developer>
+  <name>hSQLite Editor</name>
+  <summary>Edit SQLite databases locally in your browser</summary>
+  <summary xml:lang="pt-BR">Edite bancos de dados SQLite localmente no navegador</summary>
+  <summary xml:lang="es-ES">Edite bases de datos SQLite localmente en el navegador</summary>
+  <description>
+    <p>hSQLite Editor is a local-first SQLite workspace delivered as a standalone HTML application.</p>
+    <p>It opens through the default desktop browser, works without an application server, and does not claim file associations or automatic updates.</p>
+    <p xml:lang="pt-BR">hSQLite Editor é um ambiente SQLite local distribuído como um aplicativo HTML independente.</p>
+    <p xml:lang="pt-BR">Ele abre no navegador padrão, funciona sem servidor de aplicação e não declara associações de arquivo ou atualizações automáticas.</p>
+    <p xml:lang="es-ES">hSQLite Editor es un entorno SQLite local distribuido como una aplicación HTML independiente.</p>
+    <p xml:lang="es-ES">Se abre en el navegador predeterminado, funciona sin servidor de aplicación y no declara asociaciones de archivos ni actualizaciones automáticas.</p>
+  </description>
+  <launchable type="desktop-id">io.github.helbertm.hsqlite-editor.desktop</launchable>
+  <provides>
+    <binary>hsqlite-editor</binary>
+  </provides>
+  <categories>
+    <category>Development</category>
+    <category>Database</category>
+  </categories>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+  </supports>
+  <url type="homepage">https://helbertm.github.io/hSQLite-Editor/</url>
+  <url type="bugtracker">https://github.com/helbertm/hSQLite-Editor/issues</url>
+  <url type="vcs-browser">https://github.com/helbertm/hSQLite-Editor</url>
+  <releases>
+    <release version="0.3.143" date="2026-06-12" type="stable" /> <!-- x-release-please-version -->
+  </releases>
+  <content_rating type="oars-1.1" />
+</component>

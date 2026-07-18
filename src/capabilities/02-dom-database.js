@@ -1,0 +1,17 @@
+export const dbFile = document.getElementById("dbFile");
+export const databaseMenu = document.getElementById("databaseMenu");
+export const databaseMenuSummary = document.getElementById("databaseMenuSummary");
+export const databaseMenuAlert = document.getElementById("databaseMenuAlert");
+export const openDbMenuBtn = document.getElementById("openDbMenuBtn");
+export const openRecentDbBtn = document.getElementById("openRecentDbBtn");
+export const newDbBtn = document.getElementById("newDbBtn");
+export const clearRecentDbBtn = document.getElementById("clearRecentDbBtn");
+export const recentDbModal = document.getElementById("recentDbModal");
+export const recentDbList = document.getElementById("recentDbList");
+export const closeRecentDbBtn = document.getElementById("closeRecentDbBtn");
+export const newDbModal = document.getElementById("newDbModal");
+export const newDbFileNameInput = document.getElementById("newDbFileNameInput");
+export const cancelNewDbBtn = document.getElementById("cancelNewDbBtn");
+export const confirmNewDbBtn = document.getElementById("confirmNewDbBtn");
+export const dbInfo = document.getElementById("dbInfo");
+export const saveDbBtn = document.getElementById("saveDbBtn");

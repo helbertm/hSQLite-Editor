@@ -18,8 +18,12 @@ Rule:
 
 ## Typography
 - Keep current sans stack for now.
-- Use only 4 semantic sizes: `12`, `14`, `16`, `20`.
-- Titles and section labels must follow semantic role, not ad hoc sizing.
+- Core semantic sizes are `12`, `14`, `16`, and `20` px.
+- Dense operational metadata may use `9`, `10`, `11`, or `13` px when the same role is consistent across its component family.
+- Section and modal headings may use `17`, `18`, `22`, or `24` px. The boot/offline display heading may use `34` px on large screens and `22` px at constrained widths.
+- `font-size: 0` is permitted only on a wrapper that visually suppresses whitespace or a redundant text slot; accessible text must remain available through semantics.
+- Titles and section labels follow semantic role, not ad hoc per-instance sizing.
+- Font sizes do not scale continuously with viewport width. Responsive typography uses explicit breakpoint changes.
 
 ## Spacing Scale
 - Spacing tokens: `4, 8, 12, 16, 20, 24`.
@@ -46,7 +50,12 @@ Rule:
 - Runtime switch implementation classes: `ui-switch`, `ui-switch-segmented`, `ui-switch-option`, `ui-switch-thumb`.
 - Menu triggers implemented with `summary` must match button focus, hover, height, border, and radius behavior.
 - SQL tabs follow the accessible tab pattern: tablist, tab roles, roving `tabindex`, ArrowLeft/ArrowRight navigation, Home/End navigation, active-tab scroll-into-view, and overflow affordance only when content exceeds the strip.
+- SQL tabs use the `workbench rail` model: label-first tab hit area plus a distinct utility rail.
+- In the workbench rail, `close` and `rename` are the only inline utilities. `rename` remains secondary to `close`.
+- `rename` is exposed by the inline pencil action, `F2`, and double click on the title. Tabs must not rely on per-tab submenus for their primary editing actions, and the workbench rail must not render a `...` per-tab action menu.
 - Tab close/rename affordances must remain discoverable on keyboard and touch. Hover may emphasize controls, but must not be the only way to discover the capability.
+- SQL tab utility rails must not be implemented as absolute overlays with compensating label padding.
+- When the tab strip overflows, it must keep horizontal scroll plus an explicit overflow entrypoint for hidden tabs.
 - Empty states in the primary workflow are operational and low-motion. Didactic personality belongs in optional help/onboarding surfaces.
 - Result toolbars must expose labels for compact/icon controls and keep pagination, filtering, sort reset, selection reset, and freeze reset visually distinct but consistent.
 
@@ -79,9 +88,13 @@ Rule:
 - At constrained widths, preserve visibility of SQL tabs, Run, and database-open flow before secondary utilities.
 - Prefer adaptive grouping and overflow menus over uncontrolled toolbar wrapping.
 - Breakpoint contracts:
+- `<= 1100px`: result and utility groups may reduce density before the primary workspace collapses.
+- `<= 980px`: SQL Map adapts its graph and inspector composition.
 - `> 920px`: schema and editor render as two columns.
 - `<= 920px`: schema defaults to collapsed when no saved user preference exists; F4/rail restores it.
+- `<= 760px`: session/settings controls may recompose before the main mobile threshold.
 - `<= 720px`: header actions recompose into a grid, database status occupies its own row, editor actions prioritize Run + SQL file actions + overflow trigger.
+- `<= 640px`: first-run and settings surfaces use their narrow composition.
 - `<= 560px`: result toolbar becomes single-column; tab titles shrink before controls disappear.
 
 ## Table And Result Semantics
@@ -105,15 +118,51 @@ Rule:
 - Always expose explicit controls to clear/reset stored UI state.
 - For future release: support selective export/import of browser-stored data and preferences with clear scope labels and conflict strategy.
 
-## Deferred Features (Backlog)
+## Feature Status
 - Favorite instructions UX:
 - Save from history to favorites.
 - Favorites list with search/filter and quick load to editor.
 - Settings portability UX:
 - Export selected data scopes (favorites, history, theme, session, SQL tabs).
 - Import with preview of selected scopes and merge/replace choice.
+- Implemented SQL Map gesture UX:
+- Virtual-FK creation by drag-and-drop should feel materially dragged, with a floating relationship affordance that follows the pointer until drop/cancel.
+- The gesture must keep target discovery readable and must not rely on heavy animation.
+- Implemented SQL Map data integrity guardrail:
+- Virtual FKs are UI-level relationships, but creation should still validate live data compatibility.
+- If orphan rows exist on either side of the intended join, the UI should block creation and offer a generated SQL diagnostic that reveals the orphan records.
+- Implemented QA data seeding UX:
+- Provide a guided table-seeding flow that maps columns and lets the user configure deterministic or random generation rules per field before bulk insertion.
+- The workflow should keep PK generation automatic by default, expose type-aware strategies for numeric/text/date-like fields, and make the target row count explicit before execution.
+- The surface should communicate that this is a QA/performance utility, not a primary production workflow.
 
 ## Acceptance Gates (P0/P1/P2)
 - P0: interaction trust (shortcuts, focus, dialogs, keyboard table operations).
 - P1: shell hierarchy and responsive density.
 - P2: durable systemization (tokens, components, command palette/help, motion standards).
+# Localization Contract
+
+- Supported locale tags are `en-US`, `pt-BR`, and `es-ES`; `en-US` is the final fallback.
+- Visible copy, accessible names, status messages, validation feedback, empty states, and help content are localization surfaces.
+- Use stable catalog keys and shared `Intl` formatting helpers. Do not format dates, numbers, relative time, or collation directly inside feature modules.
+- Controls and layouts must tolerate at least 35% text expansion without clipping, overlap, or horizontal page scrolling.
+- Keep SQL, filenames, user data, and database identifiers unchanged unless presentation explicitly requires locale formatting.
+- The language selector is an option menu, not a decorative segmented control, and displays each language in its native name.
+
+# Accessibility Contract
+
+- Target WCAG 2.2 Level AA.
+- Every input and control has a programmatic accessible name; placeholders never act as labels.
+- Every pointer interaction has a keyboard equivalent or an adjacent accessible command surface.
+- Result-table headers support keyboard sorting, freezing, moving, and resizing. Rows use roving focus, arrow navigation, and Space selection.
+- Dialogs provide a name, modal semantics, focus containment, Escape/cancel behavior, and focus restoration.
+- Dynamic status and errors use live regions without stealing focus.
+- Focus indicators use `--ring`, remain visible in both themes, and are not removed without an equivalent replacement.
+- Color is never the sole indicator of state, severity, selection, or relationship compatibility.
+
+# Responsive Content Rules
+
+- Fixed-format controls use stable dimensions, but user-facing labels may wrap when the translated text requires it.
+- Header actions may reflow into additional rows; they must never overlap the database status or locale selector.
+- Modal content must remain usable at 320 CSS px width and 400% browser zoom.
+- Tables may scroll horizontally inside their own region; the document itself must not gain incoherent horizontal overflow.

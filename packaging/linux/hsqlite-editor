@@ -1,0 +1,42 @@
+#!/bin/sh
+set -eu
+
+locale_name=${LC_ALL:-${LC_MESSAGES:-${LANG:-en_US}}}
+case "$locale_name" in
+  pt_BR*|pt-BR*)
+    argument_error='hSQLite Editor não aceita argumentos de arquivo ou URL.'
+    xdg_open_error='hSQLite Editor requer xdg-open.'
+    artifact_error='O artefato HTML empacotado do hSQLite Editor está ausente ou ilegível.'
+    ;;
+  es_ES*|es-ES*)
+    argument_error='hSQLite Editor no acepta argumentos de archivo ni URL.'
+    xdg_open_error='hSQLite Editor requiere xdg-open.'
+    artifact_error='El artefacto HTML empaquetado de hSQLite Editor no existe o no se puede leer.'
+    ;;
+  *)
+    argument_error='hSQLite Editor does not accept file or URL arguments.'
+    xdg_open_error='hSQLite Editor requires xdg-open.'
+    artifact_error='The packaged hSQLite Editor HTML artifact is missing or unreadable.'
+    ;;
+esac
+
+if [ "$#" -ne 0 ]; then
+  printf '%s\n' "$argument_error" >&2
+  exit 64
+fi
+
+if ! command -v xdg-open >/dev/null 2>&1; then
+  printf '%s\n' "$xdg_open_error" >&2
+  exit 69
+fi
+
+launcher_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
+install_prefix=$(dirname -- "$launcher_dir")
+application_html="$install_prefix/share/hsqlite-editor/hsqlite-editor.html"
+
+if [ ! -r "$application_html" ]; then
+  printf '%s\n' "$artifact_error" >&2
+  exit 66
+fi
+
+exec xdg-open "$application_html"
