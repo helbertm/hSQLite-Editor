@@ -21,6 +21,8 @@ for (const file of workflowFiles) {
 }
 
 const releaseWorkflow = fs.readFileSync(path.join(workflowDir, "release-please.yml"), "utf8");
+const releasePleaseConfig = JSON.parse(fs.readFileSync(path.join(rootDir, "release-please-config.json"), "utf8"));
+const releasePackageConfig = releasePleaseConfig.packages?.["."] || {};
 if (/actions\/attest-build-provenance@/.test(releaseWorkflow)) {
   failures.push("release-please.yml uses the superseded attest-build-provenance wrapper.");
 }
@@ -36,6 +38,23 @@ if (!/sbom-path:\s*sbom\.spdx\.json/.test(releaseWorkflow)) {
 if (!/ref:\s*\$\{\{ needs\.release-please\.outputs\.tag_name \}\}/.test(releaseWorkflow)) {
   failures.push("release-please.yml does not rebuild the exact created release tag before publication.");
 }
+if (releasePackageConfig.draft !== true) {
+  failures.push("release-please must create a draft release so assets close before immutable publication.");
+}
+if (releasePackageConfig["force-tag-creation"] !== true) {
+  failures.push("release-please must create the exact tag before a draft release can be rebuilt and validated.");
+}
+if (/\s--clobber(?:\s|$)/m.test(releaseWorkflow)) {
+  failures.push("release-please.yml must fail closed instead of overwriting release assets with --clobber.");
+}
+const uploadIndex = releaseWorkflow.indexOf("gh release upload");
+const publishIndex = releaseWorkflow.indexOf("gh release edit");
+if (uploadIndex < 0 || publishIndex < 0 || publishIndex <= uploadIndex) {
+  failures.push("release-please.yml must upload the exact draft assets before publishing the release.");
+}
+if (!/gh release edit "\$\{\{ needs\.release-please\.outputs\.tag_name \}\}" --draft=false/.test(releaseWorkflow)) {
+  failures.push("release-please.yml must publish the exact draft tag only after asset upload succeeds.");
+}
 
 if (failures.length) {
   console.error("Workflow validation failed:");
@@ -43,4 +62,4 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`Workflow validation passed (${workflowFiles.length} workflows, immutable action pins, explicit permissions, release attestations, and timeouts).`);
+console.log(`Workflow validation passed (${workflowFiles.length} workflows, immutable action pins, atomic draft-first release publication, explicit permissions, attestations, and timeouts).`);

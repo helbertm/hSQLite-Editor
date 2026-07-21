@@ -98,4 +98,8 @@ jobs:
           "dist/hSQLite-Editor-v${{ needs.release-please.outputs.version }}.html"
           sbom.spdx.json
           SHA256SUMS
-          --clobber
+
+      - name: Publish immutable release bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "${{ needs.release-please.outputs.tag_name }}" --draft=false

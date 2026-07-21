@@ -21,6 +21,7 @@ const requiredFiles = [
   "SUPPORT.md",
   "GOVERNANCE.md",
   "THIRD_PARTY_NOTICES.md",
+  "github-controls-policy.json",
   "runtime-components.json",
   "sbom.spdx.json",
   "security_posture.md",
@@ -67,6 +68,7 @@ const requiredFiles = [
   "src/ui/80-bindings.js",
   "scripts/validate-browser-backlog.mjs",
   "scripts/validate-browser-quality.mjs",
+  "scripts/validate-github-controls.mjs",
   "scripts/validate-native-chromium.mjs",
   "scripts/validate-i18n.mjs",
   "scripts/validate-accessibility.mjs",
@@ -90,6 +92,7 @@ const requiredFiles = [
   "scripts/contract-tests/sqlite-types.test.mjs",
   "scripts/contract-tests/database-file-validation.test.mjs",
   "scripts/contract-tests/state-contracts.test.mjs",
+  "scripts/contract-tests/github-controls.test.mjs",
   "scripts/validate-security-update.sh",
   "packaging/linux/hsqlite-editor",
   "packaging/linux/io.github.helbertm.hsqlite-editor.desktop",
@@ -140,6 +143,7 @@ const requiredScripts = [
   "validate:approval",
   "validate:full",
   "validate:full:ci",
+  "validate:github-controls",
   "quality:docker",
   "quality:docker:update",
   "quality:security:docker"
@@ -226,6 +230,11 @@ for (const focusedCommand of [
     `scripts/validate-full.mjs must execute npm run ${focusedCommand} as a distinct step.`
   );
 }
+forbidRegex(
+  fullValidator,
+  /validate:github-controls/,
+  "scripts/validate-full.mjs must keep live GitHub control auditing outside deterministic local CI."
+);
 
 if (!version || !manifestVersion || version !== manifestVersion) {
   failures.push(`Version sync failed: package.json=${version || "empty"} manifest=${manifestVersion || "empty"}`);
@@ -325,6 +334,17 @@ requireRegex(releaseWorkflow, /ref:\s*\$\{\{ needs\.release-please\.outputs\.tag
 requireRegex(releaseWorkflow, /subject-path:\s*dist\/hSQLite-Editor-v\$\{\{ needs\.release-please\.outputs\.version \}\}\.html/, "Release provenance must identify the exact versioned HTML artifact.");
 requireRegex(releaseWorkflow, /sbom-path:\s*sbom\.spdx\.json/, "Release workflow must bind the SPDX SBOM to the exact HTML artifact.");
 forbidRegex(releaseWorkflow, /actions\/attest-build-provenance@/, "Release workflow still uses the superseded provenance wrapper action.");
+forbidRegex(releaseWorkflow, /\s--clobber(?:\s|$)/m, "Release workflow must fail closed instead of overwriting release assets.");
+const releaseUploadIndex = releaseWorkflow.indexOf("gh release upload");
+const releasePublishIndex = releaseWorkflow.indexOf("gh release edit");
+if (releaseUploadIndex < 0 || releasePublishIndex < 0 || releasePublishIndex <= releaseUploadIndex) {
+  failures.push("Release workflow must upload the complete draft bundle before publishing it.");
+}
+requireRegex(
+  releaseWorkflow,
+  /gh release edit "\$\{\{ needs\.release-please\.outputs\.tag_name \}\}" --draft=false/,
+  "Release workflow must publish the exact draft tag after asset closure."
+);
 
 const qualityWorkflow = readText(".github/workflows/quality.yml");
 requireRegex(qualityWorkflow, /pull_request:[\s\S]*?branches:\s*\[master\]/, "Quality workflow must validate pull requests targeting master.");
@@ -341,7 +361,7 @@ requireRegex(linuxSystemGate, /desktop-file-validate --version/, "Linux system-t
 
 const releasePleaseConfig = JSON.parse(readText("release-please-config.json"));
 const releasePackageConfig = releasePleaseConfig.packages?.["."] || {};
-if (releasePackageConfig["package-name"] !== packageJson.name || releasePackageConfig["include-component-in-tag"] !== true || releasePackageConfig["include-v-in-tag"] !== true) {
+if (releasePackageConfig["package-name"] !== packageJson.name || releasePackageConfig["include-component-in-tag"] !== true || releasePackageConfig["include-v-in-tag"] !== true || releasePackageConfig.draft !== true || releasePackageConfig["force-tag-creation"] !== true) {
   failures.push("release-please-config.json must explicitly preserve the hsqlite-editor-v<version> tag contract.");
 }
 const linuxMetainfoUpdater = (releasePackageConfig["extra-files"] || []).find(item =>
@@ -358,6 +378,29 @@ requireRegex(pagesWorkflow, /npm run validate:dependencies/, "Pages workflow mus
 const dependencyReviewWorkflow = readText(".github/workflows/dependency-review.yml");
 requireRegex(dependencyReviewWorkflow, /npm run validate:dependencies/, "Dependency-review workflow must consume the repo-owned dependency vulnerability gate.");
 requireRegex(dependencyReviewWorkflow, /fail-on-severity:\s*high/, "Dependency-review workflow must block high-severity dependency changes.");
+
+const githubControlsPolicy = JSON.parse(readText("github-controls-policy.json"));
+const attestationPredicates = githubControlsPolicy.release?.attestationPredicates || [];
+if (
+  githubControlsPolicy.repository !== "helbertm/hSQLite-Editor"
+  || githubControlsPolicy.defaultBranch !== "master"
+  || githubControlsPolicy.actions?.defaultWorkflowPermissions !== "read"
+  || githubControlsPolicy.actions?.canCreateOrApprovePullRequests !== true
+  || githubControlsPolicy.actions?.shaPinningRequired !== true
+  || githubControlsPolicy.release?.repositoryImmutabilityEnabled !== true
+  || githubControlsPolicy.release?.immutable !== true
+  || githubControlsPolicy.release?.subjectAssetTemplate !== "hSQLite-Editor-v{version}.html"
+  || !githubControlsPolicy.release?.assetTemplates?.includes(githubControlsPolicy.release?.subjectAssetTemplate)
+  || !attestationPredicates.some(predicate => predicate.name === "provenance" && predicate.query === "provenance" && predicate.predicateType === "https://slsa.dev/provenance/v1")
+  || !attestationPredicates.some(predicate => predicate.name === "sbom" && predicate.query === "sbom" && predicate.predicateType === "https://spdx.dev/Document/v2.3")
+) {
+  failures.push("github-controls-policy.json does not preserve the required hosted release-security posture.");
+}
+const validationDocs = readText("docs/validation.md");
+const releasingDocs = readText("docs/releasing.md");
+requireRegex(validationDocs, /npm run validate:github-controls/, "docs/validation.md must document the hosted GitHub control audit boundary.");
+requireRegex(releasingDocs, /npm run validate:github-controls/, "docs/releasing.md must require the hosted GitHub control audit.");
+requireRegex(releasingDocs, /draft release/, "docs/releasing.md must document draft-first immutable publication.");
 
 const license = readText("LICENSE");
 requireRegex(license, /^MIT License/m, "LICENSE must contain the approved MIT license.");

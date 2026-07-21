@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "apiVersion": "2026-03-10",
+  "repository": "helbertm/hSQLite-Editor",
+  "defaultBranch": "master",
+  "pagesEnvironment": "github-pages",
+  "requiredChecks": [
+    "Quality Gate / validate",
+    "Linux Package / validate",
+    "Browser Quality / locale-accessibility",
+    "CodeQL / Analyze JavaScript",
+    "Commit Convention Check / conventional-commits",
+    "Dependency Review / dependency-review"
+  ],
+  "actions": {
+    "enabled": true,
+    "shaPinningRequired": true,
+    "defaultWorkflowPermissions": "read",
+    "canCreateOrApprovePullRequests": true
+  },
+  "release": {
+    "repositoryImmutabilityEnabled": true,
+    "tagTemplate": "hsqlite-editor-v{version}",
+    "subjectAssetTemplate": "hSQLite-Editor-v{version}.html",
+    "assetTemplates": [
+      "hSQLite-Editor-v{version}.html",
+      "sbom.spdx.json",
+      "SHA256SUMS"
+    ],
+    "immutable": true,
+    "attestationPredicates": [
+      {
+        "name": "provenance",
+        "query": "provenance",
+        "predicateType": "https://slsa.dev/provenance/v1"
+      },
+      {
+        "name": "sbom",
+        "query": "sbom",
+        "predicateType": "https://spdx.dev/Document/v2.3"
+      }
+    ]
+  }
+}

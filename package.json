@@ -30,6 +30,7 @@
     "validate:approval": "node scripts/validate-approval-gates.mjs",
     "validate:full": "node scripts/validate-full.mjs",
     "validate:full:ci": "node scripts/validate-full.mjs --expect-clean-index",
+    "validate:github-controls": "node scripts/validate-github-controls.mjs",
     "validate:static": "npm run validate:modules && npm run validate:source && npm run validate:i18n && npm run validate:accessibility && npm run validate:privacy && npm run validate:runtime-components && npm run validate:sbom && npm run validate:workflows",
     "validate:linux": "node scripts/validate-linux-package.mjs",
     "validate:linux-metadata": "node scripts/sync-linux-release-metadata.mjs --check",

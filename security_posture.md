@@ -18,6 +18,8 @@ hSQLite Editor is a static, local-first browser application. It parses user-sele
 - `npm run validate:dependencies` blocks high or critical advisories across the complete lockfile; `npm run quality:security:docker` adds an independent OSV scan in the update-capable `codex-quality` runtime.
 - Public persistence and removal behavior is documented in `docs/privacy.md` and protected by `npm run validate:privacy`.
 - Linux desktop integration is a deterministic packaging satellite: its launcher accepts no arguments, invokes `xdg-open` without shell evaluation, and is covered by `npm run validate:linux` inside the release-quality runtime.
+- `npm run validate:github-controls` performs a read-only, redacted audit of hosted branch, disclosure, Pages, Actions, immutable-release, asset, and attestation policy without folding non-deterministic network state into local CI.
+- The default `GITHUB_TOKEN` is read-only. The pinned Release Please job receives explicit `contents: write` and `pull-requests: write` scopes, so the hosted create/approve-PR switch remains enabled only for automated release-PR creation.
 
 ## Trust limits
 
@@ -25,6 +27,7 @@ hSQLite Editor is a static, local-first browser application. It parses user-sele
 - Browser storage is local to the browser profile but is not an encrypted secrets vault.
 - Users must not assume a database is harmless because it opens successfully.
 - GitHub rulesets, required checks, private reporting, Pages settings, and release permissions are repository-host controls and must be audited separately.
+- Full hosted-control coverage requires a fine-grained read-only GitHub token and explicit operator confirmation of the Pages administrator-bypass setting; missing access is reported as unverified, never as a pass.
 - Native Safari `file://` behavior cannot be reproduced inside Docker.
 
 ## Release verification

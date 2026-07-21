@@ -36,8 +36,14 @@ Native Chromium and Safari checks open the exact versioned artifact through `fil
 
 `npm run validate:native:chromium` automates the direct-file boot, remote-request, locale-selector, and horizontal-overflow subset against the installed Chrome channel. Set `HSQLITE_NATIVE_CHROMIUM_CHANNEL` only to select another locally installed Playwright Chromium channel. Native Safari and changed assistive-technology checks remain separate because they require host facilities that the Node dependency graph does not provide.
 
+## Hosted GitHub controls
+
+Run `npm run validate:github-controls` as a separate read-only operator audit. It compares the live repository against `github-controls-policy.json`: active default-branch rules, required checks, Private Vulnerability Reporting, Pages branch and bypass posture, Actions enablement/SHA pinning/default token permissions, repository-level immutable-release enablement, the exact immutable release asset bundle, and attestations whose signed statements match the exact HTML digest and required SLSA provenance/SPDX predicate types. Use a fine-grained read-only `GH_TOKEN` for complete coverage and add `--confirm-pages-admin-bypass-disabled` only after checking the administrator setting in GitHub.
+
+This command is intentionally outside `validate:full`, `validate:full:ci`, and normal pull-request CI. Hosted state is networked, permission-sensitive, and non-deterministic. A missing token or manual confirmation is `UNVERIFIED`, never a pass; verified drift and transport failures use different exit codes so operators do not misclassify access failures as product defects.
+
 ## Orchestration
 
-`npm run validate:full` runs static policy, deterministic contracts, readable structure, cross-surface runtime, feature-owned runtime, release structure/runtime, deterministic Linux staging, and approval gates in that order. `npm run validate:full:ci` adds clean-repository checks before and after the same sequence. Browser, security-update, and host-native checks remain separate because their environments and failure modes are independent.
+`npm run validate:full` runs static policy, deterministic contracts, readable structure, cross-surface runtime, feature-owned runtime, release structure/runtime, deterministic Linux staging, and approval gates in that order. `npm run validate:full:ci` adds clean-repository checks before and after the same sequence. Browser, security-update, host-native, and hosted GitHub checks remain separate because their environments and failure modes are independent.
 
 Repository-state validation also rejects legacy CodeMirror 5 paths from the Git index. This protects release candidates from staged content that differs from the clean worktree and artifact scans.

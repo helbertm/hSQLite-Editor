@@ -6,6 +6,8 @@
       "package-name": "hsqlite-editor",
       "include-component-in-tag": true,
       "include-v-in-tag": true,
+      "draft": true,
+      "force-tag-creation": true,
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
         {
