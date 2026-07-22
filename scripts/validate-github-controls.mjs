@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { Buffer } from "node:buffer";
 import { pathToFileURL } from "node:url";
+import { assertStableReleaseVersion } from "./release-utils.mjs";
 
 const rootDir = path.resolve(new URL("..", import.meta.url).pathname);
 const apiBaseUrl = "https://api.github.com";
@@ -15,7 +16,7 @@ export const VERDICTS = Object.freeze({
 });
 
 export function renderPolicyTemplate(template, version) {
-  return String(template).replaceAll("{version}", version);
+  return String(template).replaceAll("{version}", assertStableReleaseVersion(version));
 }
 
 export function selectGithubToken(environment) {
@@ -377,7 +378,7 @@ async function main() {
 
   const policy = JSON.parse(fs.readFileSync(path.join(rootDir, "github-controls-policy.json"), "utf8"));
   const packageJson = JSON.parse(fs.readFileSync(path.join(rootDir, "package.json"), "utf8"));
-  const version = String(packageJson.version || "").trim();
+  const version = assertStableReleaseVersion(packageJson.version);
   const token = selectGithubToken(process.env);
   const result = await runLiveAudit({
     policy,

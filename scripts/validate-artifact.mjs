@@ -6,6 +6,10 @@ import {
   readVendorManifest,
   sha256
 } from "./vendor-utils.mjs";
+import {
+  assertStableReleaseVersion,
+  extractInlineScripts
+} from "./release-utils.mjs";
 
 const rootDir = path.resolve(new URL("..", import.meta.url).pathname);
 const artifactArg = process.argv[2] || "index.html";
@@ -18,12 +22,8 @@ const packageJson = readJson(path.join(rootDir, "package.json"));
 const releaseManifest = readJson(path.join(rootDir, ".release-please-manifest.json"));
 
 const failures = [];
-const packageVersion = String(packageJson.version || "").trim();
-const manifestVersion = String(releaseManifest["."] || "").trim();
-
-function extractInlineScripts(markup) {
-  return Array.from(markup.matchAll(/<script>([\s\S]*?)<\/script>/g)).map((match) => match[1] || "");
-}
+const packageVersion = assertStableReleaseVersion(packageJson.version);
+const manifestVersion = assertStableReleaseVersion(releaseManifest["."]);
 
 function validateInlineScriptSyntax(markup) {
   const scripts = extractInlineScripts(markup);

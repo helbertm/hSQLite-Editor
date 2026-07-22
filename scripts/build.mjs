@@ -9,6 +9,7 @@ import {
   getVendorAssetPath
 } from "./vendor-utils.mjs";
 import {
+  assertStableReleaseVersion,
   ensureDir
 } from "./release-utils.mjs";
 import { buildEditorBundle } from "./editor-bundle.mjs";
@@ -70,11 +71,9 @@ function parseReleaseNotesFromChangelog(changelogText) {
 
 export function buildReleaseMetadata() {
   const manifest = readJson(path.join(rootDir, ".release-please-manifest.json"));
-  const version = String(manifest["."] || "").trim();
-  if (!version) throw new Error("Missing release version in .release-please-manifest.json");
+  const version = assertStableReleaseVersion(manifest["."]);
   const packageJson = readJson(path.join(rootDir, "package.json"));
-  const packageVersion = String(packageJson.version || "").trim();
-  if (!packageVersion) throw new Error("Missing version in package.json");
+  const packageVersion = assertStableReleaseVersion(packageJson.version);
   if (packageVersion !== version) {
     throw new Error(`Version mismatch: package.json=${packageVersion} manifest=${version}`);
   }

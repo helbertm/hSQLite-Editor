@@ -1,14 +1,18 @@
 import fs from "node:fs";
 import path from "node:path";
 import { readJson } from "./vendor-utils.mjs";
-import { getReleaseArtifactPath } from "./release-utils.mjs";
+import {
+  assertStableReleaseVersion,
+  escapeRegExp,
+  getReleaseArtifactPath
+} from "./release-utils.mjs";
 
 const rootDir = path.resolve(new URL("..", import.meta.url).pathname);
 
 const packageJson = readJson(path.join(rootDir, "package.json"));
 const releaseManifest = readJson(path.join(rootDir, ".release-please-manifest.json"));
-const version = String(packageJson.version || "").trim();
-const manifestVersion = String(releaseManifest["."] || "").trim();
+const version = assertStableReleaseVersion(packageJson.version);
+const manifestVersion = assertStableReleaseVersion(releaseManifest["."]);
 
 const requiredFiles = [
   "index.html",
@@ -226,7 +230,7 @@ for (const focusedCommand of [
 ]) {
   requireRegex(
     fullValidator,
-    new RegExp(`\\["npm", "run", "${focusedCommand.replace(/[-/:]/g, "\\$&")}"\\]`),
+    new RegExp(`\\["npm", "run", "${escapeRegExp(focusedCommand)}"\\]`),
     `scripts/validate-full.mjs must execute npm run ${focusedCommand} as a distinct step.`
   );
 }
@@ -241,7 +245,7 @@ if (!version || !manifestVersion || version !== manifestVersion) {
 }
 
 const changelog = readText("CHANGELOG.md");
-requireRegex(changelog, new RegExp(`## \\[${version.replace(/\./g, "\\.")}\\]`), `CHANGELOG.md is missing current version heading ${version}.`);
+requireRegex(changelog, new RegExp(`## \\[${escapeRegExp(version)}\\]`), `CHANGELOG.md is missing current version heading ${version}.`);
 
 const readme = readText("README.md");
 requireRegex(readme, /one standalone `index\.html` artifact/, "README.md must state the one-HTML distribution contract.");
@@ -314,8 +318,8 @@ if (!fs.existsSync(releaseArtifactPath)) {
   failures.push(`Missing expected versioned release artifact: ${path.relative(rootDir, releaseArtifactPath)}`);
 } else {
   const releaseArtifact = fs.readFileSync(releaseArtifactPath, "utf8");
-  requireRegex(rootArtifact, new RegExp(`<title>hSQLite Editor v${version.replace(/\./g, "\\.")}</title>`), "index.html title is out of sync with the current version.");
-  requireRegex(releaseArtifact, new RegExp(`<title>hSQLite Editor v${version.replace(/\./g, "\\.")}</title>`), "Release artifact title is out of sync with the current version.");
+  requireRegex(rootArtifact, new RegExp(`<title>hSQLite Editor v${escapeRegExp(version)}</title>`), "index.html title is out of sync with the current version.");
+  requireRegex(releaseArtifact, new RegExp(`<title>hSQLite Editor v${escapeRegExp(version)}</title>`), "Release artifact title is out of sync with the current version.");
   if (releaseArtifact.length > rootArtifact.length) {
     failures.push("Release artifact should stay smaller than the readable root artifact after release minification.");
   }

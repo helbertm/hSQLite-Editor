@@ -3,7 +3,12 @@ import { Buffer } from "node:buffer";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { evaluateGithubControls, selectGithubToken, VERDICTS } from "../validate-github-controls.mjs";
+import {
+  evaluateGithubControls,
+  renderPolicyTemplate,
+  selectGithubToken,
+  VERDICTS
+} from "../validate-github-controls.mjs";
 
 const policy = {
   repository: "helbertm/hSQLite-Editor",
@@ -244,6 +249,13 @@ test("prefers GH_TOKEN without exposing or rewriting credential values", () => {
   assert.equal(selectGithubToken({ GH_TOKEN: "primary", GITHUB_TOKEN: "fallback" }), "primary");
   assert.equal(selectGithubToken({ GITHUB_TOKEN: "fallback" }), "fallback");
   assert.equal(selectGithubToken({}), "");
+});
+
+test("release policy templates reject unsafe version input", () => {
+  assert.equal(renderPolicyTemplate("hSQLite-Editor-v{version}.html", version), "hSQLite-Editor-v0.3.143.html");
+  for (const unsafeVersion of ["0.3.143/../../x", "0.3.143%2f..", "0.3.143<script>", "0.3.143\n"]) {
+    assert.throws(() => renderPolicyTemplate("{version}", unsafeVersion), /Invalid stable release version/);
+  }
 });
 
 test("CLI help exits cleanly without starting a network audit", () => {

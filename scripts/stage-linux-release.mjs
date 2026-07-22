@@ -8,6 +8,8 @@ import {
   rootDir
 } from "./build.mjs";
 import {
+  assertStableReleaseVersion,
+  escapeRegExp,
   getReleaseArtifactPath,
   minifyStandaloneHtml
 } from "./release-utils.mjs";
@@ -73,10 +75,11 @@ function copyFile(sourcePath, targetPath, mode) {
 }
 
 function getCanonicalTimestamp(version) {
+  const canonicalVersion = assertStableReleaseVersion(version);
   const changelog = fs.readFileSync(path.join(rootDir, "CHANGELOG.md"), "utf8");
-  const escapedVersion = version.replace(/\./g, "\\.");
+  const escapedVersion = escapeRegExp(canonicalVersion);
   const releaseDate = changelog.match(new RegExp(`^## \\[${escapedVersion}\\].*\\((\\d{4}-\\d{2}-\\d{2})\\)$`, "m"))?.[1];
-  if (!releaseDate) throw new Error(`CHANGELOG.md is missing a release date for ${version}.`);
+  if (!releaseDate) throw new Error(`CHANGELOG.md is missing a release date for ${canonicalVersion}.`);
   return new Date(`${releaseDate}T00:00:00Z`);
 }
 

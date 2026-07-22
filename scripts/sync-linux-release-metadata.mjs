@@ -2,15 +2,16 @@ import fs from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { assertRegularRepoFile } from "./linux-package-safety.mjs";
+import { assertStableReleaseVersion, escapeRegExp } from "./release-utils.mjs";
 
 const rootDir = path.resolve(new URL("..", import.meta.url).pathname);
 const metainfoPath = path.join(rootDir, "packaging/linux/io.github.helbertm.hsqlite-editor.metainfo.xml");
 
 export function getCanonicalLinuxReleaseMetadata() {
   const packageJson = JSON.parse(fs.readFileSync(path.join(rootDir, "package.json"), "utf8"));
-  const version = String(packageJson.version || "").trim();
+  const version = assertStableReleaseVersion(packageJson.version);
   const changelog = fs.readFileSync(path.join(rootDir, "CHANGELOG.md"), "utf8");
-  const escapedVersion = version.replace(/\./g, "\\.");
+  const escapedVersion = escapeRegExp(version);
   const date = changelog.match(new RegExp(`^## \\[${escapedVersion}\\].*\\((\\d{4}-\\d{2}-\\d{2})\\)$`, "m"))?.[1];
   if (!version || !date) throw new Error(`Missing canonical Linux release metadata for ${version || "empty version"}.`);
   return { version, date };

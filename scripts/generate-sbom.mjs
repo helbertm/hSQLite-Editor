@@ -1,6 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
-import { getReleaseTag } from "./release-utils.mjs";
+import {
+  assertReleasePackageName,
+  assertStableReleaseVersion,
+  escapeRegExp,
+  getReleaseTag
+} from "./release-utils.mjs";
 
 const rootDir = path.resolve(new URL("..", import.meta.url).pathname);
 const packageJson = JSON.parse(fs.readFileSync(path.join(rootDir, "package.json"), "utf8"));
@@ -10,6 +15,8 @@ const runtimeComponents = JSON.parse(fs.readFileSync(path.join(rootDir, "runtime
 const changelog = fs.readFileSync(path.join(rootDir, "CHANGELOG.md"), "utf8");
 const checkOnly = process.argv.includes("--check");
 const outputPath = path.join(rootDir, "sbom.spdx.json");
+const releasePackageName = assertReleasePackageName(packageJson.name);
+const releaseVersion = assertStableReleaseVersion(packageJson.version);
 
 const componentGroups = new Map();
 for (const [packagePath, metadata] of Object.entries(packageLock.packages || {})) {
@@ -64,14 +71,14 @@ for (const bundle of runtimeComponents.bundles || []) {
 
 const mainSpdxId = "SPDXRef-Package-hSQLite-Editor";
 const dependencies = Array.from(componentGroups.values()).sort((a, b) => a.name.localeCompare(b.name));
-const changelogPattern = new RegExp(`^## \\[${packageJson.version.replace(/\./g, "\\.")}\\].*\\((\\d{4}-\\d{2}-\\d{2})\\)$`, "m");
+const changelogPattern = new RegExp(`^## \\[${escapeRegExp(releaseVersion)}\\].*\\((\\d{4}-\\d{2}-\\d{2})\\)$`, "m");
 const releaseDate = changelog.match(changelogPattern)?.[1];
 if (!releaseDate) {
-  console.error(`CHANGELOG.md does not contain a release date for ${packageJson.version}.`);
+  console.error(`CHANGELOG.md does not contain a release date for ${releaseVersion}.`);
   process.exit(1);
 }
 const canonicalCreatedAt = `${releaseDate}T00:00:00Z`;
-const releaseTag = getReleaseTag(packageJson.name, packageJson.version);
+const releaseTag = getReleaseTag(releasePackageName, releaseVersion);
 
 function getComponentSpdxId(component) {
   return `SPDXRef-Package-${component.name}-${component.version}`.replace(/[^A-Za-z0-9.-]/g, "-");
