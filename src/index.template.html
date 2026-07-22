@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en-US" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='6' fill='%23111827'/%3E%3Cellipse cx='16' cy='11' rx='7' ry='3' fill='none' stroke='%23f9fafb' stroke-width='2'/%3E%3Cpath d='M9 11v10c0 1.7 3.1 3 7 3s7-1.3 7-3V11' fill='none' stroke='%23f9fafb' stroke-width='2'/%3E%3C/svg%3E" />
+  <title>hSQLite Editor v{{VERSION}}</title>
+
+  <style>
+<!-- INLINE_STYLES -->
+</style>
+</head>
+
+<body>
+  <div id="appRoot">
+  <header class="app-header">
+    <div class="brand-block">
+      <h1 data-i18n-ignore>hSQLite Editor <span class="version-pill" id="appVersionPill">v{{VERSION}}</span></h1>
+      <div class="subtitle" data-i18n="app.subtitle">Para trabalhar e estudar</div>
+    </div>
+
+      <div class="header-actions">
+      <label class="locale-control">
+        <span class="visually-hidden" data-i18n="language.label">Language</span>
+        <select id="localeSelect" data-locale-select aria-label="Language" data-i18n-aria-label="language.label"></select>
+      </label>
+      <div class="session-switch" title="Ao ativar esta opção, o hSQLite Editor salva localmente no seu navegador: abas abertas, consultas em edição, históricos, instruções favoritas e preferências. Em outro navegador/dispositivo esses dados não aparecem automaticamente. Para migrá-las, utilize Configurações → Exportar/Importar." data-i18n-title="session.description">
+        <span class="session-switch-label" data-i18n="session.save">Salvar sessão</span>
+        <button id="sessionToggle" class="ui-switch ui-switch-segmented session-toggle" type="button" role="switch" aria-checked="true" aria-label="Salvar sessão" data-i18n-aria-label="session.save">
+          <span class="session-toggle-option ui-switch-option" data-session-option="off" aria-hidden="true"><span class="seg-switch-center">OFF</span></span>
+          <span class="session-toggle-option ui-switch-option" data-session-option="on" aria-hidden="true"><span class="seg-switch-center">ON</span></span>
+          <span class="ui-switch-thumb"></span>
+        </button>
+      </div>
+      <div class="theme-switch" title="Alternar tema claro/escuro (Shift+F2)" data-i18n-title="theme.toggleTitle">
+        <button id="themeToggle" class="ui-switch ui-switch-segmented theme-segmented" type="button" role="switch" aria-checked="false" aria-label="Alternar tema claro/escuro" data-i18n-aria-label="theme.toggle">
+          <span class="theme-toggle-option ui-switch-option" data-theme-option="light" aria-hidden="true"><span class="seg-switch-center"><svg viewBox="0 0 24 24" role="img" focusable="false"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2.2M12 19.8V22M4.93 4.93l1.56 1.56M17.51 17.51l1.56 1.56M2 12h2.2M19.8 12H22M4.93 19.07l1.56-1.56M17.51 6.49l1.56-1.56"></path></svg></span></span>
+          <span class="theme-toggle-option ui-switch-option" data-theme-option="dark" aria-hidden="true"><span class="seg-switch-center"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M21 14.4A7.5 7.5 0 0 1 9.6 3a8.5 8.5 0 1 0 11.4 11.4Z"></path></svg></span></span>
+          <span class="ui-switch-thumb"></span>
+        </button>
+      </div>
+      <button id="releaseNotesBtn" class="ui-button ui-button-ghost ui-button-sm header-link-action release-notes-btn" type="button" title="Novidades da versão" data-i18n-title="release.title">
+        <span data-i18n="release.whatsNew">Novidades</span>
+        <span id="releaseNotesBadge" class="app-badge release-badge" aria-hidden="true" style="display:none;"></span>
+      </button>
+      <button id="helpBtn" class="ui-button ui-button-ghost ui-button-sm header-link-action" type="button" title="Ajuda geral do Editor" data-i18n-title="help.title">
+        <span class="header-action-icon header-action-icon-text" aria-hidden="true">?</span>
+        <span data-i18n="help.label">Ajuda</span>
+      </button>
+      <a id="bugReportBtn" class="ui-button ui-button-ghost ui-button-sm header-link-action" href="https://github.com/helbertm/hSQLite-Editor/issues" target="_blank" rel="noopener noreferrer" title="Reportar erros no GitHub Issues" data-i18n-title="issues.tooltip">
+        <span class="header-action-icon bug-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img" focusable="false">
+            <path d="M8.4 4.8a1 1 0 0 1 1.4 0L12 7l2.2-2.2a1 1 0 0 1 1.4 1.4l-1.9 1.9c2.6.7 4.5 3.1 4.5 6v1.9l1.9 1.9a1 1 0 1 1-1.4 1.4l-1.2-1.2a6.8 6.8 0 0 1-2.5 1.7V21a1 1 0 1 1-2 0v-1.1c-.3 0-.7.1-1 .1s-.7 0-1-.1V21a1 1 0 1 1-2 0v-1.2a6.8 6.8 0 0 1-2.5-1.7l-1.2 1.2a1 1 0 1 1-1.4-1.4l1.9-1.9V14c0-2.9 1.9-5.3 4.5-6L8.4 6.2a1 1 0 0 1 0-1.4ZM12 9.4c-2.5 0-4.5 2-4.5 4.5v1c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5v-1c0-2.5-2-4.5-4.5-4.5Zm0 1.5a.8.8 0 0 1 .8.8v5.8a.8.8 0 0 1-1.6 0v-5.8a.8.8 0 0 1 .8-.8Z"></path>
+          </svg>
+        </span>
+        <span data-i18n="issues.report">Reportar Erros</span>
+      </a>
+      <div class="pill db-pill" id="dbInfo" title="Nenhum banco carregado" data-i18n-title="database.none" data-i18n="database.none">Nenhum banco carregado</div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="toolbar top-command-bar">
+      <div class="toolbar-group db-picker-group" aria-label="Banco SQLite" data-i18n-aria-label="database.file">
+        <details class="db-menu" id="databaseMenu">
+          <summary id="databaseMenuSummary" class="ui-button ui-button-secondary ui-button-md" aria-label="Ações de arquivo de dados" data-i18n-aria-label="database.actions">
+            <span data-i18n="database.file">Arquivo de dados</span>
+            <span class="database-menu-alert" id="databaseMenuAlert" aria-hidden="true" style="display:none;">⚠</span>
+          </summary>
+          <div class="db-menu-list">
+            <button id="openRecentDbBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Abrir lista de bancos recentes" data-i18n-title="database.openRecent">
+              <span class="db-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M12 7v5l3 2"></path><path d="M4.2 10.2A8 8 0 1 1 5.7 16"></path><path d="M4 6v4h4"></path></svg></span><span data-i18n="database.recent">Recentes</span>
+            </button>
+            <button id="openDbMenuBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Escolher arquivo SQLite (F3)" data-i18n-title="database.openFile">
+              <span class="db-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M4 7.5A1.5 1.5 0 0 1 5.5 6H10l2 2h6.5A1.5 1.5 0 0 1 20 9.5v8A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-10Z"></path></svg></span><span data-i18n="common.open">Abrir</span>
+            </button>
+            <button id="newDbBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Criar novo banco vazio" data-i18n-title="database.newFile">
+              <span class="db-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" focusable="false"><ellipse cx="12" cy="6" rx="7" ry="3"></ellipse><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"></path><path d="M12 9.5v4.5M9.8 11.8h4.4"></path></svg></span><span data-i18n="database.new">Novo</span>
+            </button>
+            <button id="saveDbBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Salvar o banco atual (.db)" data-i18n-title="database.saveFile" disabled>
+              <span class="db-menu-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img" focusable="false"><path d="M5 4h11l3 3v13H5z"></path><path d="M8 4v6h8V4M8 19h8"></path></svg></span><span data-i18n="common.save">Salvar</span>
+            </button>
+          </div>
+        </details>
+        <input type="file" id="dbFile" accept=".db,.sqlite,.sqlite3,.db3,.s3db,.sl3,.sqlite.db,application/x-sqlite3,application/octet-stream" style="display:none" />
+        <input type="file" id="sqlFileInput" accept=".sql,.txt,text/plain,application/sql" style="display:none" />
+
+      </div>
+    </div>
+
+    <div class="layout" id="mainLayout">
+      <button id="schemaToggleRail" class="ui-button ui-button-icon ui-button-sm schema-toggle-rail" type="button" title="Mostrar Schema (F4)" data-i18n-title="schema.show" aria-label="Mostrar Schema" data-i18n-aria-label="schema.show">☰</button>
+      <aside class="card schema-panel" id="schemaPanel">
+        <div class="schema-header">
+          <h2 data-i18n="schema.title">Schema</h2>
+          <button id="schemaCollapseBtn" class="ui-button ui-button-icon ui-button-sm schema-collapse-btn" type="button" title="Ocultar/mostrar Schema (F4)" data-i18n-title="schema.toggle" aria-label="Ocultar/mostrar Schema" data-i18n-aria-label="schema.toggle">
+            <span class="schema-menu-icon" aria-hidden="true">☰</span>
+          </button>
+        </div>
+        <div class="schema-search-wrap">
+          <input class="schema-search" id="schemaSearch" placeholder="Filtrar objetos do schema..." data-i18n-placeholder="schema.filter" aria-label="Filtrar objetos do schema" data-i18n-aria-label="schema.filter" />
+          <button id="clearSchemaSearchBtn" class="ui-button ui-button-icon ui-button-sm ui-inline-clear clear-schema-search-btn" title="Limpar filtro do schema" data-i18n-title="schema.clearFilter" aria-label="Limpar filtro do schema" data-i18n-aria-label="schema.clearFilter" type="button">×</button>
+        </div>
+        <div class="schema-type-filters" id="schemaTypeFilters" aria-label="Filtro por tipo de objeto do schema" data-i18n-aria-label="schema.filterTypes">
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeAllBtn">ALL</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeTableBtn">TABLE</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeViewBtn">VIEW</button>
+          <div class="schema-other-filter">
+            <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeOtherBtn" data-i18n="schema.other">Outros</button>
+            <div class="schema-other-menu" id="schemaOtherMenu"></div>
+          </div>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn schema-clear-filters-btn" id="clearSchemaFiltersBtn" data-i18n="schema.clearFilters">Limpar filtros</button>
+        </div>
+        <div class="schema-list" id="schemaList">
+          <div class="empty" data-i18n="schema.empty">Nenhum arquivo carregado.</div>
+        </div>
+        <details class="hint hint-disclosure">
+          <summary data-i18n="schema.quickGuide">Guia rápido</summary>
+          <div class="hint-content" data-i18n-html="schema.quickGuideHtml">
+            Use <span class="kbd">F4</span> para ocultar/mostrar este painel.<br>
+            Clique em uma tabela com <span class="kbd">Cmd/Ctrl</span> para inserir o nome.<br>
+            Clique em uma coluna para inserir <code>tabela.coluna</code>.<br><br>
+            Autocomplete restrito:<br>
+            <span class="kbd">from/join/update/into </span> sugere tabelas/views.<br>
+            <span class="kbd">tabela.</span>, <span class="kbd">view.</span> ou <span class="kbd">alias.</span> sugere somente suas colunas.<br>
+            <span class="kbd">Ctrl/Cmd+Espaço</span> força a abertura quando houver contexto válido.<br><br>
+            Execução:<br>
+            Consultas pesadas rodam, mantendo a interface responsiva. O botão Cancelar encerra o worker.<br><br>
+            Ordenação:<br>
+            Clique normal cria uma ordenação única.<br>
+            <span class="kbd">Shift+clique</span> no cabeçalho adiciona critério, como <code>ORDER BY a DESC, b ASC</code>.<br><br>
+            Colunas:<br>
+            Arraste a borda direita do cabeçalho para aumentar/diminuir. Duplo clique na borda restaura a largura automática.<br>
+            <span class="kbd">Ctrl/Cmd+clique</span> no cabeçalho congela da primeira coluna até a coluna clicada.<br>
+            Arraste o cabeçalho da coluna para mudar sua posição.
+          </div>
+        </details>
+      </aside>
+
+      <main class="card">
+        <div class="sql-tabs-header">
+          <div class="sql-tabs" id="sqlTabs" role="tablist" aria-label="Abas de instruções SQL" data-i18n-aria-label="tabs.label"></div>
+          <button id="renameActiveSqlTabBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action" type="button" title="Renomear aba" data-i18n-title="tabs.renameLabel" aria-label="Renomear aba" data-i18n-aria-label="tabs.renameLabel">
+            <span class="sql-tab-icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" focusable="false">
+                <path d="M3 11.5V13h1.5L11.8 5.7 10.3 4.2 3 11.5Z"></path>
+                <path d="M9.8 4.7 11.3 3.2C11.7 2.8 12.3 2.8 12.7 3.2L12.8 3.3C13.2 3.7 13.2 4.3 12.8 4.7L11.3 6.2"></path>
+              </svg>
+            </span>
+          </button>
+          <button id="closeActiveSqlTabBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action" type="button" title="Fechar aba" data-i18n-title="tabs.closeLabel" aria-label="Fechar aba" data-i18n-aria-label="tabs.closeLabel" disabled>
+            <span class="sql-tab-icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" focusable="false">
+                <path d="M4 4l8 8"></path>
+                <path d="M12 4l-8 8"></path>
+              </svg>
+            </span>
+          </button>
+          <details class="sql-tabs-overflow" id="sqlTabsOverflowMenu">
+            <summary class="ui-button ui-button-secondary ui-button-sm sql-tabs-overflow-trigger" aria-label="Mais abas" data-i18n-aria-label="tabs.more">
+              <span class="sql-tab-icon" aria-hidden="true">
+                <svg viewBox="0 0 16 16" focusable="false">
+                  <path d="M3 8h10"></path>
+                  <path d="M8 3l5 5-5 5"></path>
+                </svg>
+              </span>
+            </summary>
+            <div class="sql-tabs-overflow-menu" id="sqlTabsOverflowList"></div>
+          </details>
+          <button id="newSqlTabBtn" class="ui-button ui-button-icon ui-button-sm new-sql-tab-btn" type="button" title="Nova aba (Ctrl/Cmd+T)" data-i18n-title="tabs.newTitle" aria-label="Nova aba" data-i18n-aria-label="tabs.new">+</button>
+        </div>
+        <div id="sqlTabPanel" role="tabpanel" aria-labelledby="" tabindex="0">
+        <div class="editor-header">
+          <h2 id="sqlEditorTitle" data-i18n="editor.title">Instruções SQL</h2>
+          <div class="editor-actions" aria-label="Ações da consulta e exportação" data-i18n-aria-label="editor.actions">
+            <button id="runBtn" class="ui-button ui-button-primary ui-button-md" type="button" title="Executar instruções SQL (F5)" data-i18n-title="editor.runTitle" disabled>
+              <span class="shortcut-badge" aria-hidden="true">F5</span><span data-i18n="editor.run">EXECUTAR</span>
+            </button>
+            <button id="openSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Abrir arquivo .sql ou .txt no editor (Ctrl/Cmd+O)" data-i18n-title="editor.openSqlTitle">
+              <span data-i18n="editor.openSql">Abrir .sql</span>
+            </button>
+            <button id="saveSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Salvar a consulta atual em arquivo .sql (Ctrl/Cmd+S)" data-i18n-title="editor.saveSqlTitle">
+              <span data-i18n="editor.saveSql">Salvar .sql</span>
+            </button>
+            <button id="queryHistoryBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Histórico das últimas consultas executadas" data-i18n-title="history.buttonTitle">
+              <span class="history-symbol" aria-hidden="true">
+                <svg viewBox="0 0 24 24" role="img" focusable="false">
+                  <path d="M12 7v5l3 2"></path>
+                  <path d="M4.2 10.2A8 8 0 1 1 5.7 16"></path>
+                  <path d="M4 6v4h4"></path>
+                </svg>
+              </span><span data-i18n="editor.history">Histórico</span>
+            </button>
+
+            <details class="editor-more" id="editorMoreActions">
+              <summary class="ui-button ui-button-secondary ui-button-md" aria-label="Mais ações" data-i18n-aria-label="editor.moreActions" data-i18n="common.more">Mais</summary>
+              <div class="editor-more-menu">
+                <button id="openRunSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Abrir arquivo .sql ou .txt e executar em seguida (Ctrl/Cmd+Shift+O)" data-i18n-title="editor.openRunTitle">
+                  <span class="shortcut-badge" aria-hidden="true">⌘/Ctrl+Shift+O</span><span data-i18n="editor.openRun">Abrir e executar</span>
+                </button>
+                <button id="copySqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Copiar a consulta inteira para a área de transferência (F6)" data-i18n-title="editor.copyTitle">
+                  <span class="shortcut-badge" aria-hidden="true">F6</span><span data-i18n="common.copy">Copiar</span>
+                </button>
+                <button id="clearSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Limpar o editor de consulta (F7)" data-i18n-title="editor.clearTitle">
+                  <span class="shortcut-badge" aria-hidden="true">F7</span><span data-i18n="common.clear">Limpar</span>
+                </button>
+                <button id="closeAllTabsBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Fechar todas as abas SQL e abrir uma nova" data-i18n-title="editor.closeAllTitle">
+                  <span data-i18n="editor.closeAll">Fechar todas as abas</span>
+                </button>
+                <button id="clearPasteSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Limpar o editor e colar o conteúdo da área de transferência (F8)" data-i18n-title="editor.clearPasteTitle">
+                  <span class="shortcut-badge" aria-hidden="true">F8</span><span data-i18n="editor.clearPaste">Limpar e colar</span>
+                </button>
+                <button id="exportSchemaBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Exportar script da estrutura do banco (sem dados)" data-i18n-title="editor.exportSchemaTitle" disabled>
+                  <span data-i18n="editor.exportSchema">Exportar estrutura (.sql)</span>
+                </button>
+                <button id="favoritesBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Consultas favoritas" data-i18n-title="favorites.title">
+                  <span aria-hidden="true">★</span><span data-i18n="editor.favorites">Favoritas</span>
+                </button>
+                <button id="settingsTransferBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Configurações do editor" data-i18n-title="settings.buttonTitle">
+                  <span aria-hidden="true">⇄</span><span data-i18n="editor.settings">Config</span>
+                </button>
+                <button id="shortcutsHelpBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Ver atalhos principais" data-i18n-title="editor.shortcutsTitle">
+                  <span aria-hidden="true">⌨</span><span data-i18n="editor.shortcuts">Atalhos</span>
+                </button>
+                <button id="sqlMapBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Abrir Mapa SQL / DER interativo" data-i18n-title="editor.sqlMapTitle">
+                  <span class="sql-map-symbol" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" role="img" focusable="false">
+                      <rect x="3" y="4" width="7" height="5" rx="1.2"></rect>
+                      <rect x="14" y="4" width="7" height="5" rx="1.2"></rect>
+                      <rect x="8.5" y="15" width="7" height="5" rx="1.2"></rect>
+                      <path d="M10 6.5h4M17.5 9v3.5H12v2.5M6.5 9v3.5H12"></path>
+                    </svg>
+                  </span><span data-i18n="editor.sqlMap">Mapa SQL</span>
+                </button>
+              </div>
+            </details>
+          </div>
+        </div>
+        <div class="editor-wrap">
+          <textarea id="sqlEditor" spellcheck="false" aria-label="Editor de instruções SQL" data-i18n-aria-label="editor.ariaLabel" data-i18n-ignore>select *
+from
+where
+order by</textarea>
+          <div class="editor-resize-handle" id="editorResizeHandle" aria-hidden="true" title="Arraste para ajustar a altura do editor" data-i18n-title="editor.resizeTitle"></div>
+          <div class="editor-drop-overlay" id="editorDropOverlay">
+            <div class="editor-drop-card">
+              <div class="editor-drop-icon" aria-hidden="true">↧</div>
+              <div data-i18n="editor.drop">Solte o arquivo aqui</div>
+              <small data-i18n="editor.dropTypes">Arquivos .sql, .txt ou texto puro</small>
+            </div>
+          </div>
+          <div class="sql-find-panel" id="sqlFindPanel">
+            <div class="sql-find-row">
+              <input id="sqlFindInput" type="search" placeholder="Localizar..." data-i18n-placeholder="editor.findPlaceholder" aria-label="Localizar no editor SQL" data-i18n-aria-label="editor.find" autocomplete="off" spellcheck="false">
+              <span id="sqlFindCount" class="sql-find-count">0/0</span>
+              <button id="sqlFindPrevBtn" class="ui-button ui-button-icon ui-button-sm" type="button" title="Ocorrência anterior" data-i18n-title="editor.findPrevious">↑</button>
+              <button id="sqlFindNextBtn" class="ui-button ui-button-icon ui-button-sm" type="button" title="Próxima ocorrência" data-i18n-title="editor.findNext">↓</button>
+              <button id="sqlFindToggleReplaceBtn" class="ui-button ui-button-secondary ui-button-sm" type="button" title="Mostrar substituir" data-i18n-title="editor.replace" data-i18n="editor.replace">Substituir</button>
+              <button id="sqlFindCloseBtn" class="ui-button ui-button-icon ui-button-sm" type="button" title="Fechar" data-i18n-title="common.close">×</button>
+            </div>
+            <div class="sql-find-row sql-replace-row" id="sqlReplaceRow">
+              <input id="sqlReplaceInput" type="text" placeholder="Substituir por..." data-i18n-placeholder="editor.replacePlaceholder" aria-label="Substituir no editor SQL" data-i18n-aria-label="editor.replaceWith" autocomplete="off" spellcheck="false">
+              <button id="sqlReplaceOneBtn" class="ui-button ui-button-secondary ui-button-sm" type="button" data-i18n="editor.replace">Substituir</button>
+              <button id="sqlReplaceAllBtn" class="ui-button ui-button-secondary ui-button-sm" type="button" data-i18n="editor.replaceAll">Substituir tudo</button>
+            </div>
+          </div>
+          <div class="autocomplete" id="autocomplete" role="listbox" aria-label="SQL autocomplete suggestions" data-i18n-aria-label="editor.autocompleteLabel"></div>
+          <div class="query-history-popover" id="queryHistoryPopover" role="listbox" aria-label="Histórico rápido de consultas" data-i18n-aria-label="history.quickLabel"></div>
+        </div>
+        <div class="status-line">
+          <div id="status" class="status" role="status" aria-live="polite" data-i18n="status.loadDatabase">Carregue um arquivo .db para começar.</div>
+        </div>
+        <div class="sql-running-bar" id="sqlRunningBar" aria-live="polite" aria-busy="true">
+          <span class="sql-running-dot" aria-hidden="true"></span>
+          <span id="sqlRunningText" data-i18n="status.running">Executando consulta...</span>
+          <span class="sql-running-separator">·</span>
+          <span id="sqlBusyElapsed" data-i18n="status.elapsedInitial">Tempo decorrido: 0s</span>
+          <button id="cancelSqlBtn" class="ui-button ui-button-destructive ui-button-sm sql-cancel-btn" type="button" data-i18n="status.stop">Parar execução</button>
+        </div>
+        <div id="sqlErrorBox" class="sql-error-box">
+          <div class="sql-error-title" data-i18n="status.sqlError">Erro SQL</div>
+          <div id="sqlErrorText"></div>
+        </div>
+
+        <hr style="border:0;border-top:1px solid var(--border);margin:16px 0;">
+
+        <section class="result-section">
+          <div class="result-header">
+            <h2 data-i18n="results.title">Resultados</h2>
+            <div class="result-actions" aria-label="Exportação de resultados" data-i18n-aria-label="results.exportActions">
+              <button id="exportCsvBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Exportar resultado em CSV (F9)" data-i18n-title="results.exportCsvTitle" disabled>
+                <span class="shortcut-badge" aria-hidden="true">F9</span><span>CSV</span>
+              </button>
+              <button id="exportJsonBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Exportar resultado em JSON (F10)" data-i18n-title="results.exportJsonTitle" disabled>
+                <span class="shortcut-badge" aria-hidden="true">F10</span><span>JSON</span>
+              </button>
+            </div>
+          </div>
+          <div class="result-toolbar" id="topResultToolbar"></div>
+
+          <div class="table-wrap" id="tableWrap">
+            <div class="empty-state" aria-label="Sem resultados" data-i18n-aria-label="results.empty">
+              <div class="empty-state-card">
+                <p class="empty-state-title" data-i18n="results.empty">Nenhum resultado para exibir</p>
+                <p class="empty-state-description" data-i18n="results.emptyHelp">Abra um banco SQLite, escreva uma consulta e execute com F5.</p>
+              </div>
+            </div>
+          </div>
+          <div class="result-hscroll" id="resultHScroll" aria-hidden="true">
+            <span>↔</span>
+            <input id="resultHScrollRange" type="range" min="0" max="0" value="0" step="1" aria-label="Rolagem horizontal da tabela de resultados" data-i18n-aria-label="results.horizontalScroll">
+          </div>
+
+          <div class="result-toolbar" id="bottomResultToolbar" style="margin-top:12px;"></div>
+        </section>
+        </div>
+      </main>
+    </div>
+    <footer class="app-footer">
+      <span data-i18n-ignore>hSQLite Editor</span>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/helbertm/hSQLite-Editor" target="_blank" rel="noopener noreferrer" data-i18n-ignore>GitHub</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/helbertm/hSQLite-Editor/blob/master/LICENSE" target="_blank" rel="noopener noreferrer" data-i18n-ignore>MIT</a>
+    </footer>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+
+
+
+
+
+
+  <div class="modal-backdrop" id="firstRunModal">
+    <div class="modal first-run-modal" role="dialog" aria-modal="true" aria-labelledby="firstRunTitle" aria-describedby="firstRunDescription">
+      <h3 id="firstRunTitle" data-i18n="preferences.title">Preferências</h3>
+      <p id="firstRunDescription" data-i18n="preferences.description">Escolha como o editor deve se comportar ao abrir novamente.</p>
+
+      <div class="first-run-options">
+        <section class="first-run-option">
+          <div>
+            <strong data-i18n="language.label">Idioma</strong>
+            <span data-i18n="language.description">Escolha o idioma da interface.</span>
+          </div>
+          <select id="firstRunLocaleSelect" data-locale-select aria-label="Idioma" data-i18n-aria-label="language.label"></select>
+        </section>
+        <section class="first-run-option">
+          <div>
+            <strong data-i18n="session.save">Salvar sessão</strong>
+            <span data-i18n="session.description">Ao ativar esta opção, o hSQLite Editor salva localmente no seu navegador: abas abertas, consultas em edição, históricos, instruções favoritas e preferências. Em outro navegador/dispositivo esses dados não aparecem automaticamente. Para migrá-las, utilize Configurações → Exportar/Importar.</span>
+          </div>
+          <div class="segmented-choice" role="group" aria-label="Salvar sessão" data-i18n-aria-label="session.save">
+            <label>
+              <input type="radio" name="firstRunSession" value="true" checked>
+              <span data-i18n="common.yes">Sim</span>
+            </label>
+            <label>
+              <input type="radio" name="firstRunSession" value="false">
+              <span data-i18n="common.no">Não</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="first-run-option">
+          <div>
+            <strong data-i18n="preferences.theme">Tema</strong>
+            <span data-i18n="preferences.themeDescription">Escolha o tema inicial da interface.</span>
+          </div>
+          <div class="segmented-choice" role="group" aria-label="Tema inicial" data-i18n-aria-label="preferences.initialTheme">
+            <label>
+              <input type="radio" name="firstRunTheme" value="dark" checked>
+              <span data-i18n="preferences.dark">Escuro</span>
+            </label>
+            <label>
+              <input type="radio" name="firstRunTheme" value="light">
+              <span data-i18n="preferences.light">Claro</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="first-run-option">
+          <div>
+            <strong data-i18n="preferences.tabNames">Nomes das abas</strong>
+            <span data-i18n="preferences.tabNamesDescription">Escolha o universo de nomes para novas abas SQL.</span>
+          </div>
+          <div class="segmented-choice" role="group" aria-label="Preset de nomes das abas SQL" data-i18n-aria-label="preferences.tabPreset">
+            <select id="firstRunTabNamePresetSelect" aria-label="Preset de nomes das abas SQL" data-i18n-aria-label="preferences.tabPreset"></select>
+          </div>
+        </section>
+      </div>
+
+      <div class="modal-actions first-run-actions">
+        <button id="firstRunContinueBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-confirm="true" data-modal-initial="true" data-i18n="common.continue">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="closeTabConfirmModal">
+    <div class="modal close-tab-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="closeTabTitle" aria-describedby="closeTabConfirmText">
+      <h3 id="closeTabTitle" data-i18n="tabs.closeTitle">Fechar aba?</h3>
+      <p id="closeTabConfirmText" data-i18n="tabs.unsavedCloseGeneric">Há uma consulta em edição e o seu conteúdo será perdido ao fechar a aba.</p>
+      <div class="close-tab-preview" id="closeTabPreview"></div>
+      <div class="modal-actions modal-actions-split close-tab-confirm-actions">
+        <button id="confirmCloseTabBtn" class="ui-button ui-button-destructive ui-button-md close-tab-danger-btn" type="button" data-modal-confirm="true" data-i18n="tabs.close">Fechar aba</button>
+        <button id="cancelCloseTabBtn" class="ui-button ui-button-primary ui-button-md close-tab-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-backdrop sql-map-backdrop" id="sqlMapModal">
+    <div class="sql-map-modal" role="dialog" aria-modal="true" aria-labelledby="sqlMapTitle" aria-describedby="sqlMapDescription">
+      <div class="sql-map-header">
+        <div>
+          <h3 id="sqlMapTitle" data-i18n="editor.sqlMap">Mapa SQL</h3>
+          <p id="sqlMapDescription" data-i18n="sqlMap.description">DER interativo com geração de SELECT/JOINs usando FKs declaradas e relacionamentos virtuais da sessão.</p>
+        </div>
+        <div class="sql-map-header-actions">
+          <input id="sqlMapSearch" type="search" placeholder="Buscar tabela/campo..." data-i18n-placeholder="sqlMap.searchPlaceholder" aria-label="Buscar tabela ou campo no Mapa SQL" data-i18n-aria-label="sqlMap.search" spellcheck="false" autocomplete="off">
+          <button id="sqlMapAutoLayoutBtn" class="ui-button ui-button-secondary ui-button-sm" type="button" data-i18n="sqlMap.autoLayout">Reorganizar</button>
+          <button id="sqlMapExportPngBtn" class="ui-button ui-button-secondary ui-button-sm" type="button" data-i18n="sqlMap.exportPng">Exportar PNG</button>
+          <button id="sqlMapCloseBtn" class="ui-button ui-button-secondary ui-button-sm" type="button" data-modal-cancel="true" data-i18n="common.close">Fechar</button>
+        </div>
+      </div>
+      <div class="sql-map-body">
+        <div class="sql-map-canvas-wrap" id="sqlMapCanvasWrap">
+          <svg class="sql-map-links" id="sqlMapLinks"></svg>
+          <div id="sqlMapEdgeTooltip" class="sql-map-edge-tooltip" hidden>
+            <div class="sql-map-edge-tooltip-head">
+              <span id="sqlMapEdgeTooltipBadge" class="sql-map-edge-tooltip-badge" data-i18n="sqlMap.virtualRelationship">Virtual</span>
+              <span id="sqlMapEdgeTooltipStatus" class="sql-map-edge-tooltip-status" data-i18n="sqlMap.compatible">Compatível</span>
+            </div>
+            <p id="sqlMapEdgeTooltipPath" class="sql-map-edge-tooltip-path"></p>
+            <p id="sqlMapEdgeTooltipTypes" class="sql-map-edge-tooltip-meta"></p>
+            <p id="sqlMapEdgeTooltipReason" class="sql-map-edge-tooltip-meta" hidden></p>
+            <div class="sql-map-edge-tooltip-actions">
+              <button id="sqlMapEdgeTooltipRemoveBtn" class="ui-button ui-button-ghost ui-button-sm" type="button" hidden data-i18n="common.remove">Remover</button>
+            </div>
+          </div>
+          <div class="sql-map-canvas" id="sqlMapCanvas"></div>
+        </div>
+        <aside class="sql-map-side">
+          <div class="sql-map-side-section">
+            <h4 data-i18n="sqlMap.selection">Seleção</h4>
+            <div id="sqlMapSelectionInfo" class="sql-map-selection-info" role="status" aria-live="polite" aria-atomic="true" data-i18n="sqlMap.noSelection">Selecione uma tabela ou campos para gerar SQL.</div>
+          </div>
+          <div class="sql-map-side-section">
+            <h4 data-i18n="sqlMap.generatedSql">SQL gerado</h4>
+            <pre id="sqlMapSqlPreview" class="sql-map-sql-preview" data-i18n="sqlMap.generatedPlaceholder">-- selecione tabelas/campos no mapa</pre>
+          </div>
+          <div class="sql-map-actions">
+            <button id="sqlMapCopySqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" data-i18n="common.copy">Copiar</button>
+            <button id="sqlMapPasteSqlBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-i18n="sqlMap.paste">Colar no editor</button>
+            <button id="sqlMapClearPasteSqlBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-i18n="sqlMap.clearPaste">Limpar e colar no editor</button>
+            <button id="sqlMapClearSelectionBtn" class="ui-button ui-button-ghost ui-button-md" type="button" data-i18n="results.clearSelection">Limpar seleção</button>
+          </div>
+          <div class="sql-map-side-section">
+            <h4 data-i18n="sqlMap.virtualRelationships">Relacionamentos virtuais</h4>
+            <div id="sqlMapVirtualSummary" class="sql-map-virtual-summary" data-i18n="sqlMap.virtualHint">Arraste um campo sobre outro para criar relacionamentos virtuais. Passe o mouse sobre a linha pontilhada para ver os detalhes técnicos.</div>
+            <div class="sql-map-inline-actions">
+              <button id="sqlMapClearVirtualBtn" class="ui-button ui-button-ghost ui-button-sm" type="button" data-i18n="sqlMap.clearVirtual">Limpar relacionamentos virtuais</button>
+            </div>
+          </div>
+          <div class="hint" data-i18n-html="sqlMap.blockedHintHtml">
+            Tabelas sem caminho por relacionamento declarado ou virtual ficam bloqueadas quando há seleção ativa.
+            Relacionamentos declarados vêm de <code>pragma foreign_key_list</code>; os virtuais valem apenas para esta sessão.
+          </div>
+        </aside>
+      </div>
+      <div id="sqlMapAnnouncement" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop sql-map-confirm-backdrop" id="sqlMapRelationConfirmModal">
+    <div class="modal sql-map-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="sqlMapRelationConfirmTitle" aria-describedby="sqlMapRelationConfirmDescription">
+      <h3 id="sqlMapRelationConfirmTitle" data-i18n="sqlMap.confirmTitle">Confirmar relacionamento virtual</h3>
+      <p id="sqlMapRelationConfirmDescription" data-i18n="sqlMap.reviewDirection">Revise a direção, os tipos e os riscos antes de criar o relacionamento.</p>
+      <div class="sql-map-confirm-summary">
+        <div class="sql-map-confirm-row"><strong data-i18n="sqlMap.fkSource">Origem FK</strong><code id="sqlMapConfirmFrom"></code></div>
+        <div class="sql-map-confirm-row"><strong data-i18n="sqlMap.referencedTarget">Destino referenciado</strong><code id="sqlMapConfirmTo"></code></div>
+        <div class="sql-map-confirm-row"><strong data-i18n="sqlMap.declaredTypes">Tipos declarados</strong><code id="sqlMapConfirmTypes"></code></div>
+        <div class="sql-map-confirm-direction">
+          <span id="sqlMapConfirmDirectionText" data-i18n="sqlMap.directionExplanation">A direção define qual coluna funciona como FK/origem e qual coluna é a referenciada.</span>
+          <a id="sqlMapConfirmHelpLink" class="sql-map-help-link" href="#" target="_blank" rel="noopener noreferrer" aria-label="Entender impacto da direção da FK" title="Entender impacto da direção da FK" data-i18n-aria-label="sqlMap.directionHelp" data-i18n-title="sqlMap.directionHelp">?</a>
+        </div>
+      </div>
+      <div id="sqlMapConfirmWarning" class="sql-map-confirm-warning" style="display:none;">
+        <strong id="sqlMapConfirmWarningTitle" data-i18n="sqlMap.suspicious">Compatibilidade suspeita</strong>
+        <ul id="sqlMapConfirmWarningList"></ul>
+        <label id="sqlMapConfirmAcknowledgeWrap" class="sql-map-confirm-check" style="display:none;">
+          <input id="sqlMapConfirmAcknowledge" type="checkbox">
+          <span data-i18n="sqlMap.acknowledgeRisk">Entendo os riscos e ainda assim quero criar este relacionamento virtual.</span>
+        </label>
+        <div id="sqlMapConfirmDataBlock" class="sql-map-confirm-data" hidden>
+          <div id="sqlMapConfirmOrphanCounts" class="sql-map-confirm-orphan-counts"></div>
+          <pre id="sqlMapConfirmDiagnosticSql" class="sql-map-confirm-diagnostic-sql"></pre>
+          <div class="sql-map-confirm-data-actions">
+            <button id="sqlMapConfirmCopySqlBtn" class="ui-button ui-button-secondary ui-button-sm" type="button" data-i18n="sqlMap.copyDiagnostic">Copiar SQL</button>
+            <button id="sqlMapConfirmOpenSqlBtn" class="ui-button ui-button-secondary ui-button-sm" type="button" data-i18n="sqlMap.openDiagnostic">Abrir no editor</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions modal-actions-split">
+        <button id="sqlMapConfirmInvertBtn" class="ui-button ui-button-secondary ui-button-md" type="button" data-i18n="sqlMap.invertDirection">Inverter direção</button>
+        <button id="sqlMapConfirmCreateBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-confirm="true" data-i18n="sqlMap.create">Criar relacionamento</button>
+        <button id="sqlMapConfirmCancelBtn" class="ui-button ui-button-secondary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.cancel">Cancelar</button>
+      </div>
+      <div id="sqlMapConfirmAnnouncement" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </div>
+
+
+  <div class="modal-backdrop" id="tablePopulationModal">
+    <div class="modal table-population-modal" role="dialog" aria-modal="true" aria-labelledby="tablePopulationTitle" aria-describedby="tablePopulationDescription">
+      <div class="table-population-header">
+        <div>
+          <h3 id="tablePopulationTitle" data-i18n="population.title">Popular tabela para QA</h3>
+          <p id="tablePopulationDescription" data-i18n="population.description">Configure dados sintéticos para testes locais de qualidade, carga e desempenho.</p>
+        </div>
+        <code id="tablePopulationTableName"></code>
+      </div>
+
+      <div class="table-population-settings">
+        <label>
+          <span data-i18n="population.recordCount">Quantidade de registros</span>
+          <input id="tablePopulationRecordCount" type="number" min="1" max="1000000" step="1" value="100" inputmode="numeric" aria-label="Quantidade de registros" data-i18n-aria-label="population.recordCount">
+        </label>
+        <div class="table-population-memory-note" data-i18n-html="population.memoryNoteHtml">
+          Esta operação altera o banco atual em memória. Use <strong>Salvar .db</strong> para persistir o resultado no arquivo local.
+        </div>
+      </div>
+
+      <div id="tablePopulationColumnList" class="table-population-column-list" aria-label="Estratégias por coluna" data-i18n-aria-label="population.strategiesLabel"></div>
+
+      <label id="tablePopulationLargeConfirmWrap" class="table-population-large-confirm" hidden>
+        <input id="tablePopulationLargeConfirm" type="checkbox">
+        <span data-i18n="population.largeConfirm">Entendo que gerar mais de 100.000 registros pode consumir memória e levar vários minutos.</span>
+      </label>
+
+      <div id="tablePopulationFeedback" class="table-population-feedback" role="alert"></div>
+      <div id="tablePopulationProgress" class="table-population-progress" role="status" aria-live="polite"></div>
+
+      <div class="modal-actions table-population-actions">
+        <button id="tablePopulationCancelBtn" class="ui-button ui-button-secondary ui-button-md" type="button" data-modal-cancel="true" data-i18n="common.close">Fechar</button>
+        <button id="tablePopulationRunBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-confirm="true" data-i18n="population.run">Popular tabela</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-backdrop" id="queryHistoryModal">
+    <div class="modal query-history-modal" role="dialog" aria-modal="true" aria-labelledby="queryHistoryTitle" aria-describedby="queryHistoryDescription">
+      <h3 id="queryHistoryTitle" data-i18n="history.title">Histórico de consultas</h3>
+      <p id="queryHistoryDescription" data-i18n="history.description">Últimas consultas executadas neste navegador, incluindo sucessos e erros.</p>
+
+      <div class="query-history-search-wrap">
+        <input id="queryHistorySearch" type="search" placeholder="Pesquisar no histórico..." aria-label="Pesquisar no histórico de consultas" data-i18n-placeholder="history.search" data-i18n-aria-label="history.searchLabel" autocomplete="off" spellcheck="false">
+        <button id="clearQueryHistorySearchBtn" class="ui-button ui-button-icon ui-button-sm ui-inline-clear clear-query-history-search-btn" title="Limpar pesquisa" data-i18n-title="history.clearSearch" aria-label="Limpar pesquisa" data-i18n-aria-label="history.clearSearch" type="button">×</button>
+      </div>
+
+      <div id="queryHistoryList" class="query-history-list">
+        <div class="query-history-empty" data-i18n="history.empty">Nenhuma consulta no histórico.</div>
+      </div>
+
+      <div class="modal-actions modal-actions-split query-history-actions">
+        <button id="clearQueryHistoryBtn" class="ui-button ui-button-destructive ui-button-sm modal-action-destructive" type="button" data-i18n="history.clear">Limpar histórico</button>
+        <button id="closeQueryHistoryBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.close">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="recentDbModal">
+    <div class="modal query-history-modal" role="dialog" aria-modal="true" aria-labelledby="recentDbTitle">
+      <h3 id="recentDbTitle" data-i18n="recent.title">Bancos recentes</h3>
+      <div id="recentDbList" class="query-history-list">
+        <div class="query-history-empty" data-i18n="recent.empty">Nenhum banco recente.</div>
+      </div>
+      <div class="modal-actions modal-actions-split query-history-actions">
+        <button id="clearRecentDbBtn" class="ui-button ui-button-destructive ui-button-sm modal-action-destructive" type="button" data-i18n="recent.clear">Limpar recentes</button>
+        <button id="closeRecentDbBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.close">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="favoritesModal">
+    <div class="modal query-history-modal" role="dialog" aria-modal="true" aria-labelledby="favoritesTitle">
+      <h3 id="favoritesTitle" data-i18n="favorites.title">Consultas favoritas</h3>
+      <div id="favoritesList" class="query-history-list">
+        <div class="query-history-empty" data-i18n="favorites.empty">Nenhuma favorita salva.</div>
+      </div>
+      <div class="modal-actions modal-actions-split query-history-actions">
+        <button id="clearFavoritesBtn" class="ui-button ui-button-destructive ui-button-sm modal-action-destructive" type="button" data-i18n="favorites.clear">Limpar favoritas</button>
+        <button id="closeFavoritesBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-i18n="common.close">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="settingsTransferModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsTransferTitle">
+      <h3 id="settingsTransferTitle" data-i18n="settings.title">Configurações</h3>
+      <p data-i18n="settings.description">Ajuste preferências do editor e exporte/importe suas configurações.</p>
+      <div class="modal-options" style="margin-bottom:10px;">
+        <label>
+          <span style="flex:1;" data-i18n="language.label">Idioma</span>
+          <select id="settingsLocaleSelect" data-locale-select aria-label="Idioma" data-i18n-aria-label="language.label"></select>
+        </label>
+        <label>
+          <span style="flex:1;" data-i18n="preferences.tabNames">Nomes das abas</span>
+          <select id="tabNamePresetSelect" aria-label="Preset de nomes das abas SQL" data-i18n-aria-label="preferences.tabPreset"></select>
+        </label>
+      </div>
+      <p data-i18n="settings.transferDescription">Backup e transferência entre navegadores: para importar, selecione o arquivo JSON que foi exportado.</p>
+      <div id="lastSettingsExportInfo" class="small-muted" aria-live="polite" style="margin:-4px 0 10px;" data-i18n="settings.lastExportNever">Última exportação: nunca</div>
+      <div class="modal-options">
+        <label class="cfg-switch-row">
+          <span class="cfg-switch-label" data-i18n="language.label">Idioma</span>
+          <span class="cfg-seg-switch">
+            <input type="checkbox" class="cfg-scope" value="locale" checked>
+            <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
+        <label class="cfg-switch-row">
+          <span class="cfg-switch-label" data-i18n="editor.favorites">Favoritas</span>
+          <span class="cfg-seg-switch">
+            <input type="checkbox" class="cfg-scope" value="favorites" checked>
+            <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
+        <label class="cfg-switch-row">
+          <span class="cfg-switch-label" data-i18n="editor.history">Histórico</span>
+          <span class="cfg-seg-switch">
+            <input type="checkbox" class="cfg-scope" value="queryHistory" checked>
+            <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
+        <label class="cfg-switch-row">
+          <span class="cfg-switch-label" data-i18n="preferences.theme">Tema</span>
+          <span class="cfg-seg-switch">
+            <input type="checkbox" class="cfg-scope" value="theme" checked>
+            <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
+        <label class="cfg-switch-row">
+          <span class="cfg-switch-label" data-i18n="settings.sessionScope">Sessão e abas SQL</span>
+          <span class="cfg-seg-switch">
+            <input type="checkbox" class="cfg-scope" value="session" checked>
+            <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
+        <label class="cfg-switch-row">
+          <span class="cfg-switch-label" data-i18n="preferences.tabPreset">Preset nomes abas</span>
+          <span class="cfg-seg-switch">
+            <input type="checkbox" class="cfg-scope" value="tabPreset" checked>
+            <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
+      </div>
+      <div class="modal-actions settings-transfer-actions">
+        <div class="settings-transfer-actions-left">
+          <label id="importSettingsTrigger" class="ui-button ui-button-secondary ui-button-md file-label settings-import-label">
+            <span data-i18n="common.import">Importar</span>
+            <input type="file" id="importSettingsInput" accept="application/json,.json" />
+          </label>
+          <button id="closeSettingsTransferBtn" class="ui-button ui-button-secondary ui-button-md" type="button" data-modal-cancel="true" data-i18n="common.close">Fechar</button>
+        </div>
+        <div class="settings-transfer-actions-right">
+          <button id="exportSettingsBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-i18n="common.export">Exportar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="importSettingsConfirmModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="importSettingsConfirmTitle" aria-describedby="importSettingsConfirmDescription">
+      <h3 id="importSettingsConfirmTitle" data-i18n="settings.importConfirmTitle">Confirmar importação</h3>
+      <p id="importSettingsConfirmDescription" data-i18n="settings.importConfirmDescription">Ao importar, as configurações atuais selecionadas serão substituídas.</p>
+      <div class="modal-actions modal-actions-split">
+        <button id="confirmImportSettingsBtn" class="ui-button ui-button-destructive ui-button-md" type="button" data-modal-confirm="true" data-i18n="common.continue">Continuar</button>
+        <button id="cancelImportSettingsBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="shortcutsHelpModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="shortcutsHelpTitle">
+      <h3 id="shortcutsHelpTitle" data-i18n="shortcuts.title">Atalhos principais</h3>
+      <div class="hint-content">
+        <div><span class="kbd">F3</span> <span data-i18n="shortcuts.openDatabase">Abrir banco SQLite</span></div>
+        <div><span class="kbd">F4</span> <span data-i18n="shortcuts.toggleSchema">Mostrar/ocultar schema</span></div>
+        <div><span class="kbd">F5</span> <span data-i18n="shortcuts.runSql">Executar SQL</span></div>
+        <div><span class="kbd">Ctrl/Cmd+O</span> <span data-i18n="editor.openSql">Abrir .sql</span></div>
+        <div><span class="kbd">Ctrl/Cmd+S</span> <span data-i18n="editor.saveSql">Salvar .sql</span></div>
+        <div><span class="kbd">Ctrl/Cmd+T</span> <span data-i18n="shortcuts.newTab">Nova aba SQL</span></div>
+        <div><span class="kbd">Ctrl/Cmd+F</span> <span data-i18n="shortcuts.findEditor">Localizar no editor</span></div>
+        <div><span class="kbd">Ctrl/Cmd+H</span> <span data-i18n="shortcuts.quickHistory">Histórico rápido</span></div>
+      </div>
+      <div class="modal-actions">
+        <button id="closeShortcutsHelpBtn" class="ui-button ui-button-primary ui-button-md" data-modal-cancel="true" data-i18n="common.close">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="helpModal">
+    <div class="modal help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <h3 id="helpTitle" data-i18n="help.title">Ajuda Geral do hSQLite Editor</h3>
+      <p data-i18n="help.intro">Ferramenta para análise de bases SQLite com foco em suporte/TI e uso didático em aulas de banco de dados.</p>
+      <div class="help-grid" data-i18n-html="help.gridHtml">
+        <section>
+          <h4>1. Começando</h4>
+          <div>Use <span class="kbd">Escolher .db</span> para abrir uma base. Depois escreva SQL e execute com <span class="kbd">F5</span>.</div>
+          <div class="small-muted" style="margin-top:6px;">Extensões aceitas para bancos SQLite: <code>.db</code>, <code>.sqlite</code>, <code>.sqlite3</code>, <code>.db3</code>, <code>.s3db</code>, <code>.sl3</code>, <code>.sqlite.db</code>.</div>
+        </section>
+        <section>
+          <h4>2. Área SQL</h4>
+          <div>Abas independentes, histórico, favoritos, abrir/salvar arquivo SQL e atalhos para fluxo rápido.</div>
+        </section>
+        <section>
+          <h4>3. Schema</h4>
+          <div>Filtre objetos por nome e por tipo. Clique em colunas para inserir <code>objeto.coluna</code> no editor.</div>
+        </section>
+        <section>
+          <h4>4. Resultados</h4>
+          <div>Ordenação multi-coluna, paginação, seleção de linhas, exportação CSV/JSON e cabeçalho sempre visível.</div>
+        </section>
+        <section>
+          <h4>5. Persistência</h4>
+          <div>Sessão, histórico, favoritos e preferências ficam no navegador (localStorage/IndexedDB).</div>
+        </section>
+        <section>
+          <h4>6. Modo offline</h4>
+          <div>O arquivo oficial deve abrir direto no navegador como um HTML standalone, inclusive em <code>file://</code>.</div>
+        </section>
+        <section>
+          <h4>7. Reporte de bug</h4>
+          <div>Use o botão <span class="kbd" data-i18n="issues.report">Reportar Erros</span> para abrir o GitHub Issues do projeto.</div>
+        </section>
+      </div>
+      <div class="modal-actions">
+        <button id="closeHelpBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.close">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="releaseNotesModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="releaseNotesTitle" aria-describedby="releaseNotesSummary">
+      <h3 id="releaseNotesTitle" data-i18n="release.title">Novidades da versão</h3>
+      <p id="releaseNotesSummary" data-i18n="release.updated">Seu editor foi atualizado.</p>
+      <div id="releaseNotesContent" class="hint-content"></div>
+      <div class="modal-actions">
+        <button id="closeReleaseNotesBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.close">Fechar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="newDbModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="newDbTitle" aria-describedby="newDbDescription">
+      <h3 id="newDbTitle" data-i18n="database.newTitle">Novo Database</h3>
+      <p id="newDbDescription" data-i18n="database.newDescription">Cria um arquivo SQLite vazio (somente estrutura inicial do SQLite, sem tabelas).</p>
+      <div class="modal-options">
+        <label>
+          <span data-i18n="database.fileName">Nome do arquivo</span>
+          <input id="newDbFileNameInput" type="text" maxlength="120" placeholder="novo-banco.db" data-i18n-placeholder="database.newFilePlaceholder" aria-label="Nome do novo arquivo de banco de dados" data-i18n-aria-label="database.newFileLabel" autocomplete="off" spellcheck="false">
+        </label>
+      </div>
+      <div class="modal-actions">
+        <button id="cancelNewDbBtn" class="ui-button ui-button-secondary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.cancel">Cancelar</button>
+        <button id="confirmNewDbBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-confirm="true" data-i18n="database.create">Criar .db</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="exportModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="exportTitle" aria-describedby="exportDescription">
+      <h3 id="exportTitle" data-i18n="export.title">Exportar resultado</h3>
+      <p id="exportDescription" data-i18n="export.description">Escolha o escopo da exportação.</p>
+      <div class="modal-options" id="exportScopeOptions">
+        <label data-export-scope-label="all">
+          <input type="radio" name="exportScope" value="all" checked>
+          <span data-i18n="export.allFiltered">Tabela toda filtrada</span> (<span id="exportAllCount" data-i18n="common.none">nenhum</span>)
+        </label>
+        <label data-export-scope-label="selected">
+          <input type="radio" name="exportScope" value="selected">
+          <span data-i18n="export.selected">Registros selecionados</span> (<span id="exportSelectedCount" data-i18n="common.none">nenhum</span>)
+        </label>
+        <label data-export-scope-label="current">
+          <input type="radio" name="exportScope" value="current">
+          <span data-i18n="export.current">Registro corrente</span> (<span id="exportCurrentLabel" data-i18n="common.none">nenhum</span>)
+        </label>
+        <div id="exportEmptyMessage" class="export-empty-message" data-i18n="results.exportUnavailable">Não há registros disponíveis para serem exportados.</div>
+      </div>
+      <div class="modal-actions export-modal-actions">
+        <button id="cancelExportBtn" class="ui-button ui-button-secondary ui-button-md export-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.cancel">Cancelar</button>
+        <button id="confirmExportBtn" class="ui-button ui-button-primary ui-button-md export-primary-btn" type="button" data-modal-confirm="true" data-i18n="common.export">Exportar</button>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+  <div id="bootScreen" class="boot-screen" aria-live="assertive">
+    <div class="boot-card">
+      <div id="bootStateBadge" class="boot-status">
+        <span class="boot-status-icon" aria-hidden="true">•</span>
+        <span id="bootStateLabel" data-i18n="boot.initializing">Inicializando editor</span>
+      </div>
+      <h1 id="bootScreenTitle" data-i18n="boot.preparing">Preparando hSQLite Editor</h1>
+      <p id="bootScreenMessage" data-i18n="boot.loading">Carregando o ambiente local e verificando o runtime embutido.</p>
+      <div id="bootScreenActions" class="boot-actions">
+        <button id="bootRetryBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-i18n="boot.retry">Tentar novamente</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="offlineScreen" class="offline-screen" aria-live="polite">
+    <div class="offline-card">
+      <div class="offline-status" aria-hidden="true">
+        <span class="offline-status-icon">!</span>
+        <span data-i18n="offline.invalid">Artefato offline inválido</span>
+      </div>
+      <h1 data-i18n="offline.unavailable">Modo offline indisponível</h1>
+      <p data-i18n="offline.description">O artefato atual deveria funcionar totalmente offline. Se esta tela apareceu, o arquivo foi gerado de forma incompleta ou está corrompido.</p>
+      <div class="offline-guide" data-i18n-html="offline.guideHtml">
+        <strong>O esperado:</strong> ao abrir <code id="offlineHtmlFileName">hSQLite-Editor-v{{VERSION}}.html</code> pelo navegador, todos os recursos necessários já devem estar embutidos no arquivo.
+        <br><br>
+        <strong>O que verificar:</strong>
+        <ul>
+          <li>Gere novamente o artefato com o comando de build do repositório.</li>
+          <li>Substitua cópias antigas do HTML por uma versão nova do mesmo release.</li>
+          <li>Se o arquivo foi modificado manualmente, volte ao artefato gerado oficialmente.</li>
+        </ul>
+        Depois abra novamente o arquivo local.
+      </div>
+    </div>
+  </div>
+
+<script>
+<!-- INLINE_VENDOR_AND_APP -->
+</script>
+</body>
+</html>

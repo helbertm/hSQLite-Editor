@@ -1,0 +1,10 @@
+export const tablePopulationModal = document.getElementById("tablePopulationModal");
+export const tablePopulationTableName = document.getElementById("tablePopulationTableName");
+export const tablePopulationRecordCount = document.getElementById("tablePopulationRecordCount");
+export const tablePopulationColumnList = document.getElementById("tablePopulationColumnList");
+export const tablePopulationLargeConfirmWrap = document.getElementById("tablePopulationLargeConfirmWrap");
+export const tablePopulationLargeConfirm = document.getElementById("tablePopulationLargeConfirm");
+export const tablePopulationFeedback = document.getElementById("tablePopulationFeedback");
+export const tablePopulationProgress = document.getElementById("tablePopulationProgress");
+export const tablePopulationCancelBtn = document.getElementById("tablePopulationCancelBtn");
+export const tablePopulationRunBtn = document.getElementById("tablePopulationRunBtn");

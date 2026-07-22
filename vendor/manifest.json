@@ -1,0 +1,18 @@
+{
+  "assets": [
+    {
+      "path": "vendor/sql.js/1.14.1/sql-wasm.js",
+      "version": "1.14.1",
+      "upstream": "https://www.npmjs.com/package/sql.js/v/1.14.1?activeTab=code#dist/sql-wasm.js",
+      "license": "MIT",
+      "sha256": "77d6435bac506af0e3c59636dce9d22b1b14156348bc327f41a1577f3212360f"
+    },
+    {
+      "path": "vendor/sql.js/1.14.1/sql-wasm.wasm",
+      "version": "1.14.1",
+      "upstream": "https://www.npmjs.com/package/sql.js/v/1.14.1?activeTab=code#dist/sql-wasm.wasm",
+      "license": "MIT",
+      "sha256": "438c88f666dc054ce4e9395f80fe9db4218b1a3c379960454880f048a7898aed"
+    }
+  ]
+}

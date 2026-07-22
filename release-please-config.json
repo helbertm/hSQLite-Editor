@@ -4,7 +4,17 @@
     ".": {
       "release-type": "simple",
       "package-name": "hsqlite-editor",
-      "changelog-path": "CHANGELOG.md"
+      "include-component-in-tag": true,
+      "include-v-in-tag": true,
+      "draft": true,
+      "force-tag-creation": true,
+      "changelog-path": "CHANGELOG.md",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "packaging/linux/io.github.helbertm.hsqlite-editor.metainfo.xml"
+        }
+      ]
     }
   }
 }

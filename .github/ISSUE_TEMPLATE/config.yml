@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/helbertm/hSQLite-Editor/security/advisories/new
+    about: Report security vulnerabilities privately.
+  - name: Usage question or design discussion
+    url: https://github.com/helbertm/hSQLite-Editor/discussions
+    about: Ask for help or discuss broader ideas.

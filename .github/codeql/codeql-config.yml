@@ -1,0 +1,11 @@
+name: hSQLite Editor CodeQL config
+
+paths:
+  - src
+  - scripts
+
+paths-ignore:
+  - index.html
+  - dist
+  - vendor
+  - node_modules

@@ -1,0 +1,622 @@
+/* SQL Map ownership */
+.ui-button .history-symbol,
+    .ui-button .sql-map-symbol,
+    .ui-button > span[aria-hidden="true"]:not(.shortcut-badge):not(.release-badge) {
+width: 16px;
+      min-width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      flex-shrink: 0;
+}
+
+.sql-map-symbol {
+width: 17px;
+      height: 17px;
+      color: var(--mutedText);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+}
+
+.sql-map-symbol svg {
+width: 17px; height: 17px; display: block; fill: none; stroke: currentColor;
+      stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.ui-button:hover .sql-map-symbol {
+color: var(--foreground);
+}
+
+.sql-map-backdrop {
+z-index: 160; padding: 12px;
+}
+
+.sql-map-confirm-backdrop {
+z-index: 170;
+}
+
+.sql-map-modal {
+width: min(1500px, 100%);
+      height: min(92vh, 980px);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto 1fr;
+}
+
+.sql-map-header {
+display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      padding: 13px 14px; border-bottom: 1px solid var(--border); background: var(--panel);
+}
+
+.sql-map-header h3 {
+margin: 0; font-size: 18px;
+}
+
+.sql-map-header p {
+margin: 3px 0 0; color: var(--mutedText); font-size: 13px;
+}
+
+.sql-map-header-actions {
+display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end;
+}
+
+.sql-map-header-actions input {
+min-width: min(320px, 100%); background: var(--input-bg);
+}
+
+.sql-map-body {
+display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 380px); min-height: 0;
+}
+
+.sql-map-canvas-wrap {
+position: relative; overflow: auto; min-width: 0; min-height: 0;
+      background: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--foreground) 12%, transparent) 1px, transparent 0);
+      background-size: 22px 22px; background-color: var(--input-bg);
+}
+
+.sql-map-canvas {
+position: relative; min-width: 1600px; min-height: 1000px; width: 1600px; height: 1000px;
+}
+
+.sql-map-links {
+position: absolute; left: 0; top: 0; width: 1600px; height: 1000px;
+      pointer-events: auto; overflow: visible; z-index: 1;
+}
+
+.sql-map-link {
+stroke: color-mix(in srgb, var(--foreground) 38%, transparent);
+      stroke-width: 1.4;
+      fill: none;
+      pointer-events: visibleStroke;
+}
+
+.sql-map-link.used {
+stroke: var(--foreground); stroke-width: 2.3;
+}
+
+.sql-map-link.virtual {
+stroke: color-mix(in srgb, var(--info) 72%, transparent);
+      stroke-dasharray: 7 5;
+      cursor: pointer;
+}
+
+.sql-map-link.virtual.used {
+stroke: var(--info);
+      stroke-width: 2.5;
+}
+
+.sql-map-link.draft {
+stroke: color-mix(in srgb, var(--info) 76%, var(--foreground));
+      stroke-width: 2.2;
+      stroke-dasharray: 6 5;
+      pointer-events: none;
+}
+
+.sql-map-link.draft.allowed {
+stroke: var(--success);
+}
+
+.sql-map-link.draft.caution {
+stroke: var(--warning);
+}
+
+.sql-map-link.draft.blocked {
+stroke: var(--danger);
+}
+
+.sql-map-link:hover,
+    .sql-map-link:focus-visible {
+stroke-width: 3;
+      outline: none;
+}
+
+.sql-map-node {
+position: absolute; width: 250px; border: 1px solid var(--border); border-radius: 14px;
+      background: color-mix(in srgb, var(--panel) 95%, var(--input-bg)); color: var(--foreground);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18); z-index: 3; overflow: hidden; user-select: none;
+}
+
+.sql-map-node.selected {
+border-color: color-mix(in srgb, var(--info) 54%, var(--border)); box-shadow: 0 0 0 2px color-mix(in srgb, var(--info) 16%, transparent), 0 10px 24px rgba(0,0,0,0.20);
+}
+
+.sql-map-node.blocked {
+opacity: 0.42;
+}
+
+.sql-map-node.highlight {
+outline: 2px solid color-mix(in srgb, var(--info) 34%, transparent); outline-offset: 2px;
+}
+
+.sql-map-node-header {
+display: flex; align-items: center; gap: 8px; padding: 9px 10px;
+      border-bottom: 1px solid var(--border); background: color-mix(in srgb, var(--secondary) 54%, var(--panel)); cursor: grab;
+}
+
+.sql-map-node.dragging .sql-map-node-header {
+cursor: grabbing;
+}
+
+.sql-map-drag-icon {
+width: 15px; height: 15px; color: var(--mutedText); flex: 0 0 auto;
+}
+
+.sql-map-drag-icon svg {
+width: 15px; height: 15px; display: block; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.sql-map-table-name {
+font-weight: 850; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.sql-map-field-list {
+max-height: 245px; overflow: auto; padding: 6px 0;
+}
+
+.sql-map-field {
+display: flex; align-items: center; gap: 7px; padding: 5px 10px; font-size: 12px; color: var(--mutedText);
+}
+
+.sql-map-field:hover {
+background: var(--rowHover); color: var(--foreground);
+}
+
+.sql-map-field input, .sql-map-node-header input {
+width: auto; max-width: none; margin: 0; padding: 0; accent-color: var(--foreground);
+}
+
+.sql-map-field-name {
+color: var(--foreground); font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.sql-map-field-meta {
+margin-left: auto; color: var(--mutedText); font-size: 10px; white-space: nowrap;
+}
+
+.sql-map-field-row {
+display: flex;
+      align-items: center;
+      gap: 7px;
+      flex: 1 1 auto;
+      min-width: 0;
+      cursor: grab;
+      border-radius: 8px;
+      padding: 2px 4px;
+}
+
+.sql-map-field-row:active {
+cursor: grabbing;
+}
+
+.sql-map-field-row.drag-source {
+opacity: 0.28;
+      background: color-mix(in srgb, var(--info) 10%, transparent);
+      outline: 1px dashed color-mix(in srgb, var(--info) 34%, transparent);
+}
+
+.sql-map-field-row.keyboard-source {
+background: color-mix(in srgb, var(--info) 14%, transparent);
+      outline: 2px solid color-mix(in srgb, var(--info) 58%, transparent);
+      outline-offset: 1px;
+}
+
+.sql-map-field-row:focus-visible {
+outline: 2px solid var(--ring);
+      outline-offset: 2px;
+}
+
+.sql-map-field-row.drop-target {
+background: color-mix(in srgb, var(--success) 14%, transparent);
+      outline: 1px dashed color-mix(in srgb, var(--success) 52%, transparent);
+}
+
+.sql-map-field-row.drop-target-allowed {
+background: color-mix(in srgb, var(--success) 14%, transparent);
+      outline: 1px dashed color-mix(in srgb, var(--success) 52%, transparent);
+}
+
+.sql-map-field-row.drop-target-caution {
+background: color-mix(in srgb, var(--warning) 14%, transparent);
+      outline: 1px dashed color-mix(in srgb, var(--warning) 60%, transparent);
+}
+
+.sql-map-field-row.drop-target-blocked {
+background: color-mix(in srgb, var(--danger) 12%, transparent);
+      outline: 1px dashed color-mix(in srgb, var(--danger) 64%, transparent);
+}
+
+.sql-map-field-row.drop-target-pending {
+background: color-mix(in srgb, var(--mutedText) 10%, transparent);
+      outline: 1px dashed color-mix(in srgb, var(--mutedText) 42%, transparent);
+}
+
+.sql-map-field-row.natural-candidate:not(.drop-target) {
+background: color-mix(in srgb, var(--info) 8%, transparent);
+      outline: 1px dashed color-mix(in srgb, var(--info) 26%, transparent);
+}
+
+.sql-map-field-drop-state {
+display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 64px;
+      margin-left: auto;
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      color: var(--mutedText);
+}
+
+.sql-map-field-row.drop-target-allowed .sql-map-field-drop-state {
+border-color: color-mix(in srgb, var(--success) 48%, transparent);
+      color: var(--success);
+}
+
+.sql-map-field-row.drop-target-caution .sql-map-field-drop-state {
+border-color: color-mix(in srgb, var(--warning) 54%, transparent);
+      color: var(--warning);
+}
+
+.sql-map-field-row.drop-target-blocked .sql-map-field-drop-state {
+border-color: color-mix(in srgb, var(--danger) 54%, transparent);
+      color: var(--danger);
+}
+
+.sql-map-field-row.natural-candidate:not(.drop-target) .sql-map-field-drop-state {
+border-color: color-mix(in srgb, var(--info) 32%, transparent);
+      color: color-mix(in srgb, var(--info) 78%, var(--foreground));
+}
+
+.sql-map-field-drag-ghost {
+position: absolute;
+      z-index: 7;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      min-width: 160px;
+      max-width: 260px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid color-mix(in srgb, var(--info) 44%, var(--border));
+      background: color-mix(in srgb, var(--panel) 94%, black);
+      box-shadow: 0 18px 32px rgba(0,0,0,0.28);
+      pointer-events: none;
+      transform: rotate(-2deg);
+      opacity: 0.98;
+}
+
+.sql-map-field-drag-ghost.allowed {
+border-color: color-mix(in srgb, var(--success) 56%, var(--border));
+}
+
+.sql-map-field-drag-ghost.caution {
+border-color: color-mix(in srgb, var(--warning) 58%, var(--border));
+}
+
+.sql-map-field-drag-ghost.blocked {
+border-color: color-mix(in srgb, var(--danger) 60%, var(--border));
+}
+
+.sql-map-field-drag-ghost .sql-map-field-drop-state {
+margin-left: auto;
+}
+
+.sql-map-field-link-icon {
+width: 14px;
+      height: 14px;
+      color: var(--mutedText);
+      flex: 0 0 auto;
+}
+
+.sql-map-field-link-icon svg {
+width: 14px;
+      height: 14px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+}
+
+.sql-map-side {
+border-left: 1px solid var(--border); background: var(--panel); padding: 12px; overflow: auto; min-height: 0;
+}
+
+.sql-map-side-section {
+margin-bottom: 14px;
+}
+
+.sql-map-side h4 {
+margin: 0 0 7px; font-size: 13px; color: var(--foreground);
+}
+
+.sql-map-selection-info {
+color: var(--mutedText); font-size: 13px; line-height: 1.4;
+      border: 1px solid var(--border); border-radius: var(--radius); background: var(--input-bg); padding: 10px;
+}
+
+.sql-map-sql-preview {
+min-height: 190px; max-height: 340px; overflow: auto; margin: 0;
+      border: 1px solid var(--border); border-radius: var(--radius); background: var(--input-bg);
+      color: var(--foreground); padding: 10px; font-size: 12px; line-height: 1.45; white-space: pre-wrap;
+}
+
+.sql-map-actions {
+display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;
+}
+
+.sql-map-actions button {
+width: 100%;
+}
+
+.sql-map-virtual-summary {
+color: var(--mutedText);
+      font-size: 12px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      background: var(--input-bg);
+      padding: 10px;
+      line-height: 1.4;
+}
+
+.sql-map-virtual-summary strong {
+color: var(--foreground);
+}
+
+.sql-map-edge-tooltip {
+position: absolute;
+      z-index: 6;
+      width: min(320px, calc(100vw - 56px));
+      border: 1px solid color-mix(in srgb, var(--info) 26%, var(--border));
+      border-radius: 14px;
+      background: color-mix(in srgb, var(--panel) 97%, black);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.28);
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+}
+
+.sql-map-edge-tooltip[hidden] {
+display: none;
+}
+
+.sql-map-edge-tooltip-head {
+display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+}
+
+.sql-map-edge-tooltip-badge {
+display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--info);
+}
+
+.sql-map-edge-tooltip-badge::before {
+content: "";
+      width: 18px;
+      border-top: 2px dashed currentColor;
+      opacity: 0.9;
+}
+
+.sql-map-edge-tooltip-status {
+font-size: 11px;
+      color: var(--mutedText);
+}
+
+.sql-map-edge-tooltip-path {
+margin: 0;
+      color: var(--foreground);
+      font-size: 12px;
+      line-height: 1.45;
+      word-break: break-word;
+}
+
+.sql-map-edge-tooltip-meta {
+margin: 0;
+      color: var(--mutedText);
+      font-size: 11px;
+      line-height: 1.45;
+}
+
+.sql-map-edge-tooltip-actions {
+display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+}
+
+.sql-map-inline-actions {
+display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+}
+
+.sql-map-confirm-modal {
+width: min(560px, 100%);
+}
+
+.sql-map-confirm-summary,
+    .sql-map-confirm-warning {
+border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--input-bg);
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+}
+
+.sql-map-confirm-summary strong,
+    .sql-map-confirm-warning strong {
+color: var(--foreground);
+}
+
+.sql-map-confirm-row {
+display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--mutedText);
+}
+
+.sql-map-confirm-row code {
+color: var(--foreground);
+      word-break: break-word;
+}
+
+.sql-map-confirm-direction {
+display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--mutedText);
+}
+
+.sql-map-help-link {
+display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      background: color-mix(in srgb, var(--secondary) 68%, transparent);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+}
+
+.sql-map-confirm-warning {
+border-color: color-mix(in srgb, var(--warning) 48%, var(--border));
+      background: color-mix(in srgb, var(--warning) 10%, var(--input-bg));
+}
+
+.sql-map-confirm-warning ul {
+margin: 0;
+      padding-left: 18px;
+      color: var(--mutedText);
+      font-size: 12px;
+      line-height: 1.45;
+}
+
+.sql-map-confirm-check {
+display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--foreground);
+}
+
+.sql-map-confirm-check input {
+width: auto;
+      max-width: none;
+      margin-top: 2px;
+      accent-color: var(--warning);
+}
+
+.sql-map-confirm-data {
+display: grid;
+      gap: 10px;
+      margin-top: 4px;
+      padding-top: 10px;
+      border-top: 1px dashed color-mix(in srgb, var(--warning) 44%, var(--border));
+}
+
+.sql-map-confirm-orphan-counts {
+font-size: 12px;
+      line-height: 1.45;
+      color: var(--foreground);
+}
+
+.sql-map-confirm-diagnostic-sql {
+margin: 0;
+      min-height: 140px;
+      max-height: 240px;
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--panel) 76%, black);
+      color: var(--foreground);
+      padding: 10px;
+      font-size: 11px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+}
+
+.sql-map-confirm-data-actions {
+display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+}
+
+@media (max-width: 980px) {
+.sql-map-modal {
+height: 94vh;
+}
+
+.sql-map-body {
+grid-template-columns: 1fr; grid-template-rows: minmax(420px, 1fr) auto;
+}
+
+.sql-map-side {
+border-left: 0; border-top: 1px solid var(--border); max-height: 42vh;
+}
+}
+
+.ui-button .history-symbol,
+    .ui-button .sql-map-symbol {
+align-self: center;
+      position: relative;
+      top: 1px;
+}
+
+.ui-button .history-symbol svg,
+    .ui-button .sql-map-symbol svg {
+display: block;
+      flex-shrink: 0;
+}

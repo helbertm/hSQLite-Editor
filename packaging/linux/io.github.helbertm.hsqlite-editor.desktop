@@ -1,0 +1,18 @@
+[Desktop Entry]
+Version=1.5
+Type=Application
+Name=hSQLite Editor
+GenericName=SQLite database editor
+GenericName[pt_BR]=Editor de bancos de dados SQLite
+GenericName[es_ES]=Editor de bases de datos SQLite
+Comment=Inspect and edit SQLite databases locally in your browser
+Comment[pt_BR]=Inspecione e edite bancos de dados SQLite localmente no navegador
+Comment[es_ES]=Inspeccione y edite bases de datos SQLite localmente en el navegador
+Exec=hsqlite-editor
+TryExec=hsqlite-editor
+Icon=io.github.helbertm.hsqlite-editor
+Terminal=false
+Categories=Development;Database;
+Keywords=SQLite;SQL;database;editor;offline;
+Keywords[pt_BR]=SQLite;SQL;banco de dados;editor;offline;
+Keywords[es_ES]=SQLite;SQL;base de datos;editor;sin conexión;

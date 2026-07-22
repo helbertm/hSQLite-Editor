@@ -8,12 +8,21 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
+concurrency:
+  group: commit-convention-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   conventional-commits:
+    name: Commit Convention
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
 
@@ -55,21 +64,19 @@ jobs:
             fi
 
             if [[ ! "$SUBJECT" =~ $CONVENTIONAL_REGEX ]]; then
-              echo "❌ Commit inválido: $COMMIT"
-              echo "   Mensagem: $SUBJECT"
+              echo "Invalid commit: $COMMIT"
+              echo "Subject: $SUBJECT"
               FAIL=1
             fi
           done <<< "$COMMITS"
 
           if [[ "$FAIL" -ne 0 ]]; then
             echo ""
-            echo "Use o padrão Conventional Commits:"
-            echo "  feat: descrição"
-            echo "  fix: descrição"
-            echo "  chore: descrição"
-            echo "Exemplo amigável:"
-            echo "  fix: Correção do texto das novidades no release de versão"
+            echo "Use Conventional Commits:"
+            echo "  feat: description"
+            echo "  fix: description"
+            echo "  chore: description"
             exit 1
           fi
 
-          echo "✅ Todas as mensagens de commit estão válidas."
+          echo "All commit messages are valid."

@@ -16,10 +16,15 @@
 node_modules/
 dist/
 coverage/
+playwright-report/
+test-results/
+_site/
+/SHA256SUMS
 
-# Specialist artifacts
-/agent-state/*/reports/
+# Local agent continuity and specialist artifacts
+/agent-state/
 /burlemarx/
 /davinci/
 /angela-jobson/
 /linus-swartz/
+/.codex/

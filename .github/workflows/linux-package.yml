@@ -1,0 +1,41 @@
+name: Linux Package
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linux-package-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Linux Package
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install exact JavaScript dependencies
+        run: npm ci
+
+      - name: Install freedesktop.org validators
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends appstream desktop-file-utils xdg-utils
+
+      - name: Validate Linux package stage
+        run: npm run validate:linux:system
