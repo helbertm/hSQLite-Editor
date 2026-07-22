@@ -2,6 +2,12 @@
 
 ## [0.3.143](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.3.142...hsqlite-editor-v0.3.143) (2026-06-12)
 
+### Initial Open-Source Release
+
+* ship the local-first SQLite workspace as a standalone, offline-capable HTML application with no application backend
+* provide complete interface translations in English, Brazilian Portuguese, and Spanish, targeting WCAG 2.2 AA accessibility
+* establish reproducible, verifiable releases with pinned runtime component sources, an SPDX software bill of materials (SBOM), checksums, and build attestations
+
 ### Features
 
 * replace the query-history load label with an icon-only action button while preserving hover hint and accessibility labeling
