@@ -39,6 +39,7 @@ const requiredFiles = [
   "docs/releasing.md",
   "docs/validation.md",
   ".github/CODEOWNERS",
+  ".github/codeql/codeql-config.yml",
   ".github/workflows/browser-quality.yml",
   ".github/workflows/codeql.yml",
   ".github/workflows/commit-convention.yml",
@@ -352,10 +353,12 @@ requireRegex(
 
 const qualityWorkflow = readText(".github/workflows/quality.yml");
 requireRegex(qualityWorkflow, /pull_request:[\s\S]*?branches:\s*\[master\]/, "Quality workflow must validate pull requests targeting master.");
+requireRegex(qualityWorkflow, /^  validate:\n    name: Quality Gate$/m, "Quality workflow must emit the stable Quality Gate check name.");
 requireRegex(qualityWorkflow, /npm run validate:dependencies/, "Quality workflow must consume the blocking dependency gate.");
 requireRegex(qualityWorkflow, /npm run validate:full:ci/, "Quality workflow must run the clean-index full release gate.");
 
 const linuxPackageWorkflow = readText(".github/workflows/linux-package.yml");
+requireRegex(linuxPackageWorkflow, /^  validate:\n    name: Linux Package$/m, "Linux workflow must emit the stable Linux Package check name.");
 requireRegex(linuxPackageWorkflow, /runs-on:\s*ubuntu-24\.04/, "Linux package workflow must use a stable Ubuntu release.");
 requireRegex(linuxPackageWorkflow, /appstream desktop-file-utils xdg-utils/, "Linux package workflow must install the freedesktop.org validation tools.");
 requireRegex(linuxPackageWorkflow, /npm run validate:linux:system/, "Linux package workflow must consume the strict repo-owned Linux system-tool gate.");
@@ -380,10 +383,20 @@ const pagesWorkflow = readText(".github/workflows/pages.yml");
 requireRegex(pagesWorkflow, /npm run validate:dependencies/, "Pages workflow must consume the repo-owned dependency vulnerability gate.");
 
 const dependencyReviewWorkflow = readText(".github/workflows/dependency-review.yml");
+requireRegex(dependencyReviewWorkflow, /^  dependency-review:\n    name: Dependency Review$/m, "Dependency-review workflow must emit the stable Dependency Review check name.");
 requireRegex(dependencyReviewWorkflow, /npm run validate:dependencies/, "Dependency-review workflow must consume the repo-owned dependency vulnerability gate.");
 requireRegex(dependencyReviewWorkflow, /fail-on-severity:\s*high/, "Dependency-review workflow must block high-severity dependency changes.");
 
 const githubControlsPolicy = JSON.parse(readText("github-controls-policy.json"));
+const requiredHostedChecks = [
+  "Quality Gate",
+  "Linux Package",
+  "Browser Quality",
+  "CodeQL Analysis",
+  "CodeQL",
+  "Commit Convention",
+  "Dependency Review"
+];
 const attestationPredicates = githubControlsPolicy.release?.attestationPredicates || [];
 if (
   githubControlsPolicy.repository !== "helbertm/hSQLite-Editor"
@@ -391,6 +404,7 @@ if (
   || githubControlsPolicy.actions?.defaultWorkflowPermissions !== "read"
   || githubControlsPolicy.actions?.canCreateOrApprovePullRequests !== true
   || githubControlsPolicy.actions?.shaPinningRequired !== true
+  || JSON.stringify(githubControlsPolicy.requiredChecks) !== JSON.stringify(requiredHostedChecks)
   || githubControlsPolicy.release?.repositoryImmutabilityEnabled !== true
   || githubControlsPolicy.release?.immutable !== true
   || githubControlsPolicy.release?.subjectAssetTemplate !== "hSQLite-Editor-v{version}.html"

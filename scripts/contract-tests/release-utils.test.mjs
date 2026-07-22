@@ -5,6 +5,7 @@ import {
   assertStableReleaseVersion,
   escapeRegExp,
   extractInlineScripts,
+  extractMarkupText,
   getReleaseArtifactPath,
   getReleaseTag
 } from "../release-utils.mjs";
@@ -36,6 +37,22 @@ test("extractInlineScripts rejects external script sources", () => {
     () => extractInlineScripts('<script SRC="https://example.test/runtime.js"></script>'),
     /External script sources are not allowed/
   );
+});
+
+test("extractMarkupText preserves text while removing balanced nested markup and comments", () => {
+  assert.equal(
+    extractMarkupText('Before <!-- hidden --><span class="label">inside <strong>nested</strong></span> after'),
+    "Before inside nested after"
+  );
+  assert.equal(extractMarkupText("1 < 2 and 3 > 2<br>done"), "1 < 2 and 3 > 2done");
+});
+
+test("extractMarkupText rejects malformed or active markup", () => {
+  assert.throws(() => extractMarkupText("<span>unfinished"), /Unclosed <span> element/);
+  assert.throws(() => extractMarkupText("<strong>wrong</em>"), /Mismatched <\/em> end tag/);
+  assert.throws(() => extractMarkupText("safe<script>alert(1)</script>"), /Unsafe <script> content/);
+  assert.throws(() => extractMarkupText("safe<style>body { display: none }</style>"), /Unsafe <style> content/);
+  assert.throws(() => extractMarkupText("safe<!-- unfinished"), /Unclosed HTML comment/);
 });
 
 test("release tuple helpers reject unsafe package names and versions", () => {

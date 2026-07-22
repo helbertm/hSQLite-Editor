@@ -78,6 +78,74 @@ function readAttributeNames(source, startIndex, endIndex) {
   return names;
 }
 
+const HTML_VOID_ELEMENTS = new Set([
+  "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"
+]);
+
+function readTagName(source, startIndex, endIndex) {
+  let cursor = startIndex;
+  if (source[cursor] === "/") cursor += 1;
+  while (cursor < endIndex && /\s/.test(source[cursor])) cursor += 1;
+  const nameStart = cursor;
+  while (cursor < endIndex && /[A-Za-z0-9:-]/.test(source[cursor])) cursor += 1;
+  return source.slice(nameStart, cursor).toLowerCase();
+}
+
+export function extractMarkupText(markup) {
+  const source = String(markup);
+  const openElements = [];
+  let output = "";
+  let cursor = 0;
+
+  while (cursor < source.length) {
+    const tagStart = source.indexOf("<", cursor);
+    if (tagStart === -1) {
+      output += source.slice(cursor);
+      break;
+    }
+    output += source.slice(cursor, tagStart);
+
+    if (source.startsWith("<!--", tagStart)) {
+      const commentEnd = source.indexOf("-->", tagStart + 4);
+      if (commentEnd === -1) throw new Error("Unclosed HTML comment.");
+      cursor = commentEnd + 3;
+      continue;
+    }
+
+    const candidateStart = source[tagStart + 1] === "/" ? tagStart + 2 : tagStart + 1;
+    if (!/[A-Za-z]/.test(source[candidateStart] || "")) {
+      output += "<";
+      cursor = tagStart + 1;
+      continue;
+    }
+
+    const tagEnd = findTagEnd(source, candidateStart);
+    if (tagEnd === -1) throw new Error("Unclosed HTML tag.");
+    const tagName = readTagName(source, tagStart + 1, tagEnd);
+    if (!tagName) throw new Error("HTML tag has no valid name.");
+    if (tagName === "script" || tagName === "style") {
+      throw new Error(`Unsafe <${tagName}> content is not allowed.`);
+    }
+
+    const isClosing = source[tagStart + 1] === "/";
+    const isSelfClosing = source.slice(tagStart + 1, tagEnd).trimEnd().endsWith("/");
+    if (isClosing) {
+      if (openElements.at(-1) !== tagName) {
+        throw new Error(`Mismatched </${tagName}> end tag.`);
+      }
+      openElements.pop();
+    } else if (!isSelfClosing && !HTML_VOID_ELEMENTS.has(tagName)) {
+      openElements.push(tagName);
+    }
+    cursor = tagEnd + 1;
+  }
+
+  if (openElements.length) {
+    throw new Error(`Unclosed <${openElements.at(-1)}> element.`);
+  }
+  return output;
+}
+
 export function extractInlineScripts(markup) {
   const source = String(markup);
   const normalized = source.toLowerCase();

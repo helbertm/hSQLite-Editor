@@ -8,6 +8,15 @@ const workflowFiles = fs.readdirSync(workflowDir)
   .sort();
 const failures = [];
 
+const requiredJobNames = new Map([
+  ["quality.yml", ["validate", "Quality Gate"]],
+  ["linux-package.yml", ["validate", "Linux Package"]],
+  ["browser-quality.yml", ["locale-accessibility", "Browser Quality"]],
+  ["codeql.yml", ["analyze", "CodeQL Analysis"]],
+  ["commit-convention.yml", ["conventional-commits", "Commit Convention"]],
+  ["dependency-review.yml", ["dependency-review", "Dependency Review"]]
+]);
+
 for (const file of workflowFiles) {
   const source = fs.readFileSync(path.join(workflowDir, file), "utf8");
   for (const match of source.matchAll(/^\s*uses:\s*([^\s#]+)(?:\s*#.*)?$/gm)) {
@@ -18,9 +27,37 @@ for (const file of workflowFiles) {
   }
   if (!/^permissions:/m.test(source)) failures.push(`${file} has no explicit permissions block.`);
   if (!/timeout-minutes:/m.test(source)) failures.push(`${file} has no job timeout.`);
+
+  const requiredJob = requiredJobNames.get(file);
+  if (requiredJob) {
+    const [jobId, jobName] = requiredJob;
+    const jobContract = new RegExp(`^  ${jobId}:\\n    name: ${jobName}$`, "m");
+    if (!jobContract.test(source)) {
+      failures.push(`${file} must emit the stable required-check name ${jobName}.`);
+    }
+  }
+}
+
+const codeqlConfigPath = path.join(rootDir, ".github/codeql/codeql-config.yml");
+if (!fs.existsSync(codeqlConfigPath)) {
+  failures.push("Missing .github/codeql/codeql-config.yml owned-source scope.");
+} else {
+  const codeqlConfig = fs.readFileSync(codeqlConfigPath, "utf8");
+  if (!/paths:\n  - src\n  - scripts(?:\n|$)/.test(codeqlConfig)) {
+    failures.push("CodeQL config must positively scope analysis to src and scripts.");
+  }
+  for (const ignoredPath of ["index.html", "dist", "vendor", "node_modules"]) {
+    if (!new RegExp(`^  - ${ignoredPath.replace(".", "\\.")}$`, "m").test(codeqlConfig)) {
+      failures.push(`CodeQL config must ignore generated or third-party path ${ignoredPath}.`);
+    }
+  }
 }
 
 const releaseWorkflow = fs.readFileSync(path.join(workflowDir, "release-please.yml"), "utf8");
+const codeqlWorkflow = fs.readFileSync(path.join(workflowDir, "codeql.yml"), "utf8");
+if (!/config-file:\s*\.\/\.github\/codeql\/codeql-config\.yml/.test(codeqlWorkflow)) {
+  failures.push("codeql.yml must consume the repository-owned CodeQL configuration.");
+}
 const releasePleaseConfig = JSON.parse(fs.readFileSync(path.join(rootDir, "release-please-config.json"), "utf8"));
 const releasePackageConfig = releasePleaseConfig.packages?.["."] || {};
 if (/actions\/attest-build-provenance@/.test(releaseWorkflow)) {

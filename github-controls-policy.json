@@ -5,12 +5,13 @@
   "defaultBranch": "master",
   "pagesEnvironment": "github-pages",
   "requiredChecks": [
-    "Quality Gate / validate",
-    "Linux Package / validate",
-    "Browser Quality / locale-accessibility",
-    "CodeQL / Analyze JavaScript",
-    "Commit Convention Check / conventional-commits",
-    "Dependency Review / dependency-review"
+    "Quality Gate",
+    "Linux Package",
+    "Browser Quality",
+    "CodeQL Analysis",
+    "CodeQL",
+    "Commit Convention",
+    "Dependency Review"
   ],
   "actions": {
     "enabled": true,

@@ -27,7 +27,7 @@ usr/share/icons/hicolor/scalable/apps/io.github.helbertm.hsqlite-editor.svg
 
 Run `npm run validate:linux` before handing the stage tree to a distribution-specific package builder. The command validates a repeated deterministic stage, exact file set, permissions, checksum coverage, launcher argument isolation, desktop-entry invariants, XML structure, localized metadata, and path leakage. On Linux, it also consumes `desktop-file-validate` and `appstreamcli` when those system validators are installed.
 
-`npm run validate:linux:system` is the strict distribution-host gate. It fails when `appstreamcli`, `desktop-file-validate`, or `xdg-open` is absent and rejects pedantic AppStream findings. CI runs it on Ubuntu 24.04 through the `Linux Package / validate` check.
+`npm run validate:linux:system` is the strict distribution-host gate. It fails when `appstreamcli`, `desktop-file-validate`, or `xdg-open` is absent and rejects pedantic AppStream findings. CI runs it on Ubuntu 24.04 through the `Linux Package` check.
 
 The source metadata follows the freedesktop.org [Desktop Entry](https://specifications.freedesktop.org/desktop-entry/latest-single/), [Icon Theme](https://specifications.freedesktop.org/icon-theme/latest/), and [menu category](https://specifications.freedesktop.org/menu/latest/category-registry.html) specifications. AppStream claims remain intentionally narrower than the browser application's feature set so package catalogs do not imply native integrations that are absent.
 

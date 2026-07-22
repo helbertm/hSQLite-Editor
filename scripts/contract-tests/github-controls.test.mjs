@@ -14,7 +14,7 @@ const policy = {
   repository: "helbertm/hSQLite-Editor",
   defaultBranch: "master",
   pagesEnvironment: "github-pages",
-  requiredChecks: ["Quality Gate / validate", "Linux Package / validate"],
+  requiredChecks: ["Quality Gate", "Linux Package"],
   actions: {
     enabled: true,
     shaPinningRequired: true,

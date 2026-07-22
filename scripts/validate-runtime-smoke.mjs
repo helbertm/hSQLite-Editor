@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
 import { TextDecoder, TextEncoder } from "node:util";
+import { extractInlineScripts, extractMarkupText } from "./release-utils.mjs";
 
 var FAKE_DB_STATE_PREFIX = "__hsqlite_fake_db__:";
 var fakeDbStateSequence = 0;
@@ -357,7 +358,7 @@ function extractHtmlIds(markup) {
 }
 
 function extractBootAndAppSource(markup) {
-  const scripts = Array.from(markup.matchAll(/<script>([\s\S]*?)<\/script>/g)).map((match) => match[1] || "");
+  const scripts = extractInlineScripts(markup);
   const combinedScript = scripts.find((source) => source.includes("window.__HSQLITE_BOOT__ = "));
   if (!combinedScript) {
     throw new Error("Runtime smoke could not find embedded boot script.");
@@ -3552,7 +3553,7 @@ function hydrateInnerHtmlChildren(parent, html, ownerDocument, runtime) {
 
   for (const match of buttonMatches) {
     const attrs = match[1] || "";
-    const text = String(match[2] || "").replace(/<[^>]+>/g, "").trim();
+    const text = extractMarkupText(match[2] || "").trim();
     const button = createFakeElement("button", ownerDocument, runtime);
     button.textContent = text;
 

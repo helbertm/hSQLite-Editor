@@ -27,6 +27,7 @@ const requiredTrackedPaths = [
   ".editorconfig",
   ".gitattributes",
   ".github/CODEOWNERS",
+  ".github/codeql/codeql-config.yml",
   ".github/dependabot.yml",
   ".github/workflows/browser-quality.yml",
   ".github/workflows/codeql.yml",
