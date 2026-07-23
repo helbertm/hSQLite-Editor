@@ -34,7 +34,7 @@
   <url type="bugtracker">https://github.com/helbertm/hSQLite-Editor/issues</url>
   <url type="vcs-browser">https://github.com/helbertm/hSQLite-Editor</url>
   <releases>
-    <release version="0.3.143" date="2026-06-12" type="stable" /> <!-- x-release-please-version -->
+    <release version="0.4.0" date="2026-06-12" type="stable" /> <!-- x-release-please-version -->
   </releases>
   <content_rating type="oars-1.1" />
 </component>
