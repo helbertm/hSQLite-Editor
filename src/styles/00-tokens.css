@@ -6,7 +6,7 @@
       --card-foreground: #e6edf3;
       --popover: #1a2028;
       --popover-foreground: #e6edf3;
-      --primary: #2f81f7;
+      --primary: #1f6feb;
       --primary-foreground: #ffffff;
       --secondary: #242d38;
       --secondary-foreground: #e6edf3;
@@ -54,8 +54,8 @@ html[data-theme="light"] {
       --card-foreground: #2a313a;
       --popover: #eef1f4;
       --popover-foreground: #2a313a;
-      --primary: #2f6feb;
-      --primary-foreground: #f8fbff;
+      --primary: #0969da;
+      --primary-foreground: #ffffff;
       --secondary: #e7ebf0;
       --secondary-foreground: #2a313a;
       --muted: #e2e7ed;

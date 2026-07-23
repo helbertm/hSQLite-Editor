@@ -15,7 +15,7 @@
       --card-foreground: #e6edf3;
       --popover: #1a2028;
       --popover-foreground: #e6edf3;
-      --primary: #2f81f7;
+      --primary: #1f6feb;
       --primary-foreground: #ffffff;
       --secondary: #242d38;
       --secondary-foreground: #e6edf3;
@@ -63,8 +63,8 @@ html[data-theme="light"] {
       --card-foreground: #2a313a;
       --popover: #eef1f4;
       --popover-foreground: #2a313a;
-      --primary: #2f6feb;
-      --primary-foreground: #f8fbff;
+      --primary: #0969da;
+      --primary-foreground: #ffffff;
       --secondary: #e7ebf0;
       --secondary-foreground: #2a313a;
       --muted: #e2e7ed;
@@ -5922,11 +5922,14 @@ order by</textarea>
           <div>O arquivo oficial deve abrir direto no navegador como um HTML standalone, inclusive em <code>file://</code>.</div>
         </section>
         <section>
-          <h4>7. Reporte de bug</h4>
-          <div>Use o botão <span class="kbd" data-i18n="issues.report">Reportar Erros</span> para abrir o GitHub Issues do projeto.</div>
+          <h4>7. Problemas e sugestões</h4>
+          <div>Use Reportar erro para defeitos reproduzíveis. Sugerir melhoria abre o formulário específico Feature request do GitHub.</div>
         </section>
       </div>
-      <div class="modal-actions">
+      <div class="modal-actions modal-actions-split">
+        <a id="suggestImprovementLink" class="ui-button ui-button-secondary ui-button-md" href="https://github.com/helbertm/hSQLite-Editor/issues/new?template=feature.yml" target="_blank" rel="noopener noreferrer" title="Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba" aria-label="Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba" data-i18n-title="issues.suggestTooltip" data-i18n-aria-label="issues.suggestTooltip">
+          <span data-i18n="issues.suggest">Sugerir melhoria</span>
+        </a>
         <button id="closeHelpBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.close">Fechar</button>
       </div>
     </div>
@@ -30135,7 +30138,7 @@ window.__HSQLITE_BOOT__ = {
     ["shortcuts.quickHistory", "Quick history", "Hist\xF3rico r\xE1pido", "Historial r\xE1pido"],
     ["help.title", "hSQLite Editor help", "Ajuda do hSQLite Editor", "Ayuda de hSQLite Editor"],
     ["help.intro", "A local-first SQLite analysis tool for support, teaching, and technical investigation.", "Uma ferramenta local-first para an\xE1lise de SQLite em suporte, ensino e investiga\xE7\xE3o t\xE9cnica.", "Una herramienta local-first para analizar SQLite en soporte, docencia e investigaci\xF3n t\xE9cnica."],
-    ["help.gridHtml", '<section><h4>1. Getting started</h4><div>Open a SQLite file, write SQL, and press <span class="kbd">F5</span>.</div></section><section><h4>2. SQL workspace</h4><div>Use independent tabs, history, favorites, SQL files, and keyboard shortcuts.</div></section><section><h4>3. Schema</h4><div>Filter objects by name and type. Select columns to insert qualified identifiers.</div></section><section><h4>4. Results</h4><div>Sort, paginate, select, and export rows as CSV or JSON.</div></section><section><h4>5. Local data and backups</h4><div>Session data, history, favorites, and preferences are stored only in the current browser profile. Export them periodically from Settings to prevent loss. Import that JSON backup to continue in another browser. Clearing site data, using a private window, or changing browser profiles can make local data unavailable. Backups may contain SQL text, identifiers, history, favorites, and open-tab content; review them before sharing.</div></section><section><h4>6. Offline mode</h4><div>The official standalone HTML works directly from <code>file://</code>.</div></section><section><h4>7. Issues</h4><div>Use Report a bug to open the project issue tracker.</div></section>', '<section><h4>1. Primeiros passos</h4><div>Abra um arquivo SQLite, escreva SQL e pressione <span class="kbd">F5</span>.</div></section><section><h4>2. \xC1rea SQL</h4><div>Use abas independentes, hist\xF3rico, favoritas, arquivos SQL e atalhos de teclado.</div></section><section><h4>3. Schema</h4><div>Filtre objetos por nome e tipo. Selecione colunas para inserir identificadores qualificados.</div></section><section><h4>4. Resultados</h4><div>Ordene, pagine, selecione e exporte registros como CSV ou JSON.</div></section><section><h4>5. Dados locais e backups</h4><div>Dados da sess\xE3o, hist\xF3rico, favoritas e prefer\xEAncias ficam armazenados apenas no perfil atual deste navegador. Exporte-os periodicamente em Configura\xE7\xF5es para evitar perdas. Importe esse backup JSON para continuar em outro navegador. Limpar os dados do site, usar uma janela privativa ou mudar de perfil pode tornar os dados locais indispon\xEDveis. Backups podem conter textos SQL, identificadores, hist\xF3rico, favoritas e conte\xFAdo das abas abertas; revise-os antes de compartilhar.</div></section><section><h4>6. Modo offline</h4><div>O HTML standalone oficial funciona diretamente em <code>file://</code>.</div></section><section><h4>7. Problemas</h4><div>Use Reportar erro para abrir o rastreador de issues do projeto.</div></section>', '<section><h4>1. Primeros pasos</h4><div>Abra un archivo SQLite, escriba SQL y pulse <span class="kbd">F5</span>.</div></section><section><h4>2. \xC1rea SQL</h4><div>Use pesta\xF1as independientes, historial, favoritas, archivos SQL y atajos de teclado.</div></section><section><h4>3. Esquema</h4><div>Filtre objetos por nombre y tipo. Seleccione columnas para insertar identificadores cualificados.</div></section><section><h4>4. Resultados</h4><div>Ordene, pagine, seleccione y exporte filas como CSV o JSON.</div></section><section><h4>5. Datos locales y copias de seguridad</h4><div>Los datos de la sesi\xF3n, el historial, las favoritas y las preferencias se almacenan solo en el perfil actual de este navegador. Exp\xF3rtelos peri\xF3dicamente desde Configuraci\xF3n para evitar p\xE9rdidas. Importe esa copia JSON para continuar en otro navegador. Borrar los datos del sitio, usar una ventana privada o cambiar de perfil puede hacer que los datos locales no est\xE9n disponibles. Las copias pueden contener texto SQL, identificadores, historial, favoritas y contenido de las pesta\xF1as abiertas; rev\xEDselas antes de compartirlas.</div></section><section><h4>6. Modo sin conexi\xF3n</h4><div>El HTML aut\xF3nomo oficial funciona directamente desde <code>file://</code>.</div></section><section><h4>7. Problemas</h4><div>Use Informar de un error para abrir el gestor de incidencias del proyecto.</div></section>'],
+    ["help.gridHtml", '<section><h4>1. Getting started</h4><div>Open a SQLite file, write SQL, and press <span class="kbd">F5</span>.</div></section><section><h4>2. SQL workspace</h4><div>Use independent tabs, history, favorites, SQL files, and keyboard shortcuts.</div></section><section><h4>3. Schema</h4><div>Filter objects by name and type. Select columns to insert qualified identifiers.</div></section><section><h4>4. Results</h4><div>Sort, paginate, select, and export rows as CSV or JSON.</div></section><section><h4>5. Local data and backups</h4><div>Session data, history, favorites, and preferences are stored only in the current browser profile. Export them periodically from Settings to prevent loss. Import that JSON backup to continue in another browser. Clearing site data, using a private window, or changing browser profiles can make local data unavailable. Backups may contain SQL text, identifiers, history, favorites, and open-tab content; review them before sharing.</div></section><section><h4>6. Offline mode</h4><div>The official standalone HTML works directly from <code>file://</code>.</div></section><section><h4>7. Issues and suggestions</h4><div>Use Report a bug for reproducible defects. Suggest improvement opens the scoped GitHub Feature request form.</div></section>', '<section><h4>1. Primeiros passos</h4><div>Abra um arquivo SQLite, escreva SQL e pressione <span class="kbd">F5</span>.</div></section><section><h4>2. \xC1rea SQL</h4><div>Use abas independentes, hist\xF3rico, favoritas, arquivos SQL e atalhos de teclado.</div></section><section><h4>3. Schema</h4><div>Filtre objetos por nome e tipo. Selecione colunas para inserir identificadores qualificados.</div></section><section><h4>4. Resultados</h4><div>Ordene, pagine, selecione e exporte registros como CSV ou JSON.</div></section><section><h4>5. Dados locais e backups</h4><div>Dados da sess\xE3o, hist\xF3rico, favoritas e prefer\xEAncias ficam armazenados apenas no perfil atual deste navegador. Exporte-os periodicamente em Configura\xE7\xF5es para evitar perdas. Importe esse backup JSON para continuar em outro navegador. Limpar os dados do site, usar uma janela privativa ou mudar de perfil pode tornar os dados locais indispon\xEDveis. Backups podem conter textos SQL, identificadores, hist\xF3rico, favoritas e conte\xFAdo das abas abertas; revise-os antes de compartilhar.</div></section><section><h4>6. Modo offline</h4><div>O HTML standalone oficial funciona diretamente em <code>file://</code>.</div></section><section><h4>7. Problemas e sugest\xF5es</h4><div>Use Reportar erro para defeitos reproduz\xEDveis. Sugerir melhoria abre o formul\xE1rio espec\xEDfico Feature request do GitHub.</div></section>', '<section><h4>1. Primeros pasos</h4><div>Abra un archivo SQLite, escriba SQL y pulse <span class="kbd">F5</span>.</div></section><section><h4>2. \xC1rea SQL</h4><div>Use pesta\xF1as independientes, historial, favoritas, archivos SQL y atajos de teclado.</div></section><section><h4>3. Esquema</h4><div>Filtre objetos por nombre y tipo. Seleccione columnas para insertar identificadores cualificados.</div></section><section><h4>4. Resultados</h4><div>Ordene, pagine, seleccione y exporte filas como CSV o JSON.</div></section><section><h4>5. Datos locales y copias de seguridad</h4><div>Los datos de la sesi\xF3n, el historial, las favoritas y las preferencias se almacenan solo en el perfil actual de este navegador. Exp\xF3rtelos peri\xF3dicamente desde Configuraci\xF3n para evitar p\xE9rdidas. Importe esa copia JSON para continuar en otro navegador. Borrar los datos del sitio, usar una ventana privada o cambiar de perfil puede hacer que los datos locales no est\xE9n disponibles. Las copias pueden contener texto SQL, identificadores, historial, favoritas y contenido de las pesta\xF1as abiertas; rev\xEDselas antes de compartirlas.</div></section><section><h4>6. Modo sin conexi\xF3n</h4><div>El HTML aut\xF3nomo oficial funciona directamente desde <code>file://</code>.</div></section><section><h4>7. Problemas y sugerencias</h4><div>Use Informar de un error para defectos reproducibles. Sugerir una mejora abre el formulario espec\xEDfico Feature request de GitHub.</div></section>'],
     ["offline.description", "This artifact is expected to work entirely offline. This screen means the file is incomplete or corrupted.", "Este artefato deve funcionar totalmente offline. Esta tela indica que o arquivo est\xE1 incompleto ou corrompido.", "Este artefacto debe funcionar totalmente sin conexi\xF3n. Esta pantalla indica que el archivo est\xE1 incompleto o da\xF1ado."],
     ["offline.guideHtml", "<strong>Expected:</strong> the standalone HTML contains every required resource.<br><br><strong>Verify:</strong><ul><li>Build the artifact again with the repository build command.</li><li>Replace old HTML copies with a fresh artifact from the same release.</li><li>If the file was modified manually, restore the official generated artifact.</li></ul>Then open the local file again.", "<strong>Esperado:</strong> o HTML standalone cont\xE9m todos os recursos necess\xE1rios.<br><br><strong>Verifique:</strong><ul><li>Gere o artefato novamente com o comando de build do reposit\xF3rio.</li><li>Substitua c\xF3pias antigas do HTML por um artefato novo do mesmo release.</li><li>Se o arquivo foi modificado manualmente, restaure o artefato oficial gerado.</li></ul>Depois abra o arquivo local novamente.", "<strong>Esperado:</strong> el HTML aut\xF3nomo contiene todos los recursos necesarios.<br><br><strong>Compruebe:</strong><ul><li>Genere de nuevo el artefacto con el comando de compilaci\xF3n del repositorio.</li><li>Sustituya las copias antiguas del HTML por un artefacto nuevo de la misma versi\xF3n.</li><li>Si el archivo se modific\xF3 manualmente, restaure el artefacto oficial generado.</li></ul>Despu\xE9s vuelva a abrir el archivo local."],
     ["tabs.renameLabel", "Rename tab", "Renomear aba", "Renombrar pesta\xF1a"],
@@ -30464,6 +30467,7 @@ window.__HSQLITE_BOOT__ = {
       "release.whatsNew": "What's new",
       "help.label": "Help",
       "issues.report": "Report a bug",
+      "issues.suggest": "Suggest improvement",
       "database.none": "No database loaded",
       "database.file": "Database file",
       "database.recent": "Recent",
@@ -30471,6 +30475,7 @@ window.__HSQLITE_BOOT__ = {
       "session.description": "When enabled, hSQLite Editor stores open tabs, draft queries, history, favorites, and preferences locally in this browser. Use Settings to export or import them on another browser or device.",
       "theme.toggle": "Switch light or dark theme",
       "issues.tooltip": "Report a bug in GitHub Issues",
+      "issues.suggestTooltip": "Suggest improvement: open the GitHub Feature request form in a new tab",
       "database.actions": "Database file actions",
       "database.openRecent": "Open recent databases",
       "database.openFile": "Choose a SQLite file",
@@ -30592,6 +30597,7 @@ window.__HSQLITE_BOOT__ = {
       "release.whatsNew": "Novidades",
       "help.label": "Ajuda",
       "issues.report": "Reportar erro",
+      "issues.suggest": "Sugerir melhoria",
       "database.none": "Nenhum banco carregado",
       "database.file": "Arquivo de dados",
       "database.recent": "Recentes",
@@ -30599,6 +30605,7 @@ window.__HSQLITE_BOOT__ = {
       "session.description": "Quando ativado, o hSQLite Editor armazena localmente neste navegador as abas abertas, consultas em edi\xE7\xE3o, hist\xF3rico, favoritas e prefer\xEAncias. Use Configura\xE7\xF5es para exportar ou importar esses dados em outro navegador ou dispositivo.",
       "theme.toggle": "Alternar tema claro ou escuro",
       "issues.tooltip": "Reportar um erro no GitHub Issues",
+      "issues.suggestTooltip": "Sugerir melhoria: abrir o formul\xE1rio Feature request do GitHub em uma nova aba",
       "database.actions": "A\xE7\xF5es do arquivo de banco de dados",
       "database.openRecent": "Abrir bancos recentes",
       "database.openFile": "Escolher um arquivo SQLite",
@@ -30720,6 +30727,7 @@ window.__HSQLITE_BOOT__ = {
       "release.whatsNew": "Novedades",
       "help.label": "Ayuda",
       "issues.report": "Informar de un error",
+      "issues.suggest": "Sugerir una mejora",
       "database.none": "No hay ninguna base de datos cargada",
       "database.file": "Archivo de datos",
       "database.recent": "Recientes",
@@ -30727,6 +30735,7 @@ window.__HSQLITE_BOOT__ = {
       "session.description": "Cuando est\xE1 activado, hSQLite Editor guarda localmente en este navegador las pesta\xF1as abiertas, consultas en edici\xF3n, historial, favoritas y preferencias. Usa Configuraci\xF3n para exportar o importar estos datos en otro navegador o dispositivo.",
       "theme.toggle": "Cambiar entre tema claro y oscuro",
       "issues.tooltip": "Informar de un error en GitHub Issues",
+      "issues.suggestTooltip": "Sugerir una mejora: abrir el formulario Feature request de GitHub en una pesta\xF1a nueva",
       "database.actions": "Acciones del archivo de base de datos",
       "database.openRecent": "Abrir bases de datos recientes",
       "database.openFile": "Elegir un archivo SQLite",
