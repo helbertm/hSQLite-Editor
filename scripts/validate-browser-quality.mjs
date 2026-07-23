@@ -13,6 +13,7 @@ const locales = [
     blockedAnnouncement: "Virtual relationships between columns in the same table are not supported.",
     populationTitle: "Populate table for QA", exportTitle: "Export result", historyTitle: "Query history",
     favoritesTitle: "Favorite queries", closeTabTitle: "Close tab?", renameTabPrefix: "Rename tab", closeTabPrefix: "Close tab", missingTableCause: "a table or view name was not found",
+    helpTitle: "hSQLite Editor help", suggestImprovement: "Suggest improvement: open the GitHub Feature request form in a new tab",
     helpPrefix: "https://learn.microsoft.com/en-us/", csvFilename: "sqlite_result.csv"
   },
   {
@@ -24,6 +25,7 @@ const locales = [
     blockedAnnouncement: "Relacionamentos virtuais entre colunas da mesma tabela não são suportados.",
     populationTitle: "Popular tabela para QA", exportTitle: "Exportar resultado", historyTitle: "Histórico de consultas",
     favoritesTitle: "Consultas favoritas", closeTabTitle: "Fechar aba?", renameTabPrefix: "Renomear aba", closeTabPrefix: "Fechar aba", missingTableCause: "uma tabela ou view não foi encontrada",
+    helpTitle: "Ajuda do hSQLite Editor", suggestImprovement: "Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba",
     helpPrefix: "https://learn.microsoft.com/pt-br/", csvFilename: "resultado_sqlite.csv"
   },
   {
@@ -35,6 +37,7 @@ const locales = [
     blockedAnnouncement: "No se admiten relaciones virtuales entre columnas de la misma tabla.",
     populationTitle: "Poblar tabla para QA", exportTitle: "Exportar resultado", historyTitle: "Historial de consultas",
     favoritesTitle: "Consultas favoritas", closeTabTitle: "¿Cerrar pestaña?", renameTabPrefix: "Renombrar pestaña", closeTabPrefix: "Cerrar pestaña", missingTableCause: "no se encontró una tabla o vista",
+    helpTitle: "Ayuda de hSQLite Editor", suggestImprovement: "Sugerir una mejora: abrir el formulario Feature request de GitHub en una pestaña nueva",
     helpPrefix: "https://learn.microsoft.com/es-es/", csvFilename: "resultado_sqlite.csv"
   }
 ];
@@ -148,6 +151,41 @@ try {
       assert(serious.length === 0, `${locale.tag}/${viewport.name}: ${serious.map(violation => (
         `${violation.id}: ${violation.nodes.map(node => node.target.join(" ")).join(" | ")}`
       )).join(", ")}`);
+
+      await page.locator("#helpBtn").click();
+      await page.locator("#helpModal").waitFor({ state: "visible" });
+      assert(await page.getByRole("dialog", { name: locale.helpTitle }).count() === 1, `${locale.tag}/${viewport.name}: Help dialog name is not localized.`);
+      const suggestImprovementLink = page.getByRole("link", { name: locale.suggestImprovement });
+      assert(await suggestImprovementLink.count() === 1, `${locale.tag}/${viewport.name}: Suggest improvement link is missing or ambiguously named.`);
+      assert(
+        await suggestImprovementLink.getAttribute("href") === "https://github.com/helbertm/hSQLite-Editor/issues/new?template=feature.yml",
+        `${locale.tag}/${viewport.name}: Suggest improvement does not target the scoped Feature request form.`
+      );
+      assert(await suggestImprovementLink.getAttribute("target") === "_blank", `${locale.tag}/${viewport.name}: Suggest improvement does not open in a new tab.`);
+      assert(await suggestImprovementLink.getAttribute("rel") === "noopener noreferrer", `${locale.tag}/${viewport.name}: Suggest improvement lacks safe new-tab isolation.`);
+
+      const helpAxe = await new AxeBuilder({ page })
+        .include("#helpModal")
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+        .analyze();
+      assert(helpAxe.violations.length === 0, `${locale.tag}/${viewport.name}: Help violations: ${helpAxe.violations.map(violation => (
+        `${violation.id}: ${violation.nodes.map(node => node.target.join(" ")).join(" | ")}`
+      )).join(", ")}`);
+
+      const helpViewport = page.viewportSize();
+      await page.setViewportSize({ width: 320, height: helpViewport.height });
+      await page.waitForTimeout(50);
+      const helpReflow = await page.evaluate(() => ({
+        pageOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+        modalOverflow: document.querySelector("#helpModal .modal")?.scrollWidth > document.querySelector("#helpModal .modal")?.clientWidth + 1
+      }));
+      assert(!helpReflow.pageOverflow, `${locale.tag}/${viewport.name}: Help causes horizontal page overflow at 320 CSS px.`);
+      assert(!helpReflow.modalOverflow, `${locale.tag}/${viewport.name}: Help content overflows its modal at 320 CSS px.`);
+      await page.setViewportSize(helpViewport);
+
+      await page.keyboard.press("Escape");
+      await page.locator("#helpModal").waitFor({ state: "hidden" });
+      assert(await page.locator("#helpBtn").evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: closing Help did not restore focus.`);
 
       await page.evaluate(async () => {
         const SqlJs = await initSqlJsIfNeeded();
@@ -397,6 +435,7 @@ try {
         viewport: viewport.name,
         shellViolations: axe.violations.length,
         shellSerious: serious.length,
+        helpViolations: helpAxe.violations.length,
         tabViolations: tabAxe.violations.length,
         sqlMapViolations: sqlMapAxe.violations.length,
         sqlMapSerious: sqlMapSerious.length
