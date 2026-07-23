@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.3.143...hsqlite-editor-v0.4.0) (2026-07-23)
+
+
+### Features
+
+* **help:** add feature request shortcut ([f246330](https://github.com/helbertm/hSQLite-Editor/commit/f246330286559528d397388b7d3696ce1275d303))
+* **schema:** keep quick guide open in empty state ([60d9d3c](https://github.com/helbertm/hSQLite-Editor/commit/60d9d3c3e0e71e2c1eb2d51b7f1f36a11c1feb0a))
+
+
+### Bug Fixes
+
+* **release:** support external attestation bundles ([9e0b2ef](https://github.com/helbertm/hSQLite-Editor/commit/9e0b2ef0f244c1904d5aff37073fb60b31ded928))
+
 ## [0.3.143](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.3.142...hsqlite-editor-v0.3.143) (2026-06-12)
 
 ### Initial Open-Source Release

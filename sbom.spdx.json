@@ -2,19 +2,19 @@
   "spdxVersion": "SPDX-2.3",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "name": "hSQLite Editor 0.3.143 SBOM",
-  "documentNamespace": "https://github.com/helbertm/hSQLite-Editor/releases/tag/hsqlite-editor-v0.3.143/sbom.spdx.json",
+  "name": "hSQLite Editor 0.4.0 SBOM",
+  "documentNamespace": "https://github.com/helbertm/hSQLite-Editor/releases/tag/hsqlite-editor-v0.4.0/sbom.spdx.json",
   "creationInfo": {
-    "created": "2026-06-12T00:00:00Z",
+    "created": "2026-07-23T00:00:00Z",
     "creators": [
-      "Tool: hSQLite Editor repo-owned SBOM generator@0.3.143"
+      "Tool: hSQLite Editor repo-owned SBOM generator@0.4.0"
     ]
   },
   "packages": [
     {
       "name": "hSQLite Editor",
       "SPDXID": "SPDXRef-Package-hSQLite-Editor",
-      "versionInfo": "0.3.143",
+      "versionInfo": "0.4.0",
       "downloadLocation": "https://github.com/helbertm/hSQLite-Editor",
       "filesAnalyzed": false,
       "primaryPackagePurpose": "APPLICATION",

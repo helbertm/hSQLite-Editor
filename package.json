@@ -3,7 +3,7 @@
   "description": "A local-first, offline-capable SQLite editor distributed as one standalone HTML file.",
   "private": true,
   "type": "module",
-  "version": "0.3.143",
+  "version": "0.4.0",
   "license": "MIT",
   "author": "hSQLite Editor contributors",
   "homepage": "https://helbertm.github.io/hSQLite-Editor/",
