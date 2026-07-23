@@ -298,6 +298,16 @@ async function assertGeneratedDatabaseReplacementFlows(runtime, context) {
 
 function assertAdvancedLocalizationFlows(runtime, context) {
   const observedHelpTitles = new Set();
+  const localizedBackupLabels = {
+    "en-US": "Local backup",
+    "pt-BR": "Backup local",
+    "es-ES": "Copia local"
+  };
+  const localizedHelpHeadings = {
+    "en-US": "Local data and backups",
+    "pt-BR": "Dados locais e backups",
+    "es-ES": "Datos locales y copias de seguridad"
+  };
   for (const locale of ["en-US", "pt-BR", "es-ES"]) {
     context.setLocale(locale, { persist: false });
     assert(runtime.document.documentElement.lang === locale, `Runtime smoke expected document language ${locale}.`);
@@ -308,6 +318,16 @@ function assertAdvancedLocalizationFlows(runtime, context) {
     const helpTitle = localizedProbe.textContent;
     assert(helpTitle === context.t("help.title"), `Runtime smoke expected explicit data-i18n rendering for ${locale}.`);
     observedHelpTitles.add(helpTitle);
+    assert(
+      context.t("schema.quickGuideHtml").includes(localizedBackupLabels[locale]) &&
+        context.t("schema.quickGuideHtml").includes("JSON"),
+      `Runtime smoke expected concise local-backup guidance in the Quick guide for ${locale}.`
+    );
+    assert(
+      context.t("help.gridHtml").includes(localizedHelpHeadings[locale]) &&
+        context.t("help.gridHtml").includes("JSON"),
+      `Runtime smoke expected detailed local-backup guidance in Help for ${locale}.`
+    );
     const textStrategies = context.getTablePopulationStrategyOptions({
       name: "notes",
       type: "TEXT",
