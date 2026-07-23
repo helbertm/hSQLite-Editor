@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='6' fill='%23111827'/%3E%3Cellipse cx='16' cy='11' rx='7' ry='3' fill='none' stroke='%23f9fafb' stroke-width='2'/%3E%3Cpath d='M9 11v10c0 1.7 3.1 3 7 3s7-1.3 7-3V11' fill='none' stroke='%23f9fafb' stroke-width='2'/%3E%3C/svg%3E" />
-  <title>hSQLite Editor v0.3.143</title>
+  <title>hSQLite Editor v0.4.0</title>
 
   <style>
 /* Tokens ownership */
@@ -5203,7 +5203,7 @@ margin: 8px 0 8px 18px;
   <div id="appRoot">
   <header class="app-header">
     <div class="brand-block">
-      <h1 data-i18n-ignore>hSQLite Editor <span class="version-pill" id="appVersionPill">v0.3.143</span></h1>
+      <h1 data-i18n-ignore>hSQLite Editor <span class="version-pill" id="appVersionPill">v0.4.0</span></h1>
       <div class="subtitle" data-i18n="app.subtitle">Para trabalhar e estudar</div>
     </div>
 
@@ -6014,7 +6014,7 @@ order by</textarea>
       <h1 data-i18n="offline.unavailable">Modo offline indisponível</h1>
       <p data-i18n="offline.description">O artefato atual deveria funcionar totalmente offline. Se esta tela apareceu, o arquivo foi gerado de forma incompleta ou está corrompido.</p>
       <div class="offline-guide" data-i18n-html="offline.guideHtml">
-        <strong>O esperado:</strong> ao abrir <code id="offlineHtmlFileName">hSQLite-Editor-v0.3.143.html</code> pelo navegador, todos os recursos necessários já devem estar embutidos no arquivo.
+        <strong>O esperado:</strong> ao abrir <code id="offlineHtmlFileName">hSQLite-Editor-v0.4.0.html</code> pelo navegador, todos os recursos necessários já devem estar embutidos no arquivo.
         <br><br>
         <strong>O que verificar:</strong>
         <ul>
@@ -27013,8 +27013,9 @@ else if (typeof exports === 'object'){
 
 window.__HSQLITE_BOOT__ = {
   "release": {
-    "version": "0.3.143",
+    "version": "0.4.0",
     "versions": [
+      "0.4.0",
       "0.3.143",
       "0.3.142",
       "0.3.141",
@@ -27162,6 +27163,11 @@ window.__HSQLITE_BOOT__ = {
       "0.2.0"
     ],
     "notesByVersion": {
+      "0.4.0": [
+        "**help:** add feature request shortcut ([f246330](https://github.com/helbertm/hSQLite-Editor/commit/f246330286559528d397388b7d3696ce1275d303))",
+        "**schema:** keep quick guide open in empty state ([60d9d3c](https://github.com/helbertm/hSQLite-Editor/commit/60d9d3c3e0e71e2c1eb2d51b7f1f36a11c1feb0a))",
+        "**release:** support external attestation bundles ([9e0b2ef](https://github.com/helbertm/hSQLite-Editor/commit/9e0b2ef0f244c1904d5aff37073fb60b31ded928))"
+      ],
       "0.3.143": [
         "ship the local-first SQLite workspace as a standalone, offline-capable HTML application with no application backend",
         "provide complete interface translations in English, Brazilian Portuguese, and Spanish, targeting WCAG 2.2 AA accessibility",
