@@ -878,6 +878,25 @@
       ]
     },
     {
+      "name": "snappyjs",
+      "SPDXID": "SPDXRef-Package-snappyjs-0.7.0",
+      "versionInfo": "0.7.0",
+      "downloadLocation": "https://registry.npmjs.org/snappyjs/-/snappyjs-0.7.0.tgz",
+      "filesAnalyzed": false,
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "primaryPackagePurpose": "LIBRARY",
+      "comment": "Development or release dependency from package-lock.json.",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:npm/snappyjs@0.7.0"
+        }
+      ]
+    },
+    {
       "name": "sql.js",
       "SPDXID": "SPDXRef-Package-sql.js-1.14.1",
       "versionInfo": "1.14.1",
@@ -1228,6 +1247,11 @@
     },
     {
       "spdxElementId": "SPDXRef-Package-playwright-core-1.61.1",
+      "relationshipType": "DEV_DEPENDENCY_OF",
+      "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-snappyjs-0.7.0",
       "relationshipType": "DEV_DEPENDENCY_OF",
       "relatedSpdxElement": "SPDXRef-Package-hSQLite-Editor"
     },

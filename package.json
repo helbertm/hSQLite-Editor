@@ -81,6 +81,7 @@
     "@playwright/test": "1.61.1",
     "acorn": "8.17.0",
     "esbuild": "0.28.1",
+    "snappyjs": "0.7.0",
     "sql.js": "1.14.1"
   }
 }

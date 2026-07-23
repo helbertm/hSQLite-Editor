@@ -4,11 +4,15 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import {
+  decodeAttestationBundle,
   evaluateGithubControls,
+  hydrateAttestationResponse,
+  isTrustedAttestationBundleUrl,
   renderPolicyTemplate,
   selectGithubToken,
   VERDICTS
 } from "../validate-github-controls.mjs";
+import SnappyJS from "snappyjs";
 
 const policy = {
   repository: "helbertm/hSQLite-Editor",
@@ -249,6 +253,112 @@ test("prefers GH_TOKEN without exposing or rewriting credential values", () => {
   assert.equal(selectGithubToken({ GH_TOKEN: "primary", GITHUB_TOKEN: "fallback" }), "primary");
   assert.equal(selectGithubToken({ GITHUB_TOKEN: "fallback" }), "fallback");
   assert.equal(selectGithubToken({}), "");
+});
+
+test("accepts only credential-free HTTPS attestation bundle URLs", () => {
+  assert.equal(
+    isTrustedAttestationBundleUrl("https://example.blob.core.windows.net/attestations/bundle.json.sn?sig=redacted"),
+    true
+  );
+  for (const unsafeUrl of [
+    "http://example.com/bundle.json",
+    "https://user:secret@example.com/bundle.json",
+    "file:///tmp/bundle.json",
+    "not-a-url"
+  ]) {
+    assert.equal(isTrustedAttestationBundleUrl(unsafeUrl), false);
+  }
+});
+
+test("decodes bounded Snappy attestation bundles from the current GitHub API", () => {
+  const bundle = attestation("https://slsa.dev/provenance/v1").bundle;
+  const compressed = SnappyJS.compress(Buffer.from(JSON.stringify(bundle)));
+  const decoded = decodeAttestationBundle(compressed, "application/x-snappy");
+  assert.deepEqual(decoded, bundle);
+  assert.throws(
+    () => decodeAttestationBundle(Buffer.alloc((1024 * 1024) + 1), "application/x-snappy"),
+    /size is outside the accepted range/
+  );
+});
+
+test("hydrates bundle-url-only attestations without changing policy evaluation", async () => {
+  const responses = passingResponses();
+  const bundleUrl = "https://example.blob.core.windows.net/attestations/bundle.json.sn?sig=redacted";
+  const provenance = attestation("https://slsa.dev/provenance/v1");
+  const hydrated = await hydrateAttestationResponse(
+    {
+      status: 200,
+      body: { attestations: [{ repository_id: 42, bundle_url: bundleUrl }] }
+    },
+    async url => {
+      assert.equal(url, bundleUrl);
+      return { status: 200, body: provenance.bundle };
+    }
+  );
+  responses.attestations.provenance = hydrated;
+  const result = evaluateGithubControls({
+    policy,
+    version,
+    responses,
+    manualConfirmations: { pagesAdminBypassDisabled: true }
+  });
+  assert.equal(result.exitCode, 0);
+});
+
+test("treats unavailable bundle URLs as transport failures", async () => {
+  const response = await hydrateAttestationResponse(
+    {
+      status: 200,
+      body: {
+        attestations: [{
+          repository_id: 42,
+          bundle_url: "https://example.blob.core.windows.net/attestations/missing.json.sn"
+        }]
+      }
+    },
+    async () => ({ status: 503, body: null })
+  );
+  assert.equal(response.transportError, true);
+  const responses = passingResponses();
+  responses.attestations.provenance = response;
+  const result = evaluateGithubControls({
+    policy,
+    version,
+    responses,
+    manualConfirmations: { pagesAdminBypassDisabled: true }
+  });
+  assert.equal(result.exitCode, 3);
+});
+
+test("keeps predicate and digest checks strict after bundle URL hydration", async () => {
+  for (const bundle of [
+    attestation("https://spdx.dev/Document/v2.3").bundle,
+    attestation("https://slsa.dev/provenance/v1", `sha256:${"d".repeat(64)}`).bundle
+  ]) {
+    const responses = passingResponses();
+    responses.attestations.provenance = await hydrateAttestationResponse(
+      {
+        status: 200,
+        body: {
+          attestations: [{
+            repository_id: 42,
+            bundle_url: "https://example.blob.core.windows.net/attestations/invalid.json.sn"
+          }]
+        }
+      },
+      async () => ({ status: 200, body: bundle })
+    );
+    const result = evaluateGithubControls({
+      policy,
+      version,
+      responses,
+      manualConfirmations: { pagesAdminBypassDisabled: true }
+    });
+    assert.equal(result.exitCode, 1);
+    assert.ok(result.findings.some(finding =>
+      finding.control === "provenance attestation" && finding.verdict === VERDICTS.FAIL
+    ));
+  }
 });
 
 test("release policy templates reject unsafe version input", () => {
