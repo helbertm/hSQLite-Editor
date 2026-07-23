@@ -200,7 +200,9 @@ async function runExecutionGridSuite(runtime, context) {
     "openExportModal",
     "isCurrentDbDirty"
   ]);
+  assertQuickGuideEmptyState(runtime);
   await openRuntimeDatabase(runtime, context);
+  assertQuickGuideAvailableAfterDatabaseLoad(runtime);
   assertSchemaFlows(runtime, context);
   await assertSqlExecutionMultiStatementFlows(runtime, context);
   await assertSqlExecutionMixedStatementFlows(runtime, context);
@@ -2124,6 +2126,41 @@ async function assertSqlExecutionMixedStatementFlows(runtime, context) {
   assert(
     runtime.elementsById.get("exportCsvBtn")?.disabled === false && runtime.elementsById.get("exportJsonBtn")?.disabled === false,
     "Runtime smoke expected export actions to stay enabled when mixed execution ends on a tabular SELECT result set."
+  );
+}
+
+function assertQuickGuideEmptyState(runtime) {
+  const quickGuide = runtime.elementsById.get("schemaQuickGuide");
+  const quickGuideSummary = runtime.elementsById.get("schemaQuickGuideSummary");
+
+  assert(
+    quickGuide?.open === true,
+    "Runtime smoke expected the Quick guide to initialize expanded without an active database or schema."
+  );
+
+  quickGuide.open = false;
+  const toggleAllowed = quickGuideSummary.dispatchEvent({
+    type: "click",
+    target: quickGuideSummary
+  });
+  assert(
+    toggleAllowed === false && quickGuide.open === true,
+    "Runtime smoke expected the Quick guide to remain expanded throughout the true empty state."
+  );
+}
+
+function assertQuickGuideAvailableAfterDatabaseLoad(runtime) {
+  const quickGuide = runtime.elementsById.get("schemaQuickGuide");
+  const quickGuideSummary = runtime.elementsById.get("schemaQuickGuideSummary");
+
+  quickGuide.open = false;
+  const toggleAllowed = quickGuideSummary.dispatchEvent({
+    type: "click",
+    target: quickGuideSummary
+  });
+  assert(
+    toggleAllowed === true && quickGuide.open === false,
+    "Runtime smoke expected the Quick guide disclosure to become user-controlled after a database loads."
   );
 }
 

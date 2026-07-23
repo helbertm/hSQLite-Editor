@@ -1,4 +1,4 @@
-import { clearSchemaFiltersBtn, clearSchemaSearchBtn, schemaList, schemaOtherMenu, schemaSearch, schemaTypeAllBtn, schemaTypeFilters, schemaTypeOtherBtn, schemaTypeTableBtn, schemaTypeViewBtn } from "../capabilities/01-dom-layout-schema.js";
+import { clearSchemaFiltersBtn, clearSchemaSearchBtn, schemaList, schemaOtherMenu, schemaQuickGuide, schemaQuickGuideSummary, schemaSearch, schemaTypeAllBtn, schemaTypeFilters, schemaTypeOtherBtn, schemaTypeTableBtn, schemaTypeViewBtn } from "../capabilities/01-dom-layout-schema.js";
 import { formatNumber, t } from "../capabilities/03-localization.js";
 import { sqlEscapeIdent } from "../core/07-sql-escaping.js";
 import { getActiveDatabase } from "../capabilities/07-database-runtime.js";
@@ -73,6 +73,16 @@ export function normalizeSchemaType(type) {
       if (type !== "table" && type !== "view") count++;
     }
     return count;
+  }
+
+  export function shouldKeepSchemaQuickGuideOpen() {
+    return !getActiveDatabase() && Object.keys(getSchemaObjects()).length === 0;
+  }
+
+  export function syncSchemaQuickGuide() {
+    if (schemaQuickGuide && shouldKeepSchemaQuickGuideOpen()) {
+      schemaQuickGuide.open = true;
+    }
   }
 
   export const schemaController = {
@@ -159,6 +169,7 @@ export function normalizeSchemaType(type) {
       }).join("");
     },
     render() {
+      syncSchemaQuickGuide();
       const filter = schemaSearch.value.trim().toLowerCase();
       const schemaFilterState = getSchemaFilterState();
       const entries = Object.entries(getSchemaObjects()).filter(([table, meta]) => {
@@ -232,6 +243,18 @@ export function normalizeSchemaType(type) {
   }
 
   export function bindSchemaUi() {
+    if (schemaQuickGuideSummary) {
+      schemaQuickGuideSummary.addEventListener("click", (event) => {
+        if (!shouldKeepSchemaQuickGuideOpen()) return;
+        event.preventDefault();
+        schemaQuickGuide.open = true;
+      });
+    }
+    if (schemaQuickGuide) {
+      schemaQuickGuide.addEventListener("toggle", () => {
+        syncSchemaQuickGuide();
+      });
+    }
     schemaSearch.addEventListener("input", () => {
       updateSchemaSearchClearButton();
       renderSchema();
@@ -321,4 +344,5 @@ export function normalizeSchemaType(type) {
     loadSchemaFiltersPreference();
     schemaController.renderTypeFilters();
     updateSchemaSearchClearButton();
+    syncSchemaQuickGuide();
   }
