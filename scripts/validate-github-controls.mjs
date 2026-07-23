@@ -2,10 +2,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { Buffer } from "node:buffer";
 import { pathToFileURL } from "node:url";
+import SnappyJS from "snappyjs";
 import { assertStableReleaseVersion } from "./release-utils.mjs";
 
 const rootDir = path.resolve(new URL("..", import.meta.url).pathname);
 const apiBaseUrl = "https://api.github.com";
+const maxCompressedBundleBytes = 1024 * 1024;
+const maxUncompressedBundleBytes = 5 * 1024 * 1024;
 const knownArguments = new Set(["--confirm-pages-admin-bypass-disabled", "--help"]);
 
 export const VERDICTS = Object.freeze({
@@ -43,6 +46,35 @@ function attestationStatement(entry) {
   } catch {
     return null;
   }
+}
+
+export function isTrustedAttestationBundleUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:"
+      && url.username === ""
+      && url.password === "";
+  } catch {
+    return false;
+  }
+}
+
+export function decodeAttestationBundle(bytes, contentType = "") {
+  const compressed = Buffer.from(bytes);
+  if (compressed.byteLength === 0 || compressed.byteLength > maxCompressedBundleBytes) {
+    throw new Error("Attestation bundle size is outside the accepted range.");
+  }
+  const decoded = String(contentType).toLowerCase().includes("application/x-snappy")
+    ? Buffer.from(SnappyJS.uncompress(compressed, maxUncompressedBundleBytes))
+    : compressed;
+  if (decoded.byteLength > maxUncompressedBundleBytes) {
+    throw new Error("Attestation bundle exceeds the accepted decoded size.");
+  }
+  const bundle = JSON.parse(decoded.toString("utf8"));
+  if (!bundle || typeof bundle !== "object" || typeof bundle?.dsseEnvelope?.payload !== "string") {
+    throw new Error("Attestation bundle does not contain a DSSE payload.");
+  }
+  return bundle;
 }
 
 function statementMatches(statement, predicateType, htmlDigest) {
@@ -308,6 +340,76 @@ async function requestGithub(pathname, { token, apiVersion }) {
   return { status: 0, body: null, transportError: true };
 }
 
+async function requestAttestationBundle(bundleUrl) {
+  if (!isTrustedAttestationBundleUrl(bundleUrl)) {
+    return { status: 0, body: null, transportError: true };
+  }
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      const response = await fetch(bundleUrl, {
+        method: "GET",
+        headers: {
+          Accept: "application/vnd.dev.sigstore.bundle.v0.3+json, application/x-snappy",
+          "User-Agent": "hsqlite-editor-github-controls-audit"
+        },
+        redirect: "error",
+        signal: AbortSignal.timeout(15_000)
+      });
+      if ((response.status === 429 || response.status >= 500) && attempt < 2) {
+        await delay(250 * (attempt + 1));
+        continue;
+      }
+      if (response.status !== 200) {
+        return { status: response.status, body: null };
+      }
+      const contentLength = Number(response.headers.get("content-length") || 0);
+      if (contentLength > maxCompressedBundleBytes) {
+        return { status: 0, body: null, parseError: true };
+      }
+      const bytes = Buffer.from(await response.arrayBuffer());
+      return {
+        status: response.status,
+        body: decodeAttestationBundle(bytes, response.headers.get("content-type") || "")
+      };
+    } catch {
+      if (attempt < 2) {
+        await delay(250 * (attempt + 1));
+        continue;
+      }
+      return { status: 0, body: null, transportError: true };
+    }
+  }
+  return { status: 0, body: null, transportError: true };
+}
+
+export async function hydrateAttestationResponse(response, bundleRequester = requestAttestationBundle) {
+  if (response?.status !== 200 || response.transportError || response.parseError) return response;
+  const entries = attestationEntries(response.body);
+  if (entries.length === 0 || entries.every(entry => entry?.bundle)) return response;
+
+  const hydratedEntries = [];
+  let bundleFetchFailed = false;
+  for (const entry of entries) {
+    if (entry?.bundle) {
+      hydratedEntries.push(entry);
+      continue;
+    }
+    const bundleResponse = await bundleRequester(entry?.bundle_url);
+    if (bundleResponse.status === 200 && bundleResponse.body) {
+      hydratedEntries.push({ ...entry, bundle: bundleResponse.body });
+    } else {
+      bundleFetchFailed = true;
+    }
+  }
+  if (hydratedEntries.length === 0 && bundleFetchFailed) {
+    return { status: 0, body: null, transportError: true };
+  }
+  const body = Array.isArray(response.body)
+    ? hydratedEntries
+    : { ...response.body, attestations: hydratedEntries };
+  return { ...response, body };
+}
+
 async function runLiveAudit({ policy, version, token, manualConfirmations }) {
   const repositoryPath = `/repos/${policy.repository}`;
   const encodedBranch = encodeURIComponent(policy.defaultBranch);
@@ -347,9 +449,10 @@ async function runLiveAudit({ policy, version, token, manualConfirmations }) {
   if (/^sha256:[a-f0-9]{64}$/.test(htmlDigest)) {
     for (const predicate of policy.release.attestationPredicates) {
       const query = new URLSearchParams({ predicate_type: predicate.query, per_page: "100" });
-      responses.attestations[predicate.name] = await get(
+      const attestationResponse = await get(
         `${repositoryPath}/attestations/${encodeURIComponent(htmlDigest)}?${query}`
       );
+      responses.attestations[predicate.name] = await hydrateAttestationResponse(attestationResponse);
     }
   }
 
