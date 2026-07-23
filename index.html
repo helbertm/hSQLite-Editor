@@ -5302,8 +5302,8 @@ margin: 8px 0 8px 18px;
         <div class="schema-list" id="schemaList">
           <div class="empty" data-i18n="schema.empty">Nenhum arquivo carregado.</div>
         </div>
-        <details class="hint hint-disclosure">
-          <summary data-i18n="schema.quickGuide">Guia rápido</summary>
+        <details class="hint hint-disclosure" id="schemaQuickGuide" open>
+          <summary id="schemaQuickGuideSummary" data-i18n="schema.quickGuide">Guia rápido</summary>
           <div class="hint-content" data-i18n-html="schema.quickGuideHtml">
             Use <span class="kbd">F4</span> para ocultar/mostrar este painel.<br>
             Clique em uma tabela com <span class="kbd">Cmd/Ctrl</span> para inserir o nome.<br>
@@ -28232,6 +28232,8 @@ window.__HSQLITE_BOOT__ = {
     schemaOtherMenu: () => schemaOtherMenu,
     schemaPanel: () => schemaPanel,
     schemaPanelController: () => schemaPanelController,
+    schemaQuickGuide: () => schemaQuickGuide,
+    schemaQuickGuideSummary: () => schemaQuickGuideSummary,
     schemaSearch: () => schemaSearch,
     schemaToggleRail: () => schemaToggleRail,
     schemaTypeAllBtn: () => schemaTypeAllBtn,
@@ -28286,6 +28288,7 @@ window.__HSQLITE_BOOT__ = {
     shortcutsHelpBtn: () => shortcutsHelpBtn,
     shortcutsHelpModal: () => shortcutsHelpModal,
     shouldExecuteSqlAfterFileOpen: () => shouldExecuteSqlAfterFileOpen,
+    shouldKeepSchemaQuickGuideOpen: () => shouldKeepSchemaQuickGuideOpen,
     showSqlMapEdgeTooltip: () => showSqlMapEdgeTooltip,
     showToast: () => showToast,
     shuffleList: () => shuffleList,
@@ -28374,6 +28377,7 @@ window.__HSQLITE_BOOT__ = {
     summarizeSqlMapCompatibilityReason: () => summarizeSqlMapCompatibilityReason,
     switchSqlTab: () => switchSqlTab2,
     syncActiveResultToTab: () => syncActiveResultToTab,
+    syncSchemaQuickGuide: () => syncSchemaQuickGuide,
     syncSqlMapFieldDragUi: () => syncSqlMapFieldDragUi,
     syncTabNamePresetSelectValue: () => syncTabNamePresetSelectValue,
     t: () => t,
@@ -30937,6 +30941,8 @@ window.__HSQLITE_BOOT__ = {
   var resultHScroll = document.getElementById("resultHScroll");
   var resultHScrollRange = document.getElementById("resultHScrollRange");
   var schemaList = document.getElementById("schemaList");
+  var schemaQuickGuide = document.getElementById("schemaQuickGuide");
+  var schemaQuickGuideSummary = document.getElementById("schemaQuickGuideSummary");
   var schemaSearch = document.getElementById("schemaSearch");
   var schemaTypeFilters = document.getElementById("schemaTypeFilters");
   var schemaTypeAllBtn = document.getElementById("schemaTypeAllBtn");
@@ -33986,6 +33992,14 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     }
     return count;
   }
+  function shouldKeepSchemaQuickGuideOpen() {
+    return !getActiveDatabase() && Object.keys(getSchemaObjects()).length === 0;
+  }
+  function syncSchemaQuickGuide() {
+    if (schemaQuickGuide && shouldKeepSchemaQuickGuideOpen()) {
+      schemaQuickGuide.open = true;
+    }
+  }
   var schemaController = {
     load() {
       const activeDb = getActiveDatabase();
@@ -34063,6 +34077,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       }).join("");
     },
     render() {
+      syncSchemaQuickGuide();
       const filter = schemaSearch.value.trim().toLowerCase();
       const schemaFilterState = getSchemaFilterState();
       const entries = Object.entries(getSchemaObjects()).filter(([table, meta]) => {
@@ -34127,6 +34142,18 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     schemaController.updateSearchClearButton();
   }
   function bindSchemaUi() {
+    if (schemaQuickGuideSummary) {
+      schemaQuickGuideSummary.addEventListener("click", (event) => {
+        if (!shouldKeepSchemaQuickGuideOpen()) return;
+        event.preventDefault();
+        schemaQuickGuide.open = true;
+      });
+    }
+    if (schemaQuickGuide) {
+      schemaQuickGuide.addEventListener("toggle", () => {
+        syncSchemaQuickGuide();
+      });
+    }
     schemaSearch.addEventListener("input", () => {
       updateSchemaSearchClearButton();
       renderSchema();
@@ -34214,6 +34241,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     loadSchemaFiltersPreference();
     schemaController.renderTypeFilters();
     updateSchemaSearchClearButton();
+    syncSchemaQuickGuide();
   }
 
   // src/capabilities/10-sql-execution.js
