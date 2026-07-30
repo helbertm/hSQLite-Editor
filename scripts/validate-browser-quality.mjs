@@ -526,15 +526,16 @@ try {
       assert(await activeTab.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: Enter did not restore focus to the renamed tab.`);
 
       const closeTabAction = page.locator(".sql-tab-item.active [data-tab-close-id]");
-      const renameTabAction = page.locator("#renameActiveSqlTabBtn");
+      const renameTabAction = page.locator(".sql-tab-item.active [data-tab-rename-id]");
       const closeAllTabsAction = page.locator("#closeAllTabsBtn");
       assert(
         String(await closeTabAction.getAttribute("aria-label") || "").startsWith(locale.closeTabPrefix),
         `${locale.tag}/${viewport.name}: close-tab action name is not localized.`
       );
       assert(
-        await closeTabAction.evaluate(element => element.closest('[role="tab"]') === null),
-        `${locale.tag}/${viewport.name}: close-tab action is nested inside role=tab.`
+        await closeTabAction.evaluate(element => element.closest('[role="tab"]') === null)
+          && await renameTabAction.evaluate(element => element.closest('[role="tab"]') === null),
+        `${locale.tag}/${viewport.name}: a tab action is nested inside role=tab.`
       );
       assert(
         String(await renameTabAction.getAttribute("aria-label") || "").startsWith(locale.renameTabPrefix),
@@ -542,9 +543,9 @@ try {
       );
       await activeTab.focus();
       await page.keyboard.press("Tab");
-      assert(await closeTabAction.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: inline close-tab action is not keyboard reachable.`);
+      assert(await renameTabAction.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: inline rename-tab action is not keyboard reachable.`);
       await page.keyboard.press("Tab");
-      assert(await renameTabAction.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: rename-tab action is not keyboard reachable.`);
+      assert(await closeTabAction.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: inline close-tab action is not keyboard reachable.`);
 
       await closeAllTabsAction.focus();
       await page.keyboard.press("Enter");

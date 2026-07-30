@@ -2077,8 +2077,8 @@ display: none;
 display: inline-flex;
       align-items: center;
       justify-content: flex-end;
-      width: 28px;
-      min-width: 28px;
+      width: 54px;
+      min-width: 54px;
       margin-right: 3px;
       opacity: 0;
       visibility: hidden;
@@ -2112,6 +2112,12 @@ width: 26px;
 border-color: color-mix(in srgb, var(--danger) 28%, var(--border));
       background: color-mix(in srgb, var(--danger) 9%, var(--input-bg));
       color: var(--danger);
+}
+
+.sql-tab-inline-rename:hover {
+border-color: color-mix(in srgb, var(--info) 26%, var(--border));
+      background: color-mix(in srgb, var(--info) 8%, var(--input-bg));
+      color: var(--foreground);
 }
 
 .sql-tab-header-action {
@@ -5420,14 +5426,6 @@ margin: 8px 0 8px 18px;
       <main class="card">
         <div class="sql-tabs-header">
           <div class="sql-tabs" id="sqlTabs" role="tablist" aria-label="Abas de instruções SQL" data-i18n-aria-label="tabs.label"></div>
-          <button id="renameActiveSqlTabBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action" type="button" title="Renomear aba" data-i18n-title="tabs.renameLabel" aria-label="Renomear aba" data-i18n-aria-label="tabs.renameLabel">
-            <span class="sql-tab-icon" aria-hidden="true">
-              <svg viewBox="0 0 16 16" focusable="false">
-                <path d="M3 11.5V13h1.5L11.8 5.7 10.3 4.2 3 11.5Z"></path>
-                <path d="M9.8 4.7 11.3 3.2C11.7 2.8 12.3 2.8 12.7 3.2L12.8 3.3C13.2 3.7 13.2 4.3 12.8 4.7L11.3 6.2"></path>
-              </svg>
-            </span>
-          </button>
           <button id="closeAllTabsBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action sql-tabs-close-all" type="button" title="Fechar todas as abas" data-i18n-title="tabs.closeAll" aria-label="Fechar todas as abas" data-i18n-aria-label="tabs.closeAll" disabled>
             <span class="sql-tab-icon" aria-hidden="true">
               <svg viewBox="0 0 16 16" focusable="false">
@@ -28314,7 +28312,6 @@ window.__HSQLITE_BOOT__ = {
     releaseNotesModal: () => releaseNotesModal,
     releaseNotesSummary: () => releaseNotesSummary,
     removeSqlMapVirtualRelationship: () => removeSqlMapVirtualRelationship,
-    renameActiveSqlTabBtn: () => renameActiveSqlTabBtn,
     renderAllResults: () => renderAllResults,
     renderAutocomplete: () => renderAutocomplete,
     renderCellValue: () => renderCellValue,
@@ -31191,7 +31188,6 @@ window.__HSQLITE_BOOT__ = {
   var sqlTabsEl = document.getElementById("sqlTabs");
   var sqlTabsOverflowMenu = document.getElementById("sqlTabsOverflowMenu");
   var sqlTabsOverflowList = document.getElementById("sqlTabsOverflowList");
-  var renameActiveSqlTabBtn = document.getElementById("renameActiveSqlTabBtn");
   var newSqlTabBtn = document.getElementById("newSqlTabBtn");
   var sqlEditorTitle = document.getElementById("sqlEditorTitle");
   var closeTabConfirmModal = document.getElementById("closeTabConfirmModal");
@@ -32705,16 +32701,9 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
   };
   var requestCloseSqlTab = () => {
   };
-  var headerActionsBound = false;
   function configureSqlTabActions(actions) {
     switchSqlTab = actions.switchSqlTab;
     requestCloseSqlTab = actions.requestCloseSqlTab;
-    if (headerActionsBound) return;
-    renameActiveSqlTabBtn?.addEventListener("click", () => {
-      const activeTabId = getActiveSqlTabId();
-      if (activeTabId) startInlineTabRename(activeTabId);
-    });
-    headerActionsBound = true;
   }
   function startInlineTabRename(tabId) {
     const tab = findSqlTabById(tabId);
@@ -32915,6 +32904,27 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       const inlineActions = document.createElement("div");
       inlineActions.className = "sql-tab-inline-actions";
       inlineActions.setAttribute("role", "presentation");
+      const renameButton = document.createElement("button");
+      renameButton.className = "ui-button ui-button-icon sql-tab-inline-action sql-tab-inline-rename";
+      renameButton.type = "button";
+      renameButton.dataset.tabRenameId = tab.id;
+      renameButton.disabled = isEditing;
+      renameButton.title = t("tabs.renameNamedLabel", { title: tab.title });
+      renameButton.setAttribute("aria-label", t("tabs.renameNamedLabel", { title: tab.title }));
+      renameButton.innerHTML = `
+      <span class="sql-tab-icon" aria-hidden="true">
+        <svg viewBox="0 0 16 16" focusable="false">
+          <path d="M3 11.5V13h1.5L11.8 5.7 10.3 4.2 3 11.5Z"></path>
+          <path d="M9.8 4.7 11.3 3.2C11.7 2.8 12.3 2.8 12.7 3.2L12.8 3.3C13.2 3.7 13.2 4.3 12.8 4.7L11.3 6.2"></path>
+        </svg>
+      </span>
+    `;
+      renameButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        startInlineTabRename(tab.id);
+      });
+      inlineActions.appendChild(renameButton);
       const closeButton = document.createElement("button");
       closeButton.className = "ui-button ui-button-icon sql-tab-inline-action sql-tab-inline-close";
       closeButton.type = "button";
@@ -32943,12 +32953,6 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     }
     renderSqlTabsOverflowMenu();
     const activeTab = findSqlTabById(activeTabId);
-    const isRenamingActiveTab = getEditingSqlTabId() === activeTabId;
-    if (renameActiveSqlTabBtn) {
-      renameActiveSqlTabBtn.disabled = !activeTab || isRenamingActiveTab;
-      renameActiveSqlTabBtn.title = t("tabs.renameLabel");
-      renameActiveSqlTabBtn.setAttribute("aria-label", t("tabs.renameNamedLabel", { title: activeTab?.title || t("tabs.defaultTitle") }));
-    }
     if (closeAllTabsBtn) {
       closeAllTabsBtn.disabled = sqlTabs.length <= 1;
       closeAllTabsBtn.title = t("tabs.closeAll");

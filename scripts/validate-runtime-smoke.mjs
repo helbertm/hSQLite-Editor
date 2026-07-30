@@ -1360,10 +1360,12 @@ function assertSqlTabLifecycleFlows(runtime, context) {
   const renderedCloseAction = runtime.elementsById.get("sqlTabs")?.querySelector(
     `[data-tab-close-id="${lifecycleTabsAfterAdd[1].id}"]`
   );
-  const renderedRenameAction = runtime.elementsById.get("renameActiveSqlTabBtn");
+  const renderedRenameAction = runtime.elementsById.get("sqlTabs")?.querySelector(
+    `[data-tab-rename-id="${lifecycleTabsAfterAdd[1].id}"]`
+  );
   const renderedCloseAllAction = runtime.elementsById.get("closeAllTabsBtn");
 
-  assert(renderedCloseAction && renderedRenameAction, "Runtime smoke expected inline close and external rename controls for SQL tabs.");
+  assert(renderedCloseAction && renderedRenameAction, "Runtime smoke expected inline close and rename controls for SQL tabs.");
   assert(!renderedCloseAction.disabled && !renderedRenameAction.disabled, "Runtime smoke expected active-tab actions to be enabled when two tabs exist.");
   assert(
     renderedCloseAction.getAttribute("aria-label")?.includes(lifecycleTabsAfterAdd[1].title)
@@ -1371,8 +1373,8 @@ function assertSqlTabLifecycleFlows(runtime, context) {
     "Runtime smoke expected active-tab action names to identify the current tab."
   );
   assert(
-    renderedCloseAction.closest('[role="tab"]') === null,
-    "Runtime smoke expected the inline close action to remain outside role=tab."
+    renderedCloseAction.closest('[role="tab"]') === null && renderedRenameAction.closest('[role="tab"]') === null,
+    "Runtime smoke expected inline tab actions to remain outside role=tab."
   );
   assert(
     renderedCloseAllAction && !renderedCloseAllAction.disabled,

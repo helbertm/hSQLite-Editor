@@ -8,7 +8,6 @@ export const exportJsonBtn = document.getElementById("exportJsonBtn");
 export const sqlTabsEl = document.getElementById("sqlTabs");
 export const sqlTabsOverflowMenu = document.getElementById("sqlTabsOverflowMenu");
 export const sqlTabsOverflowList = document.getElementById("sqlTabsOverflowList");
-export const renameActiveSqlTabBtn = document.getElementById("renameActiveSqlTabBtn");
 export const newSqlTabBtn = document.getElementById("newSqlTabBtn");
 export const sqlEditorTitle = document.getElementById("sqlEditorTitle");
 export const closeTabConfirmModal = document.getElementById("closeTabConfirmModal");

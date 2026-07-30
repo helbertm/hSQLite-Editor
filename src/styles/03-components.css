@@ -1623,8 +1623,8 @@ display: none;
 display: inline-flex;
       align-items: center;
       justify-content: flex-end;
-      width: 28px;
-      min-width: 28px;
+      width: 54px;
+      min-width: 54px;
       margin-right: 3px;
       opacity: 0;
       visibility: hidden;
@@ -1658,6 +1658,12 @@ width: 26px;
 border-color: color-mix(in srgb, var(--danger) 28%, var(--border));
       background: color-mix(in srgb, var(--danger) 9%, var(--input-bg));
       color: var(--danger);
+}
+
+.sql-tab-inline-rename:hover {
+border-color: color-mix(in srgb, var(--info) 26%, var(--border));
+      background: color-mix(in srgb, var(--info) 8%, var(--input-bg));
+      color: var(--foreground);
 }
 
 .sql-tab-header-action {
