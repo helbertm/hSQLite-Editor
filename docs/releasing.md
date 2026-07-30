@@ -19,7 +19,7 @@ The exact order and ownership of static, contract, artifact/runtime, browser, se
 
 `index.html` and `sbom.spdx.json` are tracked, reproducible release evidence. Versioned `dist/` artifacts, `SHA256SUMS`, and the temporary Pages `_site/` tree are generated outputs and must not be committed as release history.
 
-Generate and verify the portable checksum file with `npm run generate:release-checksums` and `npm run validate:release-assets`. After publication, verify provenance with `gh attestation verify dist/hSQLite-Editor-v<version>.html --repo <owner>/<repository>`. Verify the associated SPDX predicate by adding `--predicate-type https://spdx.dev/Document/v2.3`.
+Generate and verify the portable checksum file with `npm run generate:release-checksums` and `npm run validate:release-assets`. Published checksum entries use release asset basenames, so users can download the HTML, SBOM, and `SHA256SUMS` into one directory and run `shasum -a 256 -c SHA256SUMS`. After publication, verify provenance with `gh attestation verify dist/hSQLite-Editor-v<version>.html --repo <owner>/<repository>`. Verify the associated SPDX predicate by adding `--predicate-type https://spdx.dev/Document/v2.3`.
 
 Immutable release publication is atomic: create the exact tag and draft, build from that tag, validate, attest, upload the complete asset bundle, then publish. The workflow forbids `--clobber`. If upload is partial or an asset-name conflict occurs, delete and recreate the unpublished draft after diagnosing the cause; never repair a release by overwriting an asset.
 

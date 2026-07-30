@@ -1,7 +1,11 @@
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { getReleaseArtifactPath, getReleaseTag } from "./release-utils.mjs";
+import {
+  formatReleaseChecksumLine,
+  getReleaseArtifactPath,
+  getReleaseTag
+} from "./release-utils.mjs";
 
 const rootDir = path.resolve(new URL("..", import.meta.url).pathname);
 const checkOnly = process.argv.includes("--check");
@@ -38,7 +42,7 @@ if (sbom.spdxVersion !== "SPDX-2.3" || sbom.documentNamespace !== expectedNamesp
 
 const checksumText = subjects.map(subjectPath => {
   const digest = crypto.createHash("sha256").update(fs.readFileSync(subjectPath)).digest("hex");
-  return `${digest}  ${path.relative(rootDir, subjectPath)}`;
+  return formatReleaseChecksumLine(subjectPath, digest);
 }).join("\n") + "\n";
 
 if (checkOnly) {
