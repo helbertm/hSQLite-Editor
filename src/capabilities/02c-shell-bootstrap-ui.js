@@ -1,5 +1,5 @@
 import { schemaCollapseBtn, schemaToggleRail } from "./01-dom-layout-schema.js";
-import { clearPasteSqlBtn, clearSqlBtn, closeAllTabsBtn, copySqlBtn, newSqlTabBtn, openRunSqlBtn, openSqlBtn, sqlFileInput, sqlTabsEl } from "./03-dom-editor-results.js";
+import { clearPasteSqlBtn, clearSqlBtn, closeAllTabsBtn, copySqlBtn, newSqlTabBtn, openRunSqlBtn, openSqlBtn, sqlFileInput, sqlTabsStrip } from "./03-dom-editor-results.js";
 import { t } from "./03-localization.js";
 import { firstRunContinueBtn, firstRunTabNamePresetSelect, sessionToggle, starterSqlToggle, tabNamePresetSelect, themeToggle } from "./05-dom-library-settings.js";
 import { setStatus } from "./12-shell-status.js";
@@ -50,7 +50,7 @@ export function bindShellBootstrapUi() {
   schemaToggleRail.addEventListener("click", toggleSchemaPanel);
 
   newSqlTabBtn.addEventListener("click", addSqlTab);
-  sqlTabsEl.addEventListener("scroll", updateSqlTabsOverflow, { passive: true });
+  sqlTabsStrip.addEventListener("scroll", updateSqlTabsOverflow, { passive: true });
   window.addEventListener("resize", updateSqlTabsOverflow);
   openSqlBtn.addEventListener("click", () => openSqlFilePicker(false));
   openRunSqlBtn.addEventListener("click", () => openSqlFilePicker(true));

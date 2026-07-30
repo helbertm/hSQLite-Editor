@@ -158,7 +158,7 @@ display: flex;
       overflow: visible;
 }
 
-.sql-tabs {
+.sql-tabs-strip {
 display: flex;
       align-items: center;
       gap: 6px;
@@ -168,6 +168,27 @@ display: flex;
       overflow-y: visible;
       scrollbar-width: none;
       padding-bottom: 2px;
+}
+
+.sql-tabs {
+display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 0 0 auto;
+      min-width: 0;
+}
+
+.sql-tabs-stack {
+position: relative;
+      display: flex;
+      flex: 0 0 auto;
+      min-width: 0;
+}
+
+.sql-tab-actions-layer {
+position: absolute;
+      inset: 0;
+      pointer-events: none;
 }
 
 .sql-tabs-overflow {
@@ -231,17 +252,17 @@ min-width: 0;
       white-space: nowrap;
 }
 
-.sql-tabs.is-overflowing {
+.sql-tabs-strip.is-overflowing {
 overflow-x: auto;
       scrollbar-width: thin;
       scrollbar-gutter: stable;
 }
 
-.sql-tabs::-webkit-scrollbar {
+.sql-tabs-strip::-webkit-scrollbar {
 height: 0;
 }
 
-.sql-tabs.is-overflowing::-webkit-scrollbar {
+.sql-tabs-strip.is-overflowing::-webkit-scrollbar {
 height: 8px;
 }
 
@@ -268,7 +289,7 @@ left: 0;
 }
 
 .sql-tabs-header::after {
-right: 38px;
+right: 76px;
       background: linear-gradient(to left, var(--panel), transparent);
 }
 

@@ -1,4 +1,4 @@
-import { closeAllTabsBtn, newSqlTabBtn, sqlEditorTitle, sqlTabsEl, sqlTabsOverflowList, sqlTabsOverflowMenu } from "./03-dom-editor-results.js";
+import { closeAllTabsBtn, newSqlTabBtn, sqlEditorTitle, sqlTabActionsLayer, sqlTabsEl, sqlTabsOverflowList, sqlTabsOverflowMenu, sqlTabsStrip } from "./03-dom-editor-results.js";
 import { t } from "./03-localization.js";
 import { setStatus } from "./12-shell-status.js";
 import { saveSqlTabsToStorage } from "./22-sql-tabs-storage.js";
@@ -97,6 +97,7 @@ export function renderSqlTabs() {
   const sqlTabs = getSqlTabsItems();
   const activeTabId = getActiveSqlTabId();
   sqlTabsEl.innerHTML = "";
+  sqlTabActionsLayer.innerHTML = "";
   for (let tabIndex = 0; tabIndex < sqlTabs.length; tabIndex += 1) {
     const tab = sqlTabs[tabIndex];
     const hasResult = tab.resultSets && tab.resultSets.some(rs => rs.columns && rs.columns.length);
@@ -224,8 +225,9 @@ export function renderSqlTabs() {
     }
 
     const inlineActions = document.createElement("div");
-    inlineActions.className = "sql-tab-inline-actions";
+    inlineActions.className = `sql-tab-actions-portal ${isActive ? "active" : ""}`;
     inlineActions.setAttribute("role", "presentation");
+    inlineActions.dataset.tabActionsId = tab.id;
 
     const renameButton = document.createElement("button");
     renameButton.className = "ui-button ui-button-icon sql-tab-inline-action sql-tab-inline-rename";
@@ -271,10 +273,39 @@ export function renderSqlTabs() {
     });
     inlineActions.appendChild(closeButton);
 
+    let concealActionsTimer = null;
+    const revealActions = () => {
+      if (concealActionsTimer) clearTimeout(concealActionsTimer);
+      inlineActions.classList.add("is-revealed");
+    };
+    const concealActions = () => {
+      if (concealActionsTimer) clearTimeout(concealActionsTimer);
+      concealActionsTimer = setTimeout(() => {
+        const activeElement = document.activeElement;
+        const hasActionFocus = activeElement && inlineActions.contains(activeElement);
+        if (!inlineActions.matches(":hover") && !button.matches(":focus") && !hasActionFocus) {
+          inlineActions.classList.remove("is-revealed");
+        }
+      }, 40);
+    };
+    item.addEventListener("mouseenter", revealActions);
+    item.addEventListener("mouseleave", concealActions);
+    button.addEventListener("focus", revealActions);
+    button.addEventListener("blur", concealActions);
+    inlineActions.addEventListener("mouseenter", revealActions);
+    inlineActions.addEventListener("mouseleave", concealActions);
+
     item.appendChild(button);
     if (renameField) item.appendChild(renameField);
-    item.appendChild(inlineActions);
     sqlTabsEl.appendChild(item);
+    sqlTabActionsLayer.appendChild(inlineActions);
+
+    requestAnimationFrame(() => {
+      inlineActions.style.left = `${item.offsetLeft}px`;
+      inlineActions.style.top = `${item.offsetTop}px`;
+      inlineActions.style.width = `${item.offsetWidth}px`;
+      inlineActions.style.height = `${item.offsetHeight}px`;
+    });
   }
   renderSqlTabsOverflowMenu();
   const activeTab = findSqlTabById(activeTabId);
@@ -306,17 +337,17 @@ export function renderSqlTabs() {
 }
 
 export function updateSqlTabsOverflow() {
-  if (!sqlTabsEl) return;
-  const header = sqlTabsEl.closest(".sql-tabs-header");
-  const hasOverflow = sqlTabsEl.scrollWidth > sqlTabsEl.clientWidth + 1;
-  sqlTabsEl.classList.toggle("is-overflowing", hasOverflow);
+  if (!sqlTabsStrip) return;
+  const header = sqlTabsStrip.closest(".sql-tabs-header");
+  const hasOverflow = sqlTabsStrip.scrollWidth > sqlTabsStrip.clientWidth + 1;
+  sqlTabsStrip.classList.toggle("is-overflowing", hasOverflow);
   if (sqlTabsOverflowMenu) {
     sqlTabsOverflowMenu.hidden = !hasOverflow;
     if (!hasOverflow) closeSqlTabsOverflowMenu();
   }
   if (!header) return;
-  const canScrollLeft = hasOverflow && sqlTabsEl.scrollLeft > 1;
-  const canScrollRight = hasOverflow && sqlTabsEl.scrollLeft + sqlTabsEl.clientWidth < sqlTabsEl.scrollWidth - 1;
+  const canScrollLeft = hasOverflow && sqlTabsStrip.scrollLeft > 1;
+  const canScrollRight = hasOverflow && sqlTabsStrip.scrollLeft + sqlTabsStrip.clientWidth < sqlTabsStrip.scrollWidth - 1;
   header.classList.toggle("can-scroll-left", canScrollLeft);
   header.classList.toggle("can-scroll-right", canScrollRight);
 }

@@ -1357,10 +1357,10 @@ function assertSqlTabLifecycleFlows(runtime, context) {
     `Runtime smoke expected new-tab status feedback, got ${runtime.elementsById.get("status")?.textContent || "empty"}.`
   );
 
-  const renderedCloseAction = runtime.elementsById.get("sqlTabs")?.querySelector(
+  const renderedCloseAction = runtime.elementsById.get("sqlTabActionsLayer")?.querySelector(
     `[data-tab-close-id="${lifecycleTabsAfterAdd[1].id}"]`
   );
-  const renderedRenameAction = runtime.elementsById.get("sqlTabs")?.querySelector(
+  const renderedRenameAction = runtime.elementsById.get("sqlTabActionsLayer")?.querySelector(
     `[data-tab-rename-id="${lifecycleTabsAfterAdd[1].id}"]`
   );
   const renderedCloseAllAction = runtime.elementsById.get("closeAllTabsBtn");

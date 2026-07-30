@@ -45,8 +45,8 @@ const locales = [
   }
 ];
 const viewports = [
-  { name: "desktop", width: 1440, height: 1000 },
-  { name: "mobile", width: 390, height: 844 }
+  { name: "desktop", width: 1440, height: 1000, hasTouch: false },
+  { name: "mobile", width: 390, height: 844, hasTouch: true }
 ];
 const failures = [];
 const results = [];
@@ -102,7 +102,13 @@ try {
 
   for (const locale of locales) {
     for (const viewport of viewports) {
-      const context = await browser.newContext({ locale: locale.tag, viewport, reducedMotion: "reduce" });
+      const context = await browser.newContext({
+        locale: locale.tag,
+        viewport,
+        hasTouch: viewport.hasTouch,
+        isMobile: viewport.hasTouch,
+        reducedMotion: "reduce"
+      });
       const page = await context.newPage();
       const runtimeErrors = [];
       page.on("pageerror", error => runtimeErrors.push(error.message));
@@ -496,6 +502,28 @@ try {
         saveCurrentTabState();
       });
       const activeTab = page.locator('.sql-tab[aria-selected="true"]');
+      await page.mouse.move(1, 1);
+      if (viewport.hasTouch) {
+        const activeTouchActions = await page.locator(".sql-tab-actions-portal.active").evaluate(element => {
+          const styles = getComputedStyle(element);
+          const action = element.querySelector(".sql-tab-inline-action");
+          return {
+            visibility: styles.visibility,
+            opacity: Number(styles.opacity),
+            actionPointerEvents: action ? getComputedStyle(action).pointerEvents : "",
+            coarsePointer: matchMedia("(pointer: coarse)").matches,
+            noHover: matchMedia("(hover: none)").matches
+          };
+        });
+        assert(
+          activeTouchActions.visibility === "visible"
+            && activeTouchActions.opacity === 1
+            && activeTouchActions.actionPointerEvents === "auto"
+            && activeTouchActions.coarsePointer
+            && activeTouchActions.noHover,
+          `${locale.tag}/${viewport.name}: active-tab actions are not persistently available for coarse touch input (${JSON.stringify(activeTouchActions)}).`
+        );
+      }
       const originalTabTitle = (await activeTab.innerText()).trim();
       await activeTab.focus();
       await page.keyboard.press("F2");
@@ -525,9 +553,27 @@ try {
       assert((await activeTab.innerText()).trim() === "browser-renamed", `${locale.tag}/${viewport.name}: Enter did not commit the tab title.`);
       assert(await activeTab.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: Enter did not restore focus to the renamed tab.`);
 
-      const closeTabAction = page.locator(".sql-tab-item.active [data-tab-close-id]");
-      const renameTabAction = page.locator(".sql-tab-item.active [data-tab-rename-id]");
+      const closeTabAction = page.locator(".sql-tab-actions-portal.active [data-tab-close-id]");
+      const renameTabAction = page.locator(".sql-tab-actions-portal.active [data-tab-rename-id]");
       const closeAllTabsAction = page.locator("#closeAllTabsBtn");
+      const newTabPlacement = await page.locator("#newSqlTabBtn").evaluate(element => {
+        const lastTabItem = document.querySelector("#sqlTabs .sql-tab-item:last-child");
+        if (!lastTabItem) return null;
+        const tabRect = lastTabItem.getBoundingClientRect();
+        const buttonRect = element.getBoundingClientRect();
+        return {
+          parentId: element.parentElement?.id || "",
+          gap: Math.round(buttonRect.left - tabRect.right),
+          verticallyAligned: Math.abs(buttonRect.top + buttonRect.height / 2 - (tabRect.top + tabRect.height / 2)) <= 2
+        };
+      });
+      assert(
+        newTabPlacement?.parentId === "sqlTabsStrip"
+          && newTabPlacement.gap >= 0
+          && newTabPlacement.gap <= 8
+          && newTabPlacement.verticallyAligned,
+        `${locale.tag}/${viewport.name}: New tab is not immediately aligned after the last open tab.`
+      );
       assert(
         String(await closeTabAction.getAttribute("aria-label") || "").startsWith(locale.closeTabPrefix),
         `${locale.tag}/${viewport.name}: close-tab action name is not localized.`
@@ -582,6 +628,11 @@ try {
       await page.keyboard.press("Delete");
       await page.locator("#confirmCloseTabBtn").click();
       assert(await page.locator(".sql-tab").count() === tabCountBeforeCancel - 1, `${locale.tag}/${viewport.name}: confirming close-tab did not remove one tab.`);
+      await page.waitForFunction(() => document.activeElement?.matches('.sql-tab[aria-selected="true"]'));
+      assert(
+        await page.locator('.sql-tab[aria-selected="true"]').evaluate(element => element === document.activeElement),
+        `${locale.tag}/${viewport.name}: confirmed close did not restore focus to the resulting active tab.`
+      );
 
       if (viewport.name === "desktop") {
         await page.setViewportSize({ width: Math.floor(viewport.width / 2), height: Math.floor(viewport.height / 2) });

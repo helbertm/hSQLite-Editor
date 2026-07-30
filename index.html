@@ -1986,7 +1986,7 @@ display: inline-flex;
       width: auto;
       flex: 1 1 auto;
       min-height: 32px;
-      padding: 0 10px 0 12px;
+      padding: 0 64px 0 12px;
       border: 0;
       border-radius: 999px;
       background: transparent;
@@ -2073,27 +2073,32 @@ display: flex;
 display: none;
 }
 
-.sql-tab-inline-actions {
+.sql-tab-actions-portal {
+position: absolute;
 display: inline-flex;
       align-items: center;
       justify-content: flex-end;
-      width: 54px;
-      min-width: 54px;
-      margin-right: 3px;
+      gap: 0;
+      padding-right: 3px;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
       transition: opacity 0.15s ease, visibility 0.15s ease;
+      z-index: 2;
 }
 
-.sql-tab-item:hover .sql-tab-inline-actions,
-    .sql-tab-item:focus-within .sql-tab-inline-actions {
+.sql-tab-actions-portal.is-revealed,
+    .sql-tab-actions-portal:focus-within {
 opacity: 1;
       visibility: visible;
-      pointer-events: auto;
 }
 
-.sql-tab-item.is-editing .sql-tab-inline-actions {
+.sql-tab-actions-portal.is-revealed .sql-tab-inline-action,
+    .sql-tab-actions-portal:focus-within .sql-tab-inline-action {
+pointer-events: auto;
+}
+
+.sql-tab-actions-portal:has([data-tab-rename-id]:disabled) {
 display: none;
 }
 
@@ -2140,10 +2145,13 @@ border-color: color-mix(in srgb, var(--border) 70%, transparent);
 }
 
 @media (hover: none), (pointer: coarse) {
-.sql-tab-item.active .sql-tab-inline-actions {
+.sql-tab-actions-portal.active {
 opacity: 1;
         visibility: visible;
-        pointer-events: auto;
+}
+
+.sql-tab-actions-portal.active .sql-tab-inline-action {
+pointer-events: auto;
 }
 }
 
@@ -3025,7 +3033,7 @@ display: flex;
       overflow: visible;
 }
 
-.sql-tabs {
+.sql-tabs-strip {
 display: flex;
       align-items: center;
       gap: 6px;
@@ -3035,6 +3043,27 @@ display: flex;
       overflow-y: visible;
       scrollbar-width: none;
       padding-bottom: 2px;
+}
+
+.sql-tabs {
+display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 0 0 auto;
+      min-width: 0;
+}
+
+.sql-tabs-stack {
+position: relative;
+      display: flex;
+      flex: 0 0 auto;
+      min-width: 0;
+}
+
+.sql-tab-actions-layer {
+position: absolute;
+      inset: 0;
+      pointer-events: none;
 }
 
 .sql-tabs-overflow {
@@ -3098,17 +3127,17 @@ min-width: 0;
       white-space: nowrap;
 }
 
-.sql-tabs.is-overflowing {
+.sql-tabs-strip.is-overflowing {
 overflow-x: auto;
       scrollbar-width: thin;
       scrollbar-gutter: stable;
 }
 
-.sql-tabs::-webkit-scrollbar {
+.sql-tabs-strip::-webkit-scrollbar {
 height: 0;
 }
 
-.sql-tabs.is-overflowing::-webkit-scrollbar {
+.sql-tabs-strip.is-overflowing::-webkit-scrollbar {
 height: 8px;
 }
 
@@ -3135,7 +3164,7 @@ left: 0;
 }
 
 .sql-tabs-header::after {
-right: 38px;
+right: 76px;
       background: linear-gradient(to left, var(--panel), transparent);
 }
 
@@ -5425,7 +5454,13 @@ margin: 8px 0 8px 18px;
 
       <main class="card">
         <div class="sql-tabs-header">
-          <div class="sql-tabs" id="sqlTabs" role="tablist" aria-label="Abas de instruções SQL" data-i18n-aria-label="tabs.label"></div>
+          <div class="sql-tabs-strip" id="sqlTabsStrip">
+            <div class="sql-tabs-stack">
+              <div class="sql-tabs" id="sqlTabs" role="tablist" aria-label="Abas de instruções SQL" data-i18n-aria-label="tabs.label"></div>
+              <div class="sql-tab-actions-layer" id="sqlTabActionsLayer"></div>
+            </div>
+            <button id="newSqlTabBtn" class="ui-button ui-button-icon ui-button-sm new-sql-tab-btn" type="button" title="Nova aba (Ctrl/Cmd+T)" data-i18n-title="tabs.newTitle" aria-label="Nova aba" data-i18n-aria-label="tabs.new">+</button>
+          </div>
           <button id="closeAllTabsBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action sql-tabs-close-all" type="button" title="Fechar todas as abas" data-i18n-title="tabs.closeAll" aria-label="Fechar todas as abas" data-i18n-aria-label="tabs.closeAll" disabled>
             <span class="sql-tab-icon" aria-hidden="true">
               <svg viewBox="0 0 16 16" focusable="false">
@@ -5445,7 +5480,6 @@ margin: 8px 0 8px 18px;
             </summary>
             <div class="sql-tabs-overflow-menu" id="sqlTabsOverflowList"></div>
           </details>
-          <button id="newSqlTabBtn" class="ui-button ui-button-icon ui-button-sm new-sql-tab-btn" type="button" title="Nova aba (Ctrl/Cmd+T)" data-i18n-title="tabs.newTitle" aria-label="Nova aba" data-i18n-aria-label="tabs.new">+</button>
         </div>
         <div id="sqlTabPanel" role="tabpanel" aria-labelledby="" tabindex="0">
         <div class="editor-header">
@@ -28511,11 +28545,13 @@ window.__HSQLITE_BOOT__ = {
     sqlReplaceOneBtn: () => sqlReplaceOneBtn,
     sqlRunningBar: () => sqlRunningBar,
     sqlRunningText: () => sqlRunningText,
+    sqlTabActionsLayer: () => sqlTabActionsLayer,
     sqlTabsController: () => sqlTabsController,
     sqlTabsEl: () => sqlTabsEl,
     sqlTabsOverflowList: () => sqlTabsOverflowList,
     sqlTabsOverflowMenu: () => sqlTabsOverflowMenu,
     sqlTabsStorage: () => sqlTabsStorage,
+    sqlTabsStrip: () => sqlTabsStrip,
     startInlineTabRename: () => startInlineTabRename,
     starterSqlController: () => starterSqlController,
     starterSqlToggle: () => starterSqlToggle,
@@ -31186,6 +31222,8 @@ window.__HSQLITE_BOOT__ = {
   var exportCsvBtn = document.getElementById("exportCsvBtn");
   var exportJsonBtn = document.getElementById("exportJsonBtn");
   var sqlTabsEl = document.getElementById("sqlTabs");
+  var sqlTabActionsLayer = document.getElementById("sqlTabActionsLayer");
+  var sqlTabsStrip = document.getElementById("sqlTabsStrip");
   var sqlTabsOverflowMenu = document.getElementById("sqlTabsOverflowMenu");
   var sqlTabsOverflowList = document.getElementById("sqlTabsOverflowList");
   var newSqlTabBtn = document.getElementById("newSqlTabBtn");
@@ -32779,6 +32817,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     const sqlTabs = getSqlTabsItems();
     const activeTabId = getActiveSqlTabId();
     sqlTabsEl.innerHTML = "";
+    sqlTabActionsLayer.innerHTML = "";
     for (let tabIndex = 0; tabIndex < sqlTabs.length; tabIndex += 1) {
       const tab = sqlTabs[tabIndex];
       const hasResult = tab.resultSets && tab.resultSets.some((rs) => rs.columns && rs.columns.length);
@@ -32902,8 +32941,9 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         });
       }
       const inlineActions = document.createElement("div");
-      inlineActions.className = "sql-tab-inline-actions";
+      inlineActions.className = `sql-tab-actions-portal ${isActive ? "active" : ""}`;
       inlineActions.setAttribute("role", "presentation");
+      inlineActions.dataset.tabActionsId = tab.id;
       const renameButton = document.createElement("button");
       renameButton.className = "ui-button ui-button-icon sql-tab-inline-action sql-tab-inline-rename";
       renameButton.type = "button";
@@ -32946,10 +32986,37 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         requestCloseSqlTab(tab.id);
       });
       inlineActions.appendChild(closeButton);
+      let concealActionsTimer = null;
+      const revealActions = () => {
+        if (concealActionsTimer) clearTimeout(concealActionsTimer);
+        inlineActions.classList.add("is-revealed");
+      };
+      const concealActions = () => {
+        if (concealActionsTimer) clearTimeout(concealActionsTimer);
+        concealActionsTimer = setTimeout(() => {
+          const activeElement = document.activeElement;
+          const hasActionFocus = activeElement && inlineActions.contains(activeElement);
+          if (!inlineActions.matches(":hover") && !button.matches(":focus") && !hasActionFocus) {
+            inlineActions.classList.remove("is-revealed");
+          }
+        }, 40);
+      };
+      item.addEventListener("mouseenter", revealActions);
+      item.addEventListener("mouseleave", concealActions);
+      button.addEventListener("focus", revealActions);
+      button.addEventListener("blur", concealActions);
+      inlineActions.addEventListener("mouseenter", revealActions);
+      inlineActions.addEventListener("mouseleave", concealActions);
       item.appendChild(button);
       if (renameField) item.appendChild(renameField);
-      item.appendChild(inlineActions);
       sqlTabsEl.appendChild(item);
+      sqlTabActionsLayer.appendChild(inlineActions);
+      requestAnimationFrame(() => {
+        inlineActions.style.left = `${item.offsetLeft}px`;
+        inlineActions.style.top = `${item.offsetTop}px`;
+        inlineActions.style.width = `${item.offsetWidth}px`;
+        inlineActions.style.height = `${item.offsetHeight}px`;
+      });
     }
     renderSqlTabsOverflowMenu();
     const activeTab = findSqlTabById(activeTabId);
@@ -32978,17 +33045,17 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     });
   }
   function updateSqlTabsOverflow() {
-    if (!sqlTabsEl) return;
-    const header = sqlTabsEl.closest(".sql-tabs-header");
-    const hasOverflow = sqlTabsEl.scrollWidth > sqlTabsEl.clientWidth + 1;
-    sqlTabsEl.classList.toggle("is-overflowing", hasOverflow);
+    if (!sqlTabsStrip) return;
+    const header = sqlTabsStrip.closest(".sql-tabs-header");
+    const hasOverflow = sqlTabsStrip.scrollWidth > sqlTabsStrip.clientWidth + 1;
+    sqlTabsStrip.classList.toggle("is-overflowing", hasOverflow);
     if (sqlTabsOverflowMenu) {
       sqlTabsOverflowMenu.hidden = !hasOverflow;
       if (!hasOverflow) closeSqlTabsOverflowMenu();
     }
     if (!header) return;
-    const canScrollLeft = hasOverflow && sqlTabsEl.scrollLeft > 1;
-    const canScrollRight = hasOverflow && sqlTabsEl.scrollLeft + sqlTabsEl.clientWidth < sqlTabsEl.scrollWidth - 1;
+    const canScrollLeft = hasOverflow && sqlTabsStrip.scrollLeft > 1;
+    const canScrollRight = hasOverflow && sqlTabsStrip.scrollLeft + sqlTabsStrip.clientWidth < sqlTabsStrip.scrollWidth - 1;
     header.classList.toggle("can-scroll-left", canScrollLeft);
     header.classList.toggle("can-scroll-right", canScrollRight);
   }
@@ -36489,7 +36556,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     schemaCollapseBtn.addEventListener("click", toggleSchemaPanel);
     schemaToggleRail.addEventListener("click", toggleSchemaPanel);
     newSqlTabBtn.addEventListener("click", addSqlTab);
-    sqlTabsEl.addEventListener("scroll", updateSqlTabsOverflow, { passive: true });
+    sqlTabsStrip.addEventListener("scroll", updateSqlTabsOverflow, { passive: true });
     window.addEventListener("resize", updateSqlTabsOverflow);
     openSqlBtn.addEventListener("click", () => openSqlFilePicker(false));
     openRunSqlBtn.addEventListener("click", () => openSqlFilePicker(true));
