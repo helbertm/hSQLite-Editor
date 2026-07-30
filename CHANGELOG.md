@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.4.1...hsqlite-editor-v0.5.0) (2026-07-30)
+
+
+### Features
+
+* **settings:** configure starter SQL for new tabs ([3209d1b](https://github.com/helbertm/hSQLite-Editor/commit/3209d1bf524c42e096fb5a5abb867cff19a16fd8))
+
+
+### Bug Fixes
+
+* **schema:** reset hidden filters when leaving all ([b43cdd5](https://github.com/helbertm/hSQLite-Editor/commit/b43cdd5f3f40cedd99218da79e8bb59f3e5a8e13))
+
 ## [0.4.1](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.4.0...hsqlite-editor-v0.4.1) (2026-07-30)
 
 
