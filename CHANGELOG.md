@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.4.0...hsqlite-editor-v0.4.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* hide SQL editor fallback after initialization ([#16](https://github.com/helbertm/hSQLite-Editor/issues/16)) ([6e87ed0](https://github.com/helbertm/hSQLite-Editor/commit/6e87ed0530b98012a16001938438c945b1257d59))
+
 ## [0.4.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.3.143...hsqlite-editor-v0.4.0) (2026-07-23)
 
 
