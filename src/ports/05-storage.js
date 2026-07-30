@@ -1,9 +1,11 @@
+import { DEFAULT_SQL_TAB_TEMPLATE } from "../core/00-contracts.js";
 import { QUERY_HISTORY_LIMIT } from "../core/03-app-limits.js";
 
 export const STORAGE_KEYS = {
   STORAGE_SCHEMA_VERSION: "hSQLiteEditorStorageSchemaVersion",
   SQL_TABS: "hSQLiteEditorSqlTabsV1",
   SESSION_PERSISTENCE: "hSQLiteEditorSessionPersistenceV1",
+  STARTER_SQL: "hSQLiteEditorStarterSqlV1",
   FIRST_RUN_DONE: "hSQLiteEditorFirstRunDoneV1",
   QUERY_HISTORY: "hSQLiteEditorQueryHistoryV1",
   FAVORITES: "hSQLiteEditorFavoritesV1",
@@ -78,7 +80,9 @@ export const storageMigrationController = {
     raw.tabs = raw.tabs.map((tab, index) => {
       const id = String(tab && tab.id ? tab.id : `tab_migrated_${index}`);
       const title = String(tab && tab.title ? tab.title : "").trim().slice(0, 50) || `SQL ${index + 1}`;
-      const sql = String(tab && tab.sql ? tab.sql : "select *\nfrom \nwhere\norder by");
+      const sql = tab && tab.sql !== undefined && tab.sql !== null
+        ? String(tab.sql)
+        : DEFAULT_SQL_TAB_TEMPLATE;
       return { id, title, sql };
     });
     storage.setJSON(STORAGE_KEYS.SQL_TABS, raw);

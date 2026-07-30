@@ -52,6 +52,7 @@ export const appState = {
     },
     preferences: {
       shouldPersistSession: true,
+      shouldInsertStarterSql: true,
       locale: "en-US",
       tabNamePreset: "tlor",
       schemaCollapsed: false,

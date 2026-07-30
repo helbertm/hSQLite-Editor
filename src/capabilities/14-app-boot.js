@@ -5,7 +5,7 @@ import { bindPersistentResultHorizontalScrollbar, bindResultTableHorizontalWheel
 import { evaluateReleaseNotesUpdate, loadReleaseMetadataFromRepoFiles } from "./10-release-metadata.js";
 import { setShellAvailability, setStatus } from "./12-shell-status.js";
 import { initSchemaPanelState } from "./13-schema-panel.js";
-import { initTheme, loadSessionPersistenceSetting, openFirstRunModalIfNeeded } from "./15-preferences.js";
+import { initTheme, loadSessionPersistenceSetting, loadStarterSqlSetting, openFirstRunModalIfNeeded } from "./15-preferences.js";
 import { loadQueryHistoryFromStorage } from "./20-history-query.js";
 import { loadTabNamePresetPreference, renderTabNamePresetSelectOptions } from "./22a-sql-tab-presets.js";
 import { initSqlTabs } from "./23-sql-tabs-state.js";
@@ -95,6 +95,7 @@ export async function bootApp() {
     loadTabNamePresetPreference();
     renderTabNamePresetSelectOptions();
     loadSessionPersistenceSetting();
+    loadStarterSqlSetting();
     loadQueryHistoryFromStorage();
     await initSqlEditor();
     initSqlTabs();

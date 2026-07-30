@@ -31,8 +31,12 @@ export const I18N_MESSAGE_ROWS = Object.freeze([
   ["preferences.themeLightActive", "Light theme active", "Tema claro ativo", "Tema claro activo"],
   ["preferences.sessionRestoreOn", "The session will be restored when the editor reopens", "A sessão será restaurada ao reabrir", "La sesión se restaurará al volver a abrir"],
   ["preferences.sessionRestoreOff", "The session will not be restored when the editor reopens", "A sessão não será restaurada ao reabrir", "La sesión no se restaurará al volver a abrir"],
+  ["preferences.starterSql", "Starter SQL for new tabs", "SQL inicial para novas abas", "SQL inicial para nuevas pestañas"],
+  ["preferences.starterSqlHelp", "ON inserts the starter SQL. OFF starts new tabs empty.", "ON insere o SQL inicial. OFF inicia novas abas vazias.", "ON inserta el SQL inicial. OFF inicia las pestañas nuevas vacías."],
   ["status.sessionOff", "The session will not be saved. The editor will start empty when reopened.", "A sessão não será salva. Ao reabrir, o editor começará vazio.", "La sesión no se guardará. El editor se iniciará vacío al volver a abrir."],
   ["status.sessionOn", "The session will be saved and restored when the editor reopens.", "A sessão será salva e restaurada ao reabrir.", "La sesión se guardará y restaurará al volver a abrir."],
+  ["status.starterSqlOn", "New SQL tabs will start with the starter SQL.", "Novas abas SQL serão iniciadas com o SQL inicial.", "Las pestañas SQL nuevas se iniciarán con el SQL inicial."],
+  ["status.starterSqlOff", "New SQL tabs will start empty.", "Novas abas SQL serão iniciadas vazias.", "Las pestañas SQL nuevas se iniciarán vacías."],
   ["status.preferencesSaved", "Initial preferences saved.", "Preferências iniciais salvas.", "Preferencias iniciales guardadas."],
   ["status.themeApplied", "{theme} theme applied.", "Tema {theme} aplicado.", "Tema {theme} aplicado."],
   ["theme.dark", "Dark", "escuro", "oscuro"],
@@ -154,6 +158,7 @@ export const I18N_MESSAGE_ROWS = Object.freeze([
   , ["history.searchLabel", "Search query history", "Pesquisar no histórico de consultas", "Buscar en el historial de consultas"]
   , ["history.clear", "Clear history", "Limpar histórico", "Borrar historial"]
   , ["settings.sessionScope", "Session and SQL tabs", "Sessão e abas SQL", "Sesión y pestañas SQL"]
+  , ["settings.starterSqlScope", "Starter SQL preference", "Preferência de SQL inicial", "Preferencia de SQL inicial"]
   , ["settings.importConfirmTitle", "Confirm import", "Confirmar importação", "Confirmar importación"]
   , ["settings.importConfirmDescription", "The selected current settings will be replaced by the imported values.", "As configurações atuais selecionadas serão substituídas pelos valores importados.", "La configuración actual seleccionada será reemplazada por los valores importados."]
   , ["shortcuts.quickHistory", "Quick history", "Histórico rápido", "Historial rápido"]

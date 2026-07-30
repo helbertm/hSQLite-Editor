@@ -67,12 +67,10 @@ export const sqlTabsController = {
       return;
     }
 
-    const firstTab = createEmptyTab(null, getEditorValue());
+    const firstTab = createEmptyTab();
     setSqlTabsState({ items: [firstTab], activeTabId: firstTab.id });
-    saveCurrentTabState();
-    renderSqlTabs();
+    loadTabState(firstTab);
     if (sqlEditorTitle) sqlEditorTitle.textContent = t("tabs.defaultTitle");
-    saveSqlTabsToStorage();
   },
   switch(tabId) {
     if (tabId === getActiveSqlTabId()) return;
