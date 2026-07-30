@@ -1532,7 +1532,7 @@ display: inline-flex;
       width: auto;
       flex: 1 1 auto;
       min-height: 32px;
-      padding: 0 10px 0 12px;
+      padding: 0 64px 0 12px;
       border: 0;
       border-radius: 999px;
       background: transparent;
@@ -1619,27 +1619,32 @@ display: flex;
 display: none;
 }
 
-.sql-tab-inline-actions {
+.sql-tab-actions-portal {
+position: absolute;
 display: inline-flex;
       align-items: center;
       justify-content: flex-end;
-      width: 54px;
-      min-width: 54px;
-      margin-right: 3px;
+      gap: 0;
+      padding-right: 3px;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
       transition: opacity 0.15s ease, visibility 0.15s ease;
+      z-index: 2;
 }
 
-.sql-tab-item:hover .sql-tab-inline-actions,
-    .sql-tab-item:focus-within .sql-tab-inline-actions {
+.sql-tab-actions-portal.is-revealed,
+    .sql-tab-actions-portal:focus-within {
 opacity: 1;
       visibility: visible;
-      pointer-events: auto;
 }
 
-.sql-tab-item.is-editing .sql-tab-inline-actions {
+.sql-tab-actions-portal.is-revealed .sql-tab-inline-action,
+    .sql-tab-actions-portal:focus-within .sql-tab-inline-action {
+pointer-events: auto;
+}
+
+.sql-tab-actions-portal:has([data-tab-rename-id]:disabled) {
 display: none;
 }
 
@@ -1686,10 +1691,13 @@ border-color: color-mix(in srgb, var(--border) 70%, transparent);
 }
 
 @media (hover: none), (pointer: coarse) {
-.sql-tab-item.active .sql-tab-inline-actions {
+.sql-tab-actions-portal.active {
 opacity: 1;
         visibility: visible;
-        pointer-events: auto;
+}
+
+.sql-tab-actions-portal.active .sql-tab-inline-action {
+pointer-events: auto;
 }
 }
 

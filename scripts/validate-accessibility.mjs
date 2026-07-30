@@ -90,7 +90,8 @@ const requiredTabContracts = [
   [/closeButton\.setAttribute\("aria-label",\s*t\("tabs\.closeNamedLabel/, "tab-specific close-button name"],
   [/if \(renameField\) item\.appendChild\(renameField\)/, "rename field outside the tab button"],
   [/inlineActions\.appendChild\(renameButton\)[\s\S]*inlineActions\.appendChild\(closeButton\)/, "rename-before-close command order"],
-  [/item\.appendChild\(inlineActions\)/, "tab commands outside the tab button"]
+  [/sqlTabActionsLayer\.appendChild\(inlineActions\)/, "tab commands outside the tablist"],
+  [template, /id="sqlTabsStrip"[^>]*>[\s\S]*?<div class="sql-tabs" id="sqlTabs"[^>]*role="tablist"[\s\S]*?<div class="sql-tab-actions-layer" id="sqlTabActionsLayer"><\/div>[\s\S]*?<button id="newSqlTabBtn"/, "new-tab command immediately after the tab stack"]
 ];
 for (const contract of requiredTabContracts) {
   const [sourceOrPattern, patternOrLabel, optionalLabel] = contract;
@@ -99,7 +100,7 @@ for (const contract of requiredTabContracts) {
   const label = optionalLabel || patternOrLabel;
   if (!pattern.test(source)) failures.push(`Missing ${label}.`);
 }
-if (/sql-tab-actions|actions\.setAttribute\("aria-hidden"|(?:closeEl|renameEl)\.tabIndex\s*=\s*-1/.test(sqlTabsSource)) {
+if (/actions\.setAttribute\("aria-hidden"|(?:closeButton|renameButton)\.tabIndex\s*=\s*-1/.test(sqlTabsSource)) {
   failures.push("Visible SQL tab actions must remain available to keyboard and assistive-technology users.");
 }
 

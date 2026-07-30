@@ -140,7 +140,13 @@
 
       <main class="card">
         <div class="sql-tabs-header">
-          <div class="sql-tabs" id="sqlTabs" role="tablist" aria-label="Abas de instruções SQL" data-i18n-aria-label="tabs.label"></div>
+          <div class="sql-tabs-strip" id="sqlTabsStrip">
+            <div class="sql-tabs-stack">
+              <div class="sql-tabs" id="sqlTabs" role="tablist" aria-label="Abas de instruções SQL" data-i18n-aria-label="tabs.label"></div>
+              <div class="sql-tab-actions-layer" id="sqlTabActionsLayer"></div>
+            </div>
+            <button id="newSqlTabBtn" class="ui-button ui-button-icon ui-button-sm new-sql-tab-btn" type="button" title="Nova aba (Ctrl/Cmd+T)" data-i18n-title="tabs.newTitle" aria-label="Nova aba" data-i18n-aria-label="tabs.new">+</button>
+          </div>
           <button id="closeAllTabsBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action sql-tabs-close-all" type="button" title="Fechar todas as abas" data-i18n-title="tabs.closeAll" aria-label="Fechar todas as abas" data-i18n-aria-label="tabs.closeAll" disabled>
             <span class="sql-tab-icon" aria-hidden="true">
               <svg viewBox="0 0 16 16" focusable="false">
@@ -160,7 +166,6 @@
             </summary>
             <div class="sql-tabs-overflow-menu" id="sqlTabsOverflowList"></div>
           </details>
-          <button id="newSqlTabBtn" class="ui-button ui-button-icon ui-button-sm new-sql-tab-btn" type="button" title="Nova aba (Ctrl/Cmd+T)" data-i18n-title="tabs.newTitle" aria-label="Nova aba" data-i18n-aria-label="tabs.new">+</button>
         </div>
         <div id="sqlTabPanel" role="tabpanel" aria-labelledby="" tabindex="0">
         <div class="editor-header">
