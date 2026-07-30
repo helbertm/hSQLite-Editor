@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='4' y='4' width='24' height='24' rx='6' fill='%23111827'/%3E%3Cellipse cx='16' cy='11' rx='7' ry='3' fill='none' stroke='%23f9fafb' stroke-width='2'/%3E%3Cpath d='M9 11v10c0 1.7 3.1 3 7 3s7-1.3 7-3V11' fill='none' stroke='%23f9fafb' stroke-width='2'/%3E%3C/svg%3E" />
-  <title>hSQLite Editor v0.5.0</title>
+  <title>hSQLite Editor v0.6.0</title>
 
   <style>
 /* Tokens ownership */
@@ -5339,7 +5339,7 @@ margin: 8px 0 8px 18px;
   <div id="appRoot">
   <header class="app-header">
     <div class="brand-block">
-      <h1 data-i18n-ignore>hSQLite Editor <span class="version-pill" id="appVersionPill">v0.5.0</span></h1>
+      <h1 data-i18n-ignore>hSQLite Editor <span class="version-pill" id="appVersionPill">v0.6.0</span></h1>
       <div class="subtitle" data-i18n="app.subtitle">Para trabalhar e estudar</div>
     </div>
 
@@ -6169,7 +6169,7 @@ margin: 8px 0 8px 18px;
       <h1 data-i18n="offline.unavailable">Modo offline indisponível</h1>
       <p data-i18n="offline.description">O artefato atual deveria funcionar totalmente offline. Se esta tela apareceu, o arquivo foi gerado de forma incompleta ou está corrompido.</p>
       <div class="offline-guide" data-i18n-html="offline.guideHtml">
-        <strong>O esperado:</strong> ao abrir <code id="offlineHtmlFileName">hSQLite-Editor-v0.5.0.html</code> pelo navegador, todos os recursos necessários já devem estar embutidos no arquivo.
+        <strong>O esperado:</strong> ao abrir <code id="offlineHtmlFileName">hSQLite-Editor-v0.6.0.html</code> pelo navegador, todos os recursos necessários já devem estar embutidos no arquivo.
         <br><br>
         <strong>O que verificar:</strong>
         <ul>
@@ -27176,8 +27176,9 @@ else if (typeof exports === 'object'){
 
 window.__HSQLITE_BOOT__ = {
   "release": {
-    "version": "0.5.0",
+    "version": "0.6.0",
     "versions": [
+      "0.6.0",
       "0.5.0",
       "0.4.1",
       "0.4.0",
@@ -27328,6 +27329,13 @@ window.__HSQLITE_BOOT__ = {
       "0.2.0"
     ],
     "notesByVersion": {
+      "0.6.0": [
+        "**tabs:** add inline close and confirm bulk closure ([9fd1197](https://github.com/helbertm/hSQLite-Editor/commit/9fd11972c66e6d9ccb1d4235a48ae172adac67da))",
+        "**tabs:** keep new-tab action beside open tabs ([230e485](https://github.com/helbertm/hSQLite-Editor/commit/230e485828e3295125a90873ecd351e39b4df299))",
+        "**tabs:** move rename action into each tab ([6887542](https://github.com/helbertm/hSQLite-Editor/commit/6887542f8c1262d0454bbf07148da919a3d06f31))",
+        "**tabs:** remove close hover fill ([d44f759](https://github.com/helbertm/hSQLite-Editor/commit/d44f759e6020bd98eb60ceeb1792372910945989))",
+        "**tabs:** simplify inline action chrome ([ba7239b](https://github.com/helbertm/hSQLite-Editor/commit/ba7239ba1f0e0a49d85660213b799489367da8e0))"
+      ],
       "0.5.0": [
         "**settings:** configure starter SQL for new tabs ([3209d1b](https://github.com/helbertm/hSQLite-Editor/commit/3209d1bf524c42e096fb5a5abb867cff19a16fd8))",
         "**schema:** reset hidden filters when leaving all ([b43cdd5](https://github.com/helbertm/hSQLite-Editor/commit/b43cdd5f3f40cedd99218da79e8bb59f3e5a8e13))"
