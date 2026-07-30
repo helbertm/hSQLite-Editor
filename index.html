@@ -5293,12 +5293,12 @@ margin: 8px 0 8px 18px;
           <input class="schema-search" id="schemaSearch" placeholder="Filtrar objetos do schema..." data-i18n-placeholder="schema.filter" aria-label="Filtrar objetos do schema" data-i18n-aria-label="schema.filter" />
           <button id="clearSchemaSearchBtn" class="ui-button ui-button-icon ui-button-sm ui-inline-clear clear-schema-search-btn" title="Limpar filtro do schema" data-i18n-title="schema.clearFilter" aria-label="Limpar filtro do schema" data-i18n-aria-label="schema.clearFilter" type="button">×</button>
         </div>
-        <div class="schema-type-filters" id="schemaTypeFilters" aria-label="Filtro por tipo de objeto do schema" data-i18n-aria-label="schema.filterTypes">
-          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeAllBtn">ALL</button>
-          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeTableBtn">TABLE</button>
-          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeViewBtn">VIEW</button>
+        <div class="schema-type-filters" id="schemaTypeFilters" role="group" aria-label="Filtro por tipo de objeto do schema" data-i18n-aria-label="schema.filterTypes">
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeAllBtn" aria-pressed="false">ALL</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeTableBtn" aria-pressed="false">TABLE</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeViewBtn" aria-pressed="false">VIEW</button>
           <div class="schema-other-filter">
-            <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeOtherBtn" data-i18n="schema.other">Outros</button>
+            <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeOtherBtn" data-i18n="schema.other" aria-pressed="false" aria-expanded="false" aria-controls="schemaOtherMenu">Outros</button>
             <div class="schema-other-menu" id="schemaOtherMenu"></div>
           </div>
           <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn schema-clear-filters-btn" id="clearSchemaFiltersBtn" data-i18n="schema.clearFilters">Limpar filtros</button>
@@ -6220,7 +6220,7 @@ else if (typeof exports === 'object'){
 
 
 (() => {
-  // node_modules/@marijn/find-cluster-break/src/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@marijn/find-cluster-break/src/index.js
   var rangeFrom = [];
   var rangeTo = [];
   (() => {
@@ -6294,7 +6294,7 @@ else if (typeof exports === 'object'){
     return code2 < 65536 ? 1 : 2;
   }
 
-  // node_modules/@codemirror/state/dist/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@codemirror/state/dist/index.js
   var Text = class _Text {
     /**
     Get the line description around the given position.
@@ -9662,7 +9662,7 @@ else if (typeof exports === 'object'){
     return strict === true ? -1 : string2.length;
   }
 
-  // node_modules/style-mod/src/style-mod.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/style-mod/src/style-mod.js
   var C = "\u037C";
   var COUNT = typeof Symbol == "undefined" ? "__" + C : Symbol.for(C);
   var SET = typeof Symbol == "undefined" ? "__styleSet" + Math.floor(Math.random() * 1e8) : /* @__PURE__ */ Symbol("styleSet");
@@ -9793,7 +9793,7 @@ else if (typeof exports === 'object'){
     }
   };
 
-  // node_modules/w3c-keyname/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/w3c-keyname/index.js
   var base = {
     8: "Backspace",
     9: "Tab",
@@ -9899,7 +9899,7 @@ else if (typeof exports === 'object'){
     return name2;
   }
 
-  // node_modules/@codemirror/view/dist/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@codemirror/view/dist/index.js
   var nav = typeof navigator != "undefined" ? navigator : { userAgent: "", vendor: "", platform: "" };
   var doc = typeof document != "undefined" ? document : { documentElement: { style: {} } };
   var ie_edge = /* @__PURE__ */ /Edge\/(\d+)/.exec(nav.userAgent);
@@ -19573,7 +19573,7 @@ else if (typeof exports === 'object'){
     return activeLineGutterHighlighter;
   }
 
-  // node_modules/@lezer/common/dist/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@lezer/common/dist/index.js
   var DefaultBufferLength = 1024;
   var nextPropID = 0;
   var Range2 = class {
@@ -21197,7 +21197,7 @@ else if (typeof exports === 'object'){
   };
   var stoppedInner = new NodeProp({ perNode: true });
 
-  // node_modules/@lezer/highlight/dist/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@lezer/highlight/dist/index.js
   var nextTagID = 0;
   var Tag = class _Tag {
     /**
@@ -21921,7 +21921,7 @@ else if (typeof exports === 'object'){
     { tag: tags.punctuation, class: "tok-punctuation" }
   ]);
 
-  // node_modules/@codemirror/language/dist/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@codemirror/language/dist/index.js
   var _a;
   var languageDataProp = /* @__PURE__ */ new NodeProp();
   function defineLanguageFacet(baseData) {
@@ -23145,7 +23145,7 @@ else if (typeof exports === 'object'){
     auto: /* @__PURE__ */ Decoration.mark({ class: "cm-iso", inclusive: true, attributes: { dir: "auto" }, bidiIsolate: null })
   };
 
-  // node_modules/@codemirror/commands/dist/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@codemirror/commands/dist/index.js
   var toggleComment = (target) => {
     let { state } = target, line = state.doc.lineAt(state.selection.main.from), config = getConfig(target.state, line.from);
     return config.line ? toggleLineComment(target) : config.block ? toggleBlockCommentByLine(target) : false;
@@ -24239,7 +24239,7 @@ else if (typeof exports === 'object'){
     { key: "Ctrl-m", mac: "Shift-Alt-m", run: toggleTabFocusMode }
   ].concat(standardKeymap);
 
-  // node_modules/@lezer/lr/dist/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@lezer/lr/dist/index.js
   var Stack = class _Stack {
     /**
     @internal
@@ -25987,7 +25987,7 @@ else if (typeof exports === 'object'){
     return spec.get;
   }
 
-  // node_modules/@codemirror/autocomplete/dist/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@codemirror/autocomplete/dist/index.js
   function toSet(chars) {
     let flat = Object.keys(chars).join("");
     let words = /\w/.test(flat);
@@ -26031,7 +26031,7 @@ else if (typeof exports === 'object'){
   closedBracket.endSide = -1;
   var android = typeof navigator == "object" && /* @__PURE__ */ /Android\b/.test(navigator.userAgent);
 
-  // node_modules/@codemirror/lang-sql/dist/index.js
+  // ../../../Users/helbertm/projetos/hSQLite-Editor/node_modules/@codemirror/lang-sql/dist/index.js
   var whitespace = 36;
   var LineComment = 1;
   var BlockComment = 2;
@@ -28125,6 +28125,7 @@ window.__HSQLITE_BOOT__ = {
     normalizeReleaseNoteForUsers: () => normalizeReleaseNoteForUsers,
     normalizeResultSetState: () => normalizeResultSetState,
     normalizeSchemaFilterPreference: () => normalizeSchemaFilterPreference,
+    normalizeSchemaFilterType: () => normalizeSchemaFilterType,
     normalizeSchemaType: () => normalizeSchemaType,
     normalizeSettingsSession: () => normalizeSettingsSession,
     normalizeSettingsString: () => normalizeSettingsString,
@@ -28426,6 +28427,7 @@ window.__HSQLITE_BOOT__ = {
     themeController: () => themeController,
     themeToggle: () => themeToggle,
     toastContainer: () => toastContainer,
+    toggleSchemaFilterTypePreference: () => toggleSchemaFilterTypePreference,
     toggleSchemaPanel: () => toggleSchemaPanel,
     toggleSessionPersistence: () => toggleSessionPersistence,
     toggleSort: () => toggleSort,
@@ -29807,16 +29809,32 @@ window.__HSQLITE_BOOT__ = {
   function getSchemaFilterState() {
     return appState.preferences.schemaFilters;
   }
+  function normalizeSchemaFilterType(type) {
+    return String(type || "").trim().toLowerCase().replace(/\s+/g, "_");
+  }
   function normalizeSchemaFilterPreference(nextState = {}) {
+    const hasExplicitSelection = nextState.selectedTypes !== void 0 && nextState.selectedTypes !== null;
     const selectedTypes = new Set(
-      Array.from(nextState.selectedTypes || []).map((type) => String(type || "").trim().toLowerCase().replace(/\s+/g, "_")).filter(Boolean)
+      Array.from(nextState.selectedTypes || []).map(normalizeSchemaFilterType).filter(Boolean)
     );
-    if (!selectedTypes.size) {
+    if (!selectedTypes.size && !hasExplicitSelection) {
       selectedTypes.add("table");
       selectedTypes.add("view");
     }
     return {
       all: Boolean(nextState.all),
+      selectedTypes
+    };
+  }
+  function toggleSchemaFilterTypePreference(currentState = {}, type) {
+    const normalizedType = normalizeSchemaFilterType(type);
+    const selectedTypes = currentState.all ? /* @__PURE__ */ new Set() : new Set(Array.from(currentState.selectedTypes || []).map(normalizeSchemaFilterType).filter(Boolean));
+    if (normalizedType) {
+      if (selectedTypes.has(normalizedType)) selectedTypes.delete(normalizedType);
+      else selectedTypes.add(normalizedType);
+    }
+    return {
+      all: false,
       selectedTypes
     };
   }
@@ -34100,6 +34118,11 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       schemaTypeTableBtn.classList.toggle("active", !isAll && selected.has("table"));
       schemaTypeViewBtn.classList.toggle("active", !isAll && selected.has("view"));
       schemaTypeOtherBtn.classList.toggle("active", !isAll && otherSelected > 0);
+      schemaTypeAllBtn.setAttribute("aria-pressed", String(isAll));
+      schemaTypeTableBtn.setAttribute("aria-pressed", String(!isAll && selected.has("table")));
+      schemaTypeViewBtn.setAttribute("aria-pressed", String(!isAll && selected.has("view")));
+      schemaTypeOtherBtn.setAttribute("aria-pressed", String(!isAll && otherSelected > 0));
+      schemaTypeOtherBtn.setAttribute("aria-expanded", String(schemaOtherMenu.classList.contains("open")));
       schemaTypeOtherBtn.textContent = otherSelected > 0 ? t("schema.otherCount", { count: formatNumber(otherSelected) }) : t("schema.other");
       const orderedTypes = getOrderedSchemaTypes().filter((type) => type !== "table" && type !== "view");
       schemaOtherMenu.innerHTML = orderedTypes.map((type) => {
@@ -34198,8 +34221,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     });
     if (schemaTypeAllBtn) {
       schemaTypeAllBtn.addEventListener("click", () => {
-        const schemaFilterState = getSchemaFilterState();
-        setSchemaFilterState({ all: true, selectedTypes: schemaFilterState.selectedTypes });
+        setSchemaFilterState({ all: true, selectedTypes: /* @__PURE__ */ new Set() });
         schemaController.renderTypeFilters();
         renderSchema();
       });
@@ -34207,9 +34229,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     if (schemaTypeTableBtn) {
       schemaTypeTableBtn.addEventListener("click", () => {
         const schemaFilterState = getSchemaFilterState();
-        const selected = new Set(schemaFilterState.selectedTypes);
-        selected.has("table") ? selected.delete("table") : selected.add("table");
-        setSchemaFilterState({ all: false, selectedTypes: selected });
+        setSchemaFilterState(toggleSchemaFilterTypePreference(schemaFilterState, "table"));
         schemaController.renderTypeFilters();
         renderSchema();
       });
@@ -34217,9 +34237,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     if (schemaTypeViewBtn) {
       schemaTypeViewBtn.addEventListener("click", () => {
         const schemaFilterState = getSchemaFilterState();
-        const selected = new Set(schemaFilterState.selectedTypes);
-        selected.has("view") ? selected.delete("view") : selected.add("view");
-        setSchemaFilterState({ all: false, selectedTypes: selected });
+        setSchemaFilterState(toggleSchemaFilterTypePreference(schemaFilterState, "view"));
         schemaController.renderTypeFilters();
         renderSchema();
       });
@@ -34227,7 +34245,8 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     if (schemaTypeOtherBtn) {
       schemaTypeOtherBtn.addEventListener("click", (event) => {
         event.preventDefault();
-        schemaOtherMenu.classList.toggle("open");
+        const open = schemaOtherMenu.classList.toggle("open");
+        schemaTypeOtherBtn.setAttribute("aria-expanded", String(open));
       });
     }
     if (schemaOtherMenu) {
@@ -34259,6 +34278,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       if (!schemaOtherMenu.classList.contains("open")) return;
       if (schemaOtherMenu.contains(event.target) || schemaTypeOtherBtn.contains(event.target)) return;
       schemaOtherMenu.classList.remove("open");
+      schemaTypeOtherBtn.setAttribute("aria-expanded", "false");
     });
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;
@@ -34266,6 +34286,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       if (!schemaOtherMenu.classList.contains("open")) return;
       event.preventDefault();
       schemaOtherMenu.classList.remove("open");
+      schemaTypeOtherBtn.setAttribute("aria-expanded", "false");
       schemaTypeOtherBtn.focus();
     });
   }
