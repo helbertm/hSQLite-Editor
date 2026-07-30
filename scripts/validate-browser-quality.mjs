@@ -13,6 +13,7 @@ const locales = [
     blockedAnnouncement: "Virtual relationships between columns in the same table are not supported.",
     populationTitle: "Populate table for QA", exportTitle: "Export result", historyTitle: "Query history",
     favoritesTitle: "Favorite queries", closeTabTitle: "Close tab?", renameTabPrefix: "Rename tab", closeTabPrefix: "Close tab", missingTableCause: "a table or view name was not found",
+    settingsTitle: "Settings", starterSqlLabel: "Starter SQL for new tabs", starterSqlHelp: "ON inserts the starter SQL. OFF starts new tabs empty.",
     helpTitle: "hSQLite Editor help", suggestImprovement: "Suggest improvement: open the GitHub Feature request form in a new tab",
     helpPrefix: "https://learn.microsoft.com/en-us/", csvFilename: "sqlite_result.csv"
   },
@@ -25,6 +26,7 @@ const locales = [
     blockedAnnouncement: "Relacionamentos virtuais entre colunas da mesma tabela não são suportados.",
     populationTitle: "Popular tabela para QA", exportTitle: "Exportar resultado", historyTitle: "Histórico de consultas",
     favoritesTitle: "Consultas favoritas", closeTabTitle: "Fechar aba?", renameTabPrefix: "Renomear aba", closeTabPrefix: "Fechar aba", missingTableCause: "uma tabela ou view não foi encontrada",
+    settingsTitle: "Configurações", starterSqlLabel: "SQL inicial para novas abas", starterSqlHelp: "ON insere o SQL inicial. OFF inicia novas abas vazias.",
     helpTitle: "Ajuda do hSQLite Editor", suggestImprovement: "Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba",
     helpPrefix: "https://learn.microsoft.com/pt-br/", csvFilename: "resultado_sqlite.csv"
   },
@@ -37,6 +39,7 @@ const locales = [
     blockedAnnouncement: "No se admiten relaciones virtuales entre columnas de la misma tabla.",
     populationTitle: "Poblar tabla para QA", exportTitle: "Exportar resultado", historyTitle: "Historial de consultas",
     favoritesTitle: "Consultas favoritas", closeTabTitle: "¿Cerrar pestaña?", renameTabPrefix: "Renombrar pestaña", closeTabPrefix: "Cerrar pestaña", missingTableCause: "no se encontró una tabla o vista",
+    settingsTitle: "Configuración", starterSqlLabel: "SQL inicial para nuevas pestañas", starterSqlHelp: "ON inserta el SQL inicial. OFF inicia las pestañas nuevas vacías.",
     helpTitle: "Ayuda de hSQLite Editor", suggestImprovement: "Sugerir una mejora: abrir el formulario Feature request de GitHub en una pestaña nueva",
     helpPrefix: "https://learn.microsoft.com/es-es/", csvFilename: "resultado_sqlite.csv"
   }
@@ -206,6 +209,54 @@ try {
       assert(serious.length === 0, `${locale.tag}/${viewport.name}: ${serious.map(violation => (
         `${violation.id}: ${violation.nodes.map(node => node.target.join(" ")).join(" | ")}`
       )).join(", ")}`);
+
+      await page.locator("#editorMoreActions > summary").click();
+      await page.locator("#settingsTransferBtn").click();
+      await page.locator("#settingsTransferModal").waitFor({ state: "visible" });
+      const settingsDialog = page.getByRole("dialog", { name: locale.settingsTitle });
+      const starterSqlSwitch = settingsDialog.getByRole("switch", { name: locale.starterSqlLabel });
+      assert(await settingsDialog.count() === 1, `${locale.tag}/${viewport.name}: Settings dialog name is not localized.`);
+      assert(await starterSqlSwitch.count() === 1, `${locale.tag}/${viewport.name}: starter-SQL switch is missing or ambiguously named.`);
+      assert(await starterSqlSwitch.isChecked(), `${locale.tag}/${viewport.name}: starter-SQL switch does not default to ON.`);
+      assert(
+        await page.locator("#starterSqlHelp").textContent() === locale.starterSqlHelp,
+        `${locale.tag}/${viewport.name}: starter-SQL help text is not localized.`
+      );
+
+      const settingsAxe = await new AxeBuilder({ page })
+        .include("#settingsTransferModal")
+        .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+        .analyze();
+      assert(settingsAxe.violations.length === 0, `${locale.tag}/${viewport.name}: Settings violations: ${settingsAxe.violations.map(violation => (
+        `${violation.id}: ${violation.nodes.map(node => node.target.join(" ")).join(" | ")}`
+      )).join(", ")}`);
+
+      const settingsViewport = page.viewportSize();
+      await page.setViewportSize({ width: 320, height: settingsViewport.height });
+      const settingsReflow = await page.evaluate(() => ({
+        pageOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+        modalOverflow: document.querySelector("#settingsTransferModal .modal")?.scrollWidth
+          > document.querySelector("#settingsTransferModal .modal")?.clientWidth + 1
+      }));
+      assert(!settingsReflow.pageOverflow, `${locale.tag}/${viewport.name}: Settings causes horizontal page overflow at 320 CSS px.`);
+      assert(!settingsReflow.modalOverflow, `${locale.tag}/${viewport.name}: Settings content overflows its modal at 320 CSS px.`);
+      await page.setViewportSize(settingsViewport);
+
+      await starterSqlSwitch.focus();
+      await page.keyboard.press("Space");
+      assert(!(await starterSqlSwitch.isChecked()), `${locale.tag}/${viewport.name}: Space did not turn starter SQL OFF.`);
+      await page.keyboard.press("Escape");
+      await page.locator("#settingsTransferModal").waitFor({ state: "hidden" });
+      await page.locator("#newSqlTabBtn").click();
+      assert(await page.evaluate(() => getEditorValue()) === "", `${locale.tag}/${viewport.name}: OFF did not create an empty SQL tab.`);
+      await page.evaluate(() => {
+        setStarterSqlEnabled(true);
+        closeAllSqlTabs();
+      });
+      assert(
+        await page.evaluate(() => getEditorValue() === DEFAULT_SQL_TAB_TEMPLATE),
+        `${locale.tag}/${viewport.name}: ON did not restore the canonical starter SQL.`
+      );
 
       await page.locator("#helpBtn").click();
       await page.locator("#helpModal").waitFor({ state: "visible" });

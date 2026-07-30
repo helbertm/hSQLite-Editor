@@ -1,6 +1,6 @@
 import { cmEditor } from "./03-dom-editor-results.js";
 import { t } from "./03-localization.js";
-import { firstRunModal, firstRunTabNamePresetSelect, sessionToggle, settingsTransferModal, tabNamePresetSelect, themeToggle } from "./05-dom-library-settings.js";
+import { firstRunModal, firstRunTabNamePresetSelect, sessionToggle, settingsTransferModal, starterSqlToggle, tabNamePresetSelect, themeToggle } from "./05-dom-library-settings.js";
 import { modalController } from "./05-modal-controller.js";
 import { setStatus } from "./12-shell-status.js";
 import { saveSqlTabsToStorage } from "./22-sql-tabs-storage.js";
@@ -9,7 +9,7 @@ import { getNextSqlTabName } from "./22b-sql-tab-factory.js";
 import { renderSqlTabs } from "./24-sql-tabs-render.js";
 import { invokeRuntimeTestOverride } from "../core/09-test-hooks.js";
 import { getSqlTabsItems, updateTabState } from "../core/11-state-tabs.js";
-import { getSelectedTabNamePreset, getShouldPersistSession, setPreferencesState } from "../core/13-state-preferences.js";
+import { getSelectedTabNamePreset, getShouldInsertStarterSql, getShouldPersistSession, setPreferencesState } from "../core/13-state-preferences.js";
 import { STORAGE_KEYS, sqlTabsStorage, storage } from "../ports/05-storage.js";
 
 let prepareSettingsTransfer = () => {};
@@ -69,6 +69,24 @@ export const sessionController = {
   },
   toggle() {
     this.set(!getShouldPersistSession());
+  }
+};
+
+export const starterSqlController = {
+  load() {
+    const saved = storage.get(STORAGE_KEYS.STARTER_SQL, null);
+    setPreferencesState({ shouldInsertStarterSql: saved !== "false" });
+    this.updateToggleUI();
+  },
+  updateToggleUI() {
+    if (!starterSqlToggle) return;
+    starterSqlToggle.checked = getShouldInsertStarterSql();
+  },
+  set(value) {
+    setPreferencesState({ shouldInsertStarterSql: Boolean(value) });
+    storage.set(STORAGE_KEYS.STARTER_SQL, getShouldInsertStarterSql() ? "true" : "false");
+    this.updateToggleUI();
+    setStatus(t(getShouldInsertStarterSql() ? "status.starterSqlOn" : "status.starterSqlOff"), "ok");
   }
 };
 
@@ -154,6 +172,14 @@ export function focusTabPresetSelector() {
 
 export function loadSessionPersistenceSetting() {
   sessionController.load();
+}
+
+export function loadStarterSqlSetting() {
+  starterSqlController.load();
+}
+
+export function setStarterSqlEnabled(value) {
+  starterSqlController.set(value);
 }
 
 export function setSessionPersistence(value) {

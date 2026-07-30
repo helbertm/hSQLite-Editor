@@ -8,6 +8,10 @@ export function getShouldPersistSession() {
     return appState.preferences.shouldPersistSession;
   }
 
+export function getShouldInsertStarterSql() {
+    return appState.preferences.shouldInsertStarterSql;
+  }
+
 export function getSelectedLocale() {
     return appState.preferences.locale;
   }
@@ -65,6 +69,9 @@ export function toggleSchemaFilterTypePreference(currentState = {}, type) {
 export function setPreferencesState(patch) {
     if (Object.prototype.hasOwnProperty.call(patch, "shouldPersistSession")) {
       appState.preferences.shouldPersistSession = Boolean(patch.shouldPersistSession);
+    }
+    if (Object.prototype.hasOwnProperty.call(patch, "shouldInsertStarterSql")) {
+      appState.preferences.shouldInsertStarterSql = Boolean(patch.shouldInsertStarterSql);
     }
     if (Object.prototype.hasOwnProperty.call(patch, "locale")) {
       const locale = String(patch.locale || "").trim();

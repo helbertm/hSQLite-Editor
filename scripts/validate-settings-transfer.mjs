@@ -21,7 +21,7 @@ function expectFailure(payload, scopes, expectedMessage) {
 const multiScopePayload = {
   version: 1,
   exportedAt: "2026-07-18T00:00:00.000Z",
-  scopes: ["favorites", "queryHistory", "theme", "locale", "session", "tabPreset"],
+  scopes: ["favorites", "queryHistory", "theme", "locale", "session", "tabPreset", "starterSql"],
   data: {
     favorites: [{ id: "fav-1", sql: "select 1", createdAt: "2026-07-18T00:00:00.000Z" }],
     queryHistory: [{
@@ -43,7 +43,8 @@ const multiScopePayload = {
         tabs: [{ id: "tab-1", title: "SQL 1", sql: "select 3" }]
       }
     },
-    tabPreset: "star_wars"
+    tabPreset: "star_wars",
+    starterSql: false
   }
 };
 
@@ -65,6 +66,11 @@ expectFailure(
   { ...multiScopePayload, data: { ...multiScopePayload.data, theme: "system" } },
   ["theme"],
   "theme must be dark or light"
+);
+expectFailure(
+  { ...multiScopePayload, data: { ...multiScopePayload.data, starterSql: "false" } },
+  ["starterSql"],
+  "starterSql must be a boolean"
 );
 expectFailure(
   {

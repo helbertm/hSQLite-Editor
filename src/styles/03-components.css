@@ -719,6 +719,9 @@ display: grid;
 
 .modal-options label {
 display: flex;
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
       gap: 9px;
       align-items: center;
       padding: 10px;
@@ -1866,13 +1869,26 @@ font-size: 13px;
       color: var(--foreground);
 }
 
+.cfg-preference-copy {
+display: flex;
+      min-width: 0;
+      flex: 1;
+      flex-direction: column;
+      gap: 3px;
+}
+
+.cfg-preference-copy .small-muted {
+line-height: 1.35;
+}
+
 .cfg-seg-switch {
 position: relative;
       display: inline-flex;
       align-items: center;
 }
 
-.cfg-seg-switch .cfg-scope {
+.cfg-seg-switch .cfg-scope,
+    .cfg-seg-switch .cfg-toggle-input {
 position: absolute;
       opacity: 0;
       pointer-events: none;
@@ -1902,7 +1918,7 @@ width: var(--seg-switch-opt-w);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.04em;
-      color: color-mix(in srgb, var(--foreground) 44%, transparent);
+      color: var(--mutedText);
       line-height: 1;
       user-select: none;
 }
@@ -1919,14 +1935,23 @@ position: absolute;
       z-index: 1;
 }
 
-.cfg-seg-switch .cfg-scope:checked + .cfg-seg-track .cfg-seg-thumb {
+.cfg-seg-switch .cfg-scope:checked + .cfg-seg-track .cfg-seg-thumb,
+    .cfg-seg-switch .cfg-toggle-input:checked + .cfg-seg-track .cfg-seg-thumb {
 transform: translateX(var(--seg-switch-shift-on));
       background: var(--foreground);
 }
 
 .cfg-seg-switch .cfg-scope:checked + .cfg-seg-track .cfg-seg-option.on,
-    .cfg-seg-switch .cfg-scope:not(:checked) + .cfg-seg-track .cfg-seg-option.off {
+    .cfg-seg-switch .cfg-scope:not(:checked) + .cfg-seg-track .cfg-seg-option.off,
+    .cfg-seg-switch .cfg-toggle-input:checked + .cfg-seg-track .cfg-seg-option.on,
+    .cfg-seg-switch .cfg-toggle-input:not(:checked) + .cfg-seg-track .cfg-seg-option.off {
 color: var(--background);
+}
+
+.cfg-seg-switch .cfg-scope:focus-visible + .cfg-seg-track,
+    .cfg-seg-switch .cfg-toggle-input:focus-visible + .cfg-seg-track {
+outline: 2px solid var(--ring);
+      outline-offset: 2px;
 }
 
 #openSqlBtn,
