@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.5.0...hsqlite-editor-v0.6.0) (2026-07-30)
+
+
+### Features
+
+* **tabs:** add inline close and confirm bulk closure ([9fd1197](https://github.com/helbertm/hSQLite-Editor/commit/9fd11972c66e6d9ccb1d4235a48ae172adac67da))
+* **tabs:** keep new-tab action beside open tabs ([230e485](https://github.com/helbertm/hSQLite-Editor/commit/230e485828e3295125a90873ecd351e39b4df299))
+* **tabs:** move rename action into each tab ([6887542](https://github.com/helbertm/hSQLite-Editor/commit/6887542f8c1262d0454bbf07148da919a3d06f31))
+
+
+### Bug Fixes
+
+* **tabs:** remove close hover fill ([d44f759](https://github.com/helbertm/hSQLite-Editor/commit/d44f759e6020bd98eb60ceeb1792372910945989))
+* **tabs:** simplify inline action chrome ([ba7239b](https://github.com/helbertm/hSQLite-Editor/commit/ba7239ba1f0e0a49d85660213b799489367da8e0))
+
 ## [0.5.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.4.1...hsqlite-editor-v0.5.0) (2026-07-30)
 
 
