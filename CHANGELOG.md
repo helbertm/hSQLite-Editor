@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.6.0...hsqlite-editor-v0.6.1) (2026-07-30)
+
+
+### Bug Fixes
+
+* **release:** make checksum manifest portable ([b93ca44](https://github.com/helbertm/hSQLite-Editor/commit/b93ca4468dd93379413d10a77f1ca1e5f5b92cdd))
+
 ## [0.6.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.5.0...hsqlite-editor-v0.6.0) (2026-07-30)
 
 
