@@ -3,7 +3,7 @@ import { formatNumber, t } from "../capabilities/03-localization.js";
 import { sqlEscapeIdent } from "../core/07-sql-escaping.js";
 import { getActiveDatabase } from "../capabilities/07-database-runtime.js";
 import { setStatus } from "../capabilities/12-shell-status.js";
-import { getSchemaFilterState, setPreferencesState } from "../core/13-state-preferences.js";
+import { getSchemaFilterState, setPreferencesState, toggleSchemaFilterTypePreference } from "../core/13-state-preferences.js";
 import { getSchemaAvailableTypes, getSchemaObjects, setSchemaState } from "../core/14-state-database-schema.js";
 import { isSqlExecutionRunning } from "../core/15-state-runtime-library.js";
 import { STORAGE_KEYS, storage } from "../ports/05-storage.js";
@@ -157,6 +157,11 @@ export function normalizeSchemaType(type) {
       schemaTypeTableBtn.classList.toggle("active", !isAll && selected.has("table"));
       schemaTypeViewBtn.classList.toggle("active", !isAll && selected.has("view"));
       schemaTypeOtherBtn.classList.toggle("active", !isAll && otherSelected > 0);
+      schemaTypeAllBtn.setAttribute("aria-pressed", String(isAll));
+      schemaTypeTableBtn.setAttribute("aria-pressed", String(!isAll && selected.has("table")));
+      schemaTypeViewBtn.setAttribute("aria-pressed", String(!isAll && selected.has("view")));
+      schemaTypeOtherBtn.setAttribute("aria-pressed", String(!isAll && otherSelected > 0));
+      schemaTypeOtherBtn.setAttribute("aria-expanded", String(schemaOtherMenu.classList.contains("open")));
       schemaTypeOtherBtn.textContent = otherSelected > 0
         ? t("schema.otherCount", { count: formatNumber(otherSelected) })
         : t("schema.other");
@@ -268,8 +273,7 @@ export function normalizeSchemaType(type) {
     });
     if (schemaTypeAllBtn) {
       schemaTypeAllBtn.addEventListener("click", () => {
-        const schemaFilterState = getSchemaFilterState();
-        setSchemaFilterState({ all: true, selectedTypes: schemaFilterState.selectedTypes });
+        setSchemaFilterState({ all: true, selectedTypes: new Set() });
         schemaController.renderTypeFilters();
         renderSchema();
       });
@@ -277,9 +281,7 @@ export function normalizeSchemaType(type) {
     if (schemaTypeTableBtn) {
       schemaTypeTableBtn.addEventListener("click", () => {
         const schemaFilterState = getSchemaFilterState();
-        const selected = new Set(schemaFilterState.selectedTypes);
-        selected.has("table") ? selected.delete("table") : selected.add("table");
-        setSchemaFilterState({ all: false, selectedTypes: selected });
+        setSchemaFilterState(toggleSchemaFilterTypePreference(schemaFilterState, "table"));
         schemaController.renderTypeFilters();
         renderSchema();
       });
@@ -287,9 +289,7 @@ export function normalizeSchemaType(type) {
     if (schemaTypeViewBtn) {
       schemaTypeViewBtn.addEventListener("click", () => {
         const schemaFilterState = getSchemaFilterState();
-        const selected = new Set(schemaFilterState.selectedTypes);
-        selected.has("view") ? selected.delete("view") : selected.add("view");
-        setSchemaFilterState({ all: false, selectedTypes: selected });
+        setSchemaFilterState(toggleSchemaFilterTypePreference(schemaFilterState, "view"));
         schemaController.renderTypeFilters();
         renderSchema();
       });
@@ -297,7 +297,8 @@ export function normalizeSchemaType(type) {
     if (schemaTypeOtherBtn) {
       schemaTypeOtherBtn.addEventListener("click", (event) => {
         event.preventDefault();
-        schemaOtherMenu.classList.toggle("open");
+        const open = schemaOtherMenu.classList.toggle("open");
+        schemaTypeOtherBtn.setAttribute("aria-expanded", String(open));
       });
     }
     if (schemaOtherMenu) {
@@ -329,6 +330,7 @@ export function normalizeSchemaType(type) {
       if (!schemaOtherMenu.classList.contains("open")) return;
       if (schemaOtherMenu.contains(event.target) || schemaTypeOtherBtn.contains(event.target)) return;
       schemaOtherMenu.classList.remove("open");
+      schemaTypeOtherBtn.setAttribute("aria-expanded", "false");
     });
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;
@@ -336,6 +338,7 @@ export function normalizeSchemaType(type) {
       if (!schemaOtherMenu.classList.contains("open")) return;
       event.preventDefault();
       schemaOtherMenu.classList.remove("open");
+      schemaTypeOtherBtn.setAttribute("aria-expanded", "false");
       schemaTypeOtherBtn.focus();
     });
   }

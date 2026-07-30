@@ -2187,7 +2187,9 @@ function assertQuickGuideAvailableAfterDatabaseLoad(runtime) {
 function assertSchemaFlows(runtime, context) {
   const schemaList = runtime.elementsById.get("schemaList");
   const schemaSearch = runtime.elementsById.get("schemaSearch");
+  const schemaTypeAllBtn = runtime.elementsById.get("schemaTypeAllBtn");
   const schemaTypeTableBtn = runtime.elementsById.get("schemaTypeTableBtn");
+  const schemaTypeViewBtn = runtime.elementsById.get("schemaTypeViewBtn");
   const clearSchemaFiltersBtn = runtime.elementsById.get("clearSchemaFiltersBtn");
 
   context.loadSchema();
@@ -2197,11 +2199,38 @@ function assertSchemaFlows(runtime, context) {
     `Runtime smoke expected schema list to render multiple objects after DB load, got ${schemaList?.children?.length ?? "empty"}.`
   );
 
+  schemaTypeAllBtn.click();
+  schemaTypeTableBtn.click();
+  assert(
+    schemaTypeAllBtn.getAttribute("aria-pressed") === "false"
+      && schemaTypeTableBtn.getAttribute("aria-pressed") === "true"
+      && schemaTypeViewBtn.getAttribute("aria-pressed") === "false"
+      && schemaList.children.length >= 3,
+    "Runtime smoke expected ALL -> TABLE to select only table objects."
+  );
+
+  schemaTypeAllBtn.click();
+  schemaTypeViewBtn.click();
+  assert(
+    schemaTypeAllBtn.getAttribute("aria-pressed") === "false"
+      && schemaTypeTableBtn.getAttribute("aria-pressed") === "false"
+      && schemaTypeViewBtn.getAttribute("aria-pressed") === "true"
+      && schemaList.children.length === 0,
+    "Runtime smoke expected ALL -> VIEW to select only view objects."
+  );
+
+  schemaTypeAllBtn.click();
   schemaSearch.value = "ped";
   context.renderSchema();
   assert(
     schemaList.children.length === 1,
     `Runtime smoke expected schema search to reduce rendered objects to one match, got ${schemaList.children.length}.`
+  );
+
+  schemaTypeTableBtn.click();
+  assert(
+    schemaList.children.length === 1 && schemaTypeTableBtn.getAttribute("aria-pressed") === "true",
+    "Runtime smoke expected ALL -> TABLE to keep the matching table visible."
   );
 
   schemaTypeTableBtn.click();

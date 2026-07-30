@@ -24,18 +24,40 @@ export function getSchemaFilterState() {
     return appState.preferences.schemaFilters;
   }
 
+export function normalizeSchemaFilterType(type) {
+    return String(type || "").trim().toLowerCase().replace(/\s+/g, "_");
+  }
+
 export function normalizeSchemaFilterPreference(nextState = {}) {
+    const hasExplicitSelection = nextState.selectedTypes !== undefined && nextState.selectedTypes !== null;
     const selectedTypes = new Set(
       Array.from(nextState.selectedTypes || [])
-        .map((type) => String(type || "").trim().toLowerCase().replace(/\s+/g, "_"))
+        .map(normalizeSchemaFilterType)
         .filter(Boolean)
     );
-    if (!selectedTypes.size) {
+    if (!selectedTypes.size && !hasExplicitSelection) {
       selectedTypes.add("table");
       selectedTypes.add("view");
     }
     return {
       all: Boolean(nextState.all),
+      selectedTypes
+    };
+  }
+
+export function toggleSchemaFilterTypePreference(currentState = {}, type) {
+    const normalizedType = normalizeSchemaFilterType(type);
+    const selectedTypes = currentState.all
+      ? new Set()
+      : new Set(Array.from(currentState.selectedTypes || []).map(normalizeSchemaFilterType).filter(Boolean));
+
+    if (normalizedType) {
+      if (selectedTypes.has(normalizedType)) selectedTypes.delete(normalizedType);
+      else selectedTypes.add(normalizedType);
+    }
+
+    return {
+      all: false,
       selectedTypes
     };
   }

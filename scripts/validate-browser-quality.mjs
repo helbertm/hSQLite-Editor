@@ -251,12 +251,47 @@ try {
           CREATE TABLE qa_child (id INTEGER PRIMARY KEY, parent_id INTEGER REFERENCES qa_parent(id));
           CREATE TABLE qa_virtual_a (id INTEGER PRIMARY KEY, code TEXT NOT NULL);
           CREATE TABLE qa_virtual_b (id INTEGER PRIMARY KEY, code TEXT NOT NULL);
+          CREATE VIEW qa_parent_view AS SELECT id, label FROM qa_parent;
         `);
         const bytes = database.export();
         database.close();
         await openDbFromBytes("sql-map-accessibility.db", bytes);
         buildSqlMapSchema();
       });
+
+      const schemaAllFilter = page.locator("#schemaTypeAllBtn");
+      const schemaTableFilter = page.locator("#schemaTypeTableBtn");
+      const schemaViewFilter = page.locator("#schemaTypeViewBtn");
+
+      await page.evaluate(() => {
+        document.querySelector("#schemaTypeAllBtn")?.click();
+        document.querySelector("#schemaTypeTableBtn")?.click();
+      });
+      assert(await schemaAllFilter.getAttribute("aria-pressed") === "false", `${locale.tag}/${viewport.name}: ALL remained pressed after TABLE selection.`);
+      assert(await schemaTableFilter.getAttribute("aria-pressed") === "true", `${locale.tag}/${viewport.name}: ALL -> TABLE did not press TABLE.`);
+      assert(await schemaViewFilter.getAttribute("aria-pressed") === "false", `${locale.tag}/${viewport.name}: ALL -> TABLE incorrectly pressed VIEW.`);
+      const tableTypeLabels = await page.locator("#schemaList .schema-object-type").allTextContents();
+      assert(
+        tableTypeLabels.length > 0 && tableTypeLabels.every(label => label === "(table)"),
+        `${locale.tag}/${viewport.name}: ALL -> TABLE rendered a non-table schema object.`
+      );
+
+      await page.evaluate(() => {
+        document.querySelector("#schemaTypeAllBtn")?.click();
+        document.querySelector("#schemaTypeViewBtn")?.click();
+      });
+      assert(await schemaTableFilter.getAttribute("aria-pressed") === "false", `${locale.tag}/${viewport.name}: ALL -> VIEW incorrectly pressed TABLE.`);
+      assert(await schemaViewFilter.getAttribute("aria-pressed") === "true", `${locale.tag}/${viewport.name}: ALL -> VIEW did not press VIEW.`);
+      const viewTypeLabels = await page.locator("#schemaList .schema-object-type").allTextContents();
+      assert(
+        viewTypeLabels.length > 0 && viewTypeLabels.every(label => label === "(view)"),
+        `${locale.tag}/${viewport.name}: ALL -> VIEW rendered a non-view schema object.`
+      );
+
+      await page.evaluate(() => document.querySelector("#schemaTypeTableBtn")?.click());
+      assert(await schemaTableFilter.getAttribute("aria-pressed") === "true", `${locale.tag}/${viewport.name}: TABLE did not join the active VIEW filter.`);
+      assert(await schemaViewFilter.getAttribute("aria-pressed") === "true", `${locale.tag}/${viewport.name}: TABLE selection cleared the active VIEW filter.`);
+      await page.evaluate(() => document.querySelector("#schemaTypeAllBtn")?.click());
 
       await page.evaluate(() => {
         setEditorValue("select * from qa_");
@@ -287,8 +322,8 @@ try {
       const fieldCheckbox = page.locator('input[data-map-field-table="qa_parent"][data-map-field-name="id"]');
       assert(await tableCheckbox.getAttribute("aria-label") === locale.tableName, `${locale.tag}/${viewport.name}: SQL Map table checkbox name is ambiguous.`);
       assert(await fieldCheckbox.getAttribute("aria-label") === locale.fieldName, `${locale.tag}/${viewport.name}: SQL Map field checkbox name is ambiguous.`);
-      assert(await page.getByRole("checkbox", { name: locale.tableName }).count() === 1, `${locale.tag}/${viewport.name}: table checkbox is not exposed by its localized name.`);
-      assert(await page.getByRole("checkbox", { name: locale.fieldName }).count() === 1, `${locale.tag}/${viewport.name}: field checkbox is not exposed by its localized name.`);
+      assert(await page.getByRole("checkbox", { name: locale.tableName, exact: true }).count() === 1, `${locale.tag}/${viewport.name}: table checkbox is not exposed by its localized name.`);
+      assert(await page.getByRole("checkbox", { name: locale.fieldName, exact: true }).count() === 1, `${locale.tag}/${viewport.name}: field checkbox is not exposed by its localized name.`);
 
       await tableCheckbox.focus();
       await page.keyboard.press("Tab");
