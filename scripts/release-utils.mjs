@@ -205,6 +205,19 @@ export function getReleaseArtifactPath(rootDir, version) {
   return path.join(rootDir, "dist", `hSQLite-Editor-v${assertStableReleaseVersion(version)}.html`);
 }
 
+export function formatReleaseChecksumLine(subjectPath, digest) {
+  const normalizedDigest = String(digest ?? "");
+  if (!/^[a-f0-9]{64}$/.test(normalizedDigest)) {
+    throw new Error(`Invalid SHA-256 digest: ${JSON.stringify(normalizedDigest)}`);
+  }
+
+  const assetName = path.basename(String(subjectPath ?? ""));
+  if (!assetName || assetName === "." || assetName === "..") {
+    throw new Error(`Invalid release asset path: ${JSON.stringify(subjectPath)}`);
+  }
+  return `${normalizedDigest}  ${assetName}`;
+}
+
 export function getReleaseTag(packageName, version) {
   return `${assertReleasePackageName(packageName)}-v${assertStableReleaseVersion(version)}`;
 }

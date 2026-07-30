@@ -6,6 +6,7 @@ import {
   escapeRegExp,
   extractInlineScripts,
   extractMarkupText,
+  formatReleaseChecksumLine,
   getReleaseArtifactPath,
   getReleaseTag
 } from "../release-utils.mjs";
@@ -74,4 +75,21 @@ test("release tuple helpers reject unsafe package names and versions", () => {
   for (const packageName of ["../hsqlite-editor", "hsqlite/editor", "hsqlite editor", "hsqlite%2feditor"]) {
     assert.throws(() => assertReleasePackageName(packageName), /Invalid release package name/);
   }
+});
+
+test("release checksum lines use flat public asset names", () => {
+  const digest = "a".repeat(64);
+
+  assert.equal(
+    formatReleaseChecksumLine("/tmp/release/dist/hSQLite-Editor-v0.6.1.html", digest),
+    `${digest}  hSQLite-Editor-v0.6.1.html`
+  );
+  assert.equal(
+    formatReleaseChecksumLine("/tmp/release/sbom.spdx.json", digest),
+    `${digest}  sbom.spdx.json`
+  );
+  assert.throws(
+    () => formatReleaseChecksumLine("/tmp/release/SHA256SUMS", "not-a-digest"),
+    /Invalid SHA-256 digest/
+  );
 });
