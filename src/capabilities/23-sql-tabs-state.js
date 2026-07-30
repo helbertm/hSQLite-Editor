@@ -1,4 +1,4 @@
-import { closeTabConfirmModal, closeTabConfirmText, closeTabPreview, sqlEditorTitle } from "./03-dom-editor-results.js";
+import { closeAllTabsConfirmModal, closeAllTabsConfirmText, closeAllTabsTitle, closeTabConfirmModal, closeTabConfirmText, closeTabPreview, sqlEditorTitle, sqlTabsEl } from "./03-dom-editor-results.js";
 import { t } from "./03-localization.js";
 import { modalController } from "./05-modal-controller.js";
 import { activateResultSet, setResultControlsEnabled } from "./05a-result-state-controller.js";
@@ -45,6 +45,13 @@ export function loadTabState(tab) {
   if (sqlEditorTitle) sqlEditorTitle.textContent = t("tabs.defaultTitle");
   setSqlTabsState({ isSwitching: false });
   saveSqlTabsToStorage();
+}
+
+function focusActiveSqlTab() {
+  requestAnimationFrame(() => {
+    const activeTab = sqlTabsEl?.querySelector(".sql-tab.active");
+    if (activeTab && typeof activeTab.focus === "function") activeTab.focus();
+  });
 }
 
 export const sqlTabsController = {
@@ -155,7 +162,25 @@ export const sqlTabsController = {
       saveSqlTabsToStorage();
     }
 
+    focusActiveSqlTab();
     setStatus(t("tabs.closed"), "ok");
+  },
+  requestCloseAll() {
+    const count = getSqlTabsItems().length;
+    if (count <= 1) {
+      setStatus(t("tabs.keepOne"), "warn");
+      return;
+    }
+    closeAllTabsTitle.textContent = t("tabs.closeAllTitle", { count });
+    closeAllTabsConfirmText.textContent = t("tabs.closeAllWarning", { count });
+    modalController.open(closeAllTabsConfirmModal);
+  },
+  cancelCloseAll() {
+    modalController.close(closeAllTabsConfirmModal);
+  },
+  confirmCloseAll() {
+    modalController.close(closeAllTabsConfirmModal);
+    this.closeAll();
   },
   closeAll() {
     const freshTab = createEmptyTab();
@@ -164,6 +189,7 @@ export const sqlTabsController = {
       activeTabId: freshTab.id
     });
     loadTabState(freshTab);
+    focusActiveSqlTab();
     setStatus(t("tabs.allClosed"), "ok");
     saveSqlTabsToStorage();
   }
@@ -200,6 +226,18 @@ export function confirmCloseSqlTab() {
 
 export function closeAllSqlTabs() {
   sqlTabsController.closeAll();
+}
+
+export function requestCloseAllSqlTabs() {
+  sqlTabsController.requestCloseAll();
+}
+
+export function cancelCloseAllSqlTabs() {
+  sqlTabsController.cancelCloseAll();
+}
+
+export function confirmCloseAllSqlTabs() {
+  sqlTabsController.confirmCloseAll();
 }
 
 export function initSqlTabs() {

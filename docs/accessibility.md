@@ -11,7 +11,7 @@ hSQLite Editor targets WCAG 2.2 Level AA for the latest release. Accessibility i
 - Controls require programmatic names; placeholders are not labels.
 - Dialogs require an accessible name, appropriate description, focus containment, and focus restoration.
 - Status and error feedback must be exposed without moving focus unnecessarily.
-- SQL tabs keep form controls outside `role="tab"`. F2 starts an inline rename, Enter commits, Escape cancels, and both paths restore focus to the same tab. Rename and close commands for the active tab live outside the tablist and remain keyboard reachable.
+- SQL tabs keep form controls outside `role="tab"`. F2 starts an inline rename, Enter commits, Escape cancels, and both paths restore focus to the same tab. The rename command for the active tab remains outside the tablist; each close command is a sibling of its tab, appears on hover or focus, and remains keyboard reachable. Closing a tab restores focus to the resulting active tab. Closing all tabs requires a count-specific destructive confirmation whose initial focus is Cancel.
 - Error toasts use atomic assertive announcements; informational toasts use atomic polite announcements. Toasts never take focus, and their close buttons have localized accessible names.
 - Results-grid sorting, row selection, current-row movement, and column operations require keyboard equivalents or an accessible command surface.
 - SQL Map table and field selectors expose names derived from the visible database identifiers. Relationship controls support Enter and Space, preserve pressed state while a source is selected, and announce source, cancellation, blocked validation, and completion within the open dialog.

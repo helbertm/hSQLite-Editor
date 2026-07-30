@@ -1,4 +1,4 @@
-import { closeActiveSqlTabBtn, newSqlTabBtn, renameActiveSqlTabBtn, sqlEditorTitle, sqlTabsEl, sqlTabsOverflowList, sqlTabsOverflowMenu } from "./03-dom-editor-results.js";
+import { closeAllTabsBtn, newSqlTabBtn, renameActiveSqlTabBtn, sqlEditorTitle, sqlTabsEl, sqlTabsOverflowList, sqlTabsOverflowMenu } from "./03-dom-editor-results.js";
 import { t } from "./03-localization.js";
 import { setStatus } from "./12-shell-status.js";
 import { saveSqlTabsToStorage } from "./22-sql-tabs-storage.js";
@@ -18,10 +18,6 @@ export function configureSqlTabActions(actions) {
   renameActiveSqlTabBtn?.addEventListener("click", () => {
     const activeTabId = getActiveSqlTabId();
     if (activeTabId) startInlineTabRename(activeTabId);
-  });
-  closeActiveSqlTabBtn?.addEventListener("click", () => {
-    const activeTabId = getActiveSqlTabId();
-    if (activeTabId) requestCloseSqlTab(activeTabId);
   });
   headerActionsBound = true;
 }
@@ -233,8 +229,36 @@ export function renderSqlTabs() {
         finishInlineTabRename(tab.id, input.value);
       });
     }
+
+    const inlineActions = document.createElement("div");
+    inlineActions.className = "sql-tab-inline-actions";
+    inlineActions.setAttribute("role", "presentation");
+
+    const closeButton = document.createElement("button");
+    closeButton.className = "ui-button ui-button-icon sql-tab-inline-action sql-tab-inline-close";
+    closeButton.type = "button";
+    closeButton.dataset.tabCloseId = tab.id;
+    closeButton.disabled = sqlTabs.length <= 1 || isEditing;
+    closeButton.title = t("tabs.closeNamedLabel", { title: tab.title });
+    closeButton.setAttribute("aria-label", t("tabs.closeNamedLabel", { title: tab.title }));
+    closeButton.innerHTML = `
+      <span class="sql-tab-icon" aria-hidden="true">
+        <svg viewBox="0 0 16 16" focusable="false">
+          <path d="M4 4l8 8"></path>
+          <path d="M12 4l-8 8"></path>
+        </svg>
+      </span>
+    `;
+    closeButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      requestCloseSqlTab(tab.id);
+    });
+    inlineActions.appendChild(closeButton);
+
     item.appendChild(button);
     if (renameField) item.appendChild(renameField);
+    item.appendChild(inlineActions);
     sqlTabsEl.appendChild(item);
   }
   renderSqlTabsOverflowMenu();
@@ -245,10 +269,10 @@ export function renderSqlTabs() {
     renameActiveSqlTabBtn.title = t("tabs.renameLabel");
     renameActiveSqlTabBtn.setAttribute("aria-label", t("tabs.renameNamedLabel", { title: activeTab?.title || t("tabs.defaultTitle") }));
   }
-  if (closeActiveSqlTabBtn) {
-    closeActiveSqlTabBtn.disabled = sqlTabs.length <= 1 || isRenamingActiveTab;
-    closeActiveSqlTabBtn.title = t("tabs.closeLabel");
-    closeActiveSqlTabBtn.setAttribute("aria-label", t("tabs.closeNamedLabel", { title: activeTab?.title || t("tabs.defaultTitle") }));
+  if (closeAllTabsBtn) {
+    closeAllTabsBtn.disabled = sqlTabs.length <= 1;
+    closeAllTabsBtn.title = t("tabs.closeAll");
+    closeAllTabsBtn.setAttribute("aria-label", t("tabs.closeAll"));
   }
   newSqlTabBtn.disabled = sqlTabs.length >= MAX_SQL_TABS;
   newSqlTabBtn.title = sqlTabs.length >= MAX_SQL_TABS

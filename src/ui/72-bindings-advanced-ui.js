@@ -1,12 +1,12 @@
 import { bootRetryBtn } from "../capabilities/00-dom-base.js";
-import { cancelCloseTabBtn, cancelSqlBtn, closeTabConfirmModal, confirmCloseTabBtn, sqlFindCloseBtn, sqlFindInput, sqlFindNextBtn, sqlFindPrevBtn, sqlFindToggleReplaceBtn, sqlReplaceAllBtn, sqlReplaceInput, sqlReplaceOneBtn } from "../capabilities/03-dom-editor-results.js";
+import { cancelCloseAllTabsBtn, cancelCloseTabBtn, cancelSqlBtn, closeAllTabsConfirmModal, closeTabConfirmModal, confirmCloseAllTabsBtn, confirmCloseTabBtn, sqlFindCloseBtn, sqlFindInput, sqlFindNextBtn, sqlFindPrevBtn, sqlFindToggleReplaceBtn, sqlReplaceAllBtn, sqlReplaceInput, sqlReplaceOneBtn } from "../capabilities/03-dom-editor-results.js";
 import { t } from "../capabilities/03-localization.js";
 import { modalController } from "../capabilities/05-modal-controller.js";
 import { sqlMapAutoLayoutBtn, sqlMapBtn, sqlMapCanvasWrap, sqlMapClearPasteSqlBtn, sqlMapClearSelectionBtn, sqlMapClearVirtualBtn, sqlMapCloseBtn, sqlMapConfirmAcknowledge, sqlMapConfirmCancelBtn, sqlMapConfirmCopySqlBtn, sqlMapConfirmCreateBtn, sqlMapConfirmInvertBtn, sqlMapConfirmOpenSqlBtn, sqlMapCopySqlBtn, sqlMapEdgeTooltip, sqlMapEdgeTooltipRemoveBtn, sqlMapExportPngBtn, sqlMapModal, sqlMapPasteSqlBtn, sqlMapRelationConfirmModal, sqlMapSearch } from "../capabilities/06-dom-sql-map.js";
 import { tablePopulationCancelBtn, tablePopulationColumnList, tablePopulationModal, tablePopulationRecordCount, tablePopulationRunBtn } from "../capabilities/07-dom-table-population.js";
 import { terminateActiveSqlWorker } from "../capabilities/10-sql-execution.js";
 import { setStatus } from "../capabilities/12-shell-status.js";
-import { cancelCloseSqlTab, confirmCloseSqlTab } from "../capabilities/23-sql-tabs-state.js";
+import { cancelCloseAllSqlTabs, cancelCloseSqlTab, confirmCloseAllSqlTabs, confirmCloseSqlTab } from "../capabilities/23-sql-tabs-state.js";
 import { clearTablePopulationErrors, closeTablePopulationModal, executeTablePopulation, renderTablePopulationStrategyParams, updateTablePopulationLargeConfirmation } from "../capabilities/39-table-population.js";
 import { closeSqlFindPanel, findNextSqlMatch, findPreviousSqlMatch, refreshSqlFindMatches, replaceAllSqlMatches, replaceCurrentSqlMatch, toggleSqlReplaceMode } from "../capabilities/40-sql-find.js";
 import { resetSqlMapFieldDragRuntime, sqlMapRuntime, sqlMapState } from "../capabilities/45a-sql-map-runtime.js";
@@ -126,6 +126,11 @@ export function bindExecutionAndTabDialogs() {
   confirmCloseTabBtn.addEventListener("click", confirmCloseSqlTab);
   closeTabConfirmModal.addEventListener("click", (event) => {
     if (modalController.isBackdropClick(event, closeTabConfirmModal)) cancelCloseSqlTab();
+  });
+  cancelCloseAllTabsBtn.addEventListener("click", cancelCloseAllSqlTabs);
+  confirmCloseAllTabsBtn.addEventListener("click", confirmCloseAllSqlTabs);
+  closeAllTabsConfirmModal.addEventListener("click", (event) => {
+    if (modalController.isBackdropClick(event, closeAllTabsConfirmModal)) cancelCloseAllSqlTabs();
   });
 }
 

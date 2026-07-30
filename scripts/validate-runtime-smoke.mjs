@@ -1304,6 +1304,9 @@ function assertSqlTabLifecycleFlows(runtime, context) {
   const closeTabConfirmModal = runtime.elementsById.get("closeTabConfirmModal");
   const closeTabConfirmText = runtime.elementsById.get("closeTabConfirmText");
   const closeTabPreview = runtime.elementsById.get("closeTabPreview");
+  const closeAllTabsConfirmModal = runtime.elementsById.get("closeAllTabsConfirmModal");
+  const closeAllTabsTitle = runtime.elementsById.get("closeAllTabsTitle");
+  const closeAllTabsConfirmText = runtime.elementsById.get("closeAllTabsConfirmText");
   const starterSqlToggle = runtime.elementsById.get("starterSqlToggle");
 
   const baseTab = context.createEmptyTab("Lifecycle Base", "select * from clientes");
@@ -1354,15 +1357,41 @@ function assertSqlTabLifecycleFlows(runtime, context) {
     `Runtime smoke expected new-tab status feedback, got ${runtime.elementsById.get("status")?.textContent || "empty"}.`
   );
 
-  const renderedCloseAction = runtime.elementsById.get("closeActiveSqlTabBtn");
+  const renderedCloseAction = runtime.elementsById.get("sqlTabs")?.querySelector(
+    `[data-tab-close-id="${lifecycleTabsAfterAdd[1].id}"]`
+  );
   const renderedRenameAction = runtime.elementsById.get("renameActiveSqlTabBtn");
+  const renderedCloseAllAction = runtime.elementsById.get("closeAllTabsBtn");
 
-  assert(renderedCloseAction && renderedRenameAction, "Runtime smoke expected close and rename controls outside the SQL tablist.");
+  assert(renderedCloseAction && renderedRenameAction, "Runtime smoke expected inline close and external rename controls for SQL tabs.");
   assert(!renderedCloseAction.disabled && !renderedRenameAction.disabled, "Runtime smoke expected active-tab actions to be enabled when two tabs exist.");
   assert(
     renderedCloseAction.getAttribute("aria-label")?.includes(lifecycleTabsAfterAdd[1].title)
       && renderedRenameAction.getAttribute("aria-label")?.includes(lifecycleTabsAfterAdd[1].title),
     "Runtime smoke expected active-tab action names to identify the current tab."
+  );
+  assert(
+    renderedCloseAction.closest('[role="tab"]') === null,
+    "Runtime smoke expected the inline close action to remain outside role=tab."
+  );
+  assert(
+    renderedCloseAllAction && !renderedCloseAllAction.disabled,
+    "Runtime smoke expected Close all to be enabled when two tabs exist."
+  );
+
+  context.requestCloseAllSqlTabs();
+  assert(
+    closeAllTabsConfirmModal?.style?.display === "flex",
+    "Runtime smoke expected Close all to open its destructive confirmation modal."
+  );
+  assert(
+    /2/.test(closeAllTabsTitle?.textContent || "") && /2/.test(closeAllTabsConfirmText?.textContent || ""),
+    "Runtime smoke expected Close all confirmation copy to include the exact tab count."
+  );
+  context.cancelCloseAllSqlTabs();
+  assert(
+    context.getSqlTabsItems().length === 2,
+    "Runtime smoke expected canceling Close all to preserve every SQL tab."
   );
 
   context.requestCloseSqlTab(baseTab.id);

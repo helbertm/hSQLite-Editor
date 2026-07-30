@@ -12,7 +12,7 @@ const locales = [
     sourceAnnouncement: "Source selected: qa_virtual_a.code.", relationCreated: "Virtual relationship created for this session.",
     blockedAnnouncement: "Virtual relationships between columns in the same table are not supported.",
     populationTitle: "Populate table for QA", exportTitle: "Export result", historyTitle: "Query history",
-    favoritesTitle: "Favorite queries", closeTabTitle: "Close tab?", renameTabPrefix: "Rename tab", closeTabPrefix: "Close tab", missingTableCause: "a table or view name was not found",
+    favoritesTitle: "Favorite queries", closeTabTitle: "Close tab?", closeAllTabsTitle: "Close all 2 tabs?", renameTabPrefix: "Rename tab", closeTabPrefix: "Close tab", missingTableCause: "a table or view name was not found",
     settingsTitle: "Settings", starterSqlLabel: "Starter SQL for new tabs", starterSqlHelp: "ON inserts the starter SQL. OFF starts new tabs empty.",
     helpTitle: "hSQLite Editor help", suggestImprovement: "Suggest improvement: open the GitHub Feature request form in a new tab",
     helpPrefix: "https://learn.microsoft.com/en-us/", csvFilename: "sqlite_result.csv"
@@ -25,7 +25,7 @@ const locales = [
     sourceAnnouncement: "Origem selecionada: qa_virtual_a.code.", relationCreated: "Relacionamento virtual criado para a sessão atual.",
     blockedAnnouncement: "Relacionamentos virtuais entre colunas da mesma tabela não são suportados.",
     populationTitle: "Popular tabela para QA", exportTitle: "Exportar resultado", historyTitle: "Histórico de consultas",
-    favoritesTitle: "Consultas favoritas", closeTabTitle: "Fechar aba?", renameTabPrefix: "Renomear aba", closeTabPrefix: "Fechar aba", missingTableCause: "uma tabela ou view não foi encontrada",
+    favoritesTitle: "Consultas favoritas", closeTabTitle: "Fechar aba?", closeAllTabsTitle: "Fechar todas as 2 abas?", renameTabPrefix: "Renomear aba", closeTabPrefix: "Fechar aba", missingTableCause: "uma tabela ou view não foi encontrada",
     settingsTitle: "Configurações", starterSqlLabel: "SQL inicial para novas abas", starterSqlHelp: "ON insere o SQL inicial. OFF inicia novas abas vazias.",
     helpTitle: "Ajuda do hSQLite Editor", suggestImprovement: "Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba",
     helpPrefix: "https://learn.microsoft.com/pt-br/", csvFilename: "resultado_sqlite.csv"
@@ -38,7 +38,7 @@ const locales = [
     sourceAnnouncement: "Origen seleccionado: qa_virtual_a.code.", relationCreated: "Relación virtual creada para esta sesión.",
     blockedAnnouncement: "No se admiten relaciones virtuales entre columnas de la misma tabla.",
     populationTitle: "Poblar tabla para QA", exportTitle: "Exportar resultado", historyTitle: "Historial de consultas",
-    favoritesTitle: "Consultas favoritas", closeTabTitle: "¿Cerrar pestaña?", renameTabPrefix: "Renombrar pestaña", closeTabPrefix: "Cerrar pestaña", missingTableCause: "no se encontró una tabla o vista",
+    favoritesTitle: "Consultas favoritas", closeTabTitle: "¿Cerrar pestaña?", closeAllTabsTitle: "¿Cerrar las 2 pestañas?", renameTabPrefix: "Renombrar pestaña", closeTabPrefix: "Cerrar pestaña", missingTableCause: "no se encontró una tabla o vista",
     settingsTitle: "Configuración", starterSqlLabel: "SQL inicial para nuevas pestañas", starterSqlHelp: "ON inserta el SQL inicial. OFF inicia las pestañas nuevas vacías.",
     helpTitle: "Ayuda de hSQLite Editor", suggestImprovement: "Sugerir una mejora: abrir el formulario Feature request de GitHub en una pestaña nueva",
     helpPrefix: "https://learn.microsoft.com/es-es/", csvFilename: "resultado_sqlite.csv"
@@ -525,11 +525,16 @@ try {
       assert((await activeTab.innerText()).trim() === "browser-renamed", `${locale.tag}/${viewport.name}: Enter did not commit the tab title.`);
       assert(await activeTab.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: Enter did not restore focus to the renamed tab.`);
 
-      const closeTabAction = page.locator("#closeActiveSqlTabBtn");
+      const closeTabAction = page.locator(".sql-tab-item.active [data-tab-close-id]");
       const renameTabAction = page.locator("#renameActiveSqlTabBtn");
+      const closeAllTabsAction = page.locator("#closeAllTabsBtn");
       assert(
         String(await closeTabAction.getAttribute("aria-label") || "").startsWith(locale.closeTabPrefix),
         `${locale.tag}/${viewport.name}: close-tab action name is not localized.`
+      );
+      assert(
+        await closeTabAction.evaluate(element => element.closest('[role="tab"]') === null),
+        `${locale.tag}/${viewport.name}: close-tab action is nested inside role=tab.`
       );
       assert(
         String(await renameTabAction.getAttribute("aria-label") || "").startsWith(locale.renameTabPrefix),
@@ -537,9 +542,27 @@ try {
       );
       await activeTab.focus();
       await page.keyboard.press("Tab");
-      assert(await renameTabAction.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: rename-tab action is not keyboard reachable.`);
+      assert(await closeTabAction.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: inline close-tab action is not keyboard reachable.`);
       await page.keyboard.press("Tab");
-      assert(await closeTabAction.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: close-tab action is not keyboard reachable.`);
+      assert(await renameTabAction.evaluate(element => element === document.activeElement), `${locale.tag}/${viewport.name}: rename-tab action is not keyboard reachable.`);
+
+      await closeAllTabsAction.focus();
+      await page.keyboard.press("Enter");
+      await page.locator("#closeAllTabsConfirmModal").waitFor({ state: "visible" });
+      assert(
+        await page.getByRole("dialog", { name: locale.closeAllTabsTitle }).count() === 1,
+        `${locale.tag}/${viewport.name}: Close all confirmation does not identify the exact tab count.`
+      );
+      assert(
+        await page.locator("#cancelCloseAllTabsBtn").evaluate(element => element === document.activeElement),
+        `${locale.tag}/${viewport.name}: Close all confirmation did not put initial focus on Cancel.`
+      );
+      const tabCountBeforeCloseAllCancel = await page.locator(".sql-tab").count();
+      await page.locator("#cancelCloseAllTabsBtn").click();
+      assert(
+        await page.locator(".sql-tab").count() === tabCountBeforeCloseAllCancel,
+        `${locale.tag}/${viewport.name}: canceling Close all removed tabs.`
+      );
 
       const tabAxe = await new AxeBuilder({ page })
         .include("#sqlTabs")
