@@ -2,6 +2,8 @@
  * @typedef {Object<string, string[]>} ReleaseNotesByVersion
  */
 
+export const DEFAULT_SQL_TAB_TEMPLATE = "select *\nfrom\nwhere\norder by";
+
 /**
  * @typedef {Object} ReleaseMetadata
  * @property {string} version
@@ -103,6 +105,7 @@
 /**
  * @typedef {Object} PreferencesState
  * @property {boolean} shouldPersistSession
+ * @property {boolean} shouldInsertStarterSql
  * @property {"en-US"|"pt-BR"|"es-ES"} locale
  * @property {string} tabNamePreset
  * @property {boolean} schemaCollapsed
@@ -165,7 +168,9 @@ export function createTabState(raw = {}) {
   return {
     id: String(raw.id || ""),
     title: String(raw.title || "").trim() || "SQL",
-    sql: String(raw.sql || "select *\nfrom \nwhere\norder by"),
+    sql: raw.sql === undefined || raw.sql === null
+      ? DEFAULT_SQL_TAB_TEMPLATE
+      : String(raw.sql),
     resultSets: Array.isArray(raw.resultSets) ? raw.resultSets : [],
     activeResultIndex: Number(raw.activeResultIndex || 0),
     filterValue: String(raw.filterValue || "")

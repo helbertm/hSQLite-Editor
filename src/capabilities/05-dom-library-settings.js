@@ -37,6 +37,7 @@ export const firstRunContinueBtn = document.getElementById("firstRunContinueBtn"
 export const firstRunTabNamePresetSelect = document.getElementById("firstRunTabNamePresetSelect");
 export const themeToggle = document.getElementById("themeToggle");
 export const tabNamePresetSelect = document.getElementById("tabNamePresetSelect");
+export const starterSqlToggle = document.getElementById("starterSqlToggle");
 export const sessionToggle = document.getElementById("sessionToggle");
 export const localeSelect = document.getElementById("localeSelect");
 export const firstRunLocaleSelect = document.getElementById("firstRunLocaleSelect");

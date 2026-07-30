@@ -238,10 +238,7 @@
           </div>
         </div>
         <div class="editor-wrap">
-          <textarea id="sqlEditor" spellcheck="false" aria-label="Editor de instruções SQL" data-i18n-aria-label="editor.ariaLabel" data-i18n-ignore>select *
-from
-where
-order by</textarea>
+          <textarea id="sqlEditor" spellcheck="false" aria-label="Editor de instruções SQL" data-i18n-aria-label="editor.ariaLabel" data-i18n-ignore></textarea>
           <div class="editor-resize-handle" id="editorResizeHandle" aria-hidden="true" title="Arraste para ajustar a altura do editor" data-i18n-title="editor.resizeTitle"></div>
           <div class="editor-drop-overlay" id="editorDropOverlay">
             <div class="editor-drop-card">
@@ -611,6 +608,16 @@ order by</textarea>
           <span style="flex:1;" data-i18n="preferences.tabNames">Nomes das abas</span>
           <select id="tabNamePresetSelect" aria-label="Preset de nomes das abas SQL" data-i18n-aria-label="preferences.tabPreset"></select>
         </label>
+        <label class="cfg-switch-row cfg-preference-row">
+          <span class="cfg-preference-copy">
+            <span id="starterSqlLabel" class="cfg-switch-label" data-i18n="preferences.starterSql">SQL inicial para novas abas</span>
+            <small id="starterSqlHelp" class="small-muted" data-i18n="preferences.starterSqlHelp">ON insere o SQL inicial. OFF inicia novas abas vazias.</small>
+          </span>
+          <span class="cfg-seg-switch">
+            <input id="starterSqlToggle" type="checkbox" class="cfg-toggle-input" role="switch" checked aria-labelledby="starterSqlLabel" aria-describedby="starterSqlHelp">
+            <span class="cfg-seg-track" aria-hidden="true"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
       </div>
       <p data-i18n="settings.transferDescription">Backup e transferência entre navegadores: para importar, selecione o arquivo JSON que foi exportado.</p>
       <div id="lastSettingsExportInfo" class="small-muted" aria-live="polite" style="margin:-4px 0 10px;" data-i18n="settings.lastExportNever">Última exportação: nunca</div>
@@ -654,6 +661,13 @@ order by</textarea>
           <span class="cfg-switch-label" data-i18n="preferences.tabPreset">Preset nomes abas</span>
           <span class="cfg-seg-switch">
             <input type="checkbox" class="cfg-scope" value="tabPreset" checked>
+            <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
+        <label class="cfg-switch-row">
+          <span class="cfg-switch-label" data-i18n="settings.starterSqlScope">Preferência de SQL inicial</span>
+          <span class="cfg-seg-switch">
+            <input type="checkbox" class="cfg-scope" value="starterSql" checked>
             <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
           </span>
         </label>

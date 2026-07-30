@@ -1,10 +1,10 @@
 import { schemaCollapseBtn, schemaToggleRail } from "./01-dom-layout-schema.js";
 import { clearPasteSqlBtn, clearSqlBtn, closeAllTabsBtn, copySqlBtn, newSqlTabBtn, openRunSqlBtn, openSqlBtn, sqlFileInput, sqlTabsEl } from "./03-dom-editor-results.js";
 import { t } from "./03-localization.js";
-import { firstRunContinueBtn, firstRunTabNamePresetSelect, sessionToggle, tabNamePresetSelect, themeToggle } from "./05-dom-library-settings.js";
+import { firstRunContinueBtn, firstRunTabNamePresetSelect, sessionToggle, starterSqlToggle, tabNamePresetSelect, themeToggle } from "./05-dom-library-settings.js";
 import { setStatus } from "./12-shell-status.js";
 import { toggleSchemaPanel } from "./13-schema-panel.js";
-import { applyFirstRunPreferences, handleThemeSwitchClick, previewFirstRunTheme, toggleSessionPersistence } from "./15-preferences.js";
+import { applyFirstRunPreferences, handleThemeSwitchClick, previewFirstRunTheme, setStarterSqlEnabled, toggleSessionPersistence } from "./15-preferences.js";
 import { setTabNamePresetPreference } from "./22a-sql-tab-presets.js";
 import { addSqlTab, closeAllSqlTabs } from "./23-sql-tabs-state.js";
 import { updateSqlTabsOverflow } from "./24-sql-tabs-render.js";
@@ -31,6 +31,11 @@ export function bindShellBootstrapUi() {
   if (firstRunTabNamePresetSelect) {
     firstRunTabNamePresetSelect.addEventListener("change", () => {
       setTabNamePresetPreference(firstRunTabNamePresetSelect.value);
+    });
+  }
+  if (starterSqlToggle) {
+    starterSqlToggle.addEventListener("change", () => {
+      setStarterSqlEnabled(starterSqlToggle.checked);
     });
   }
   sessionToggle.addEventListener("click", toggleSessionPersistence);

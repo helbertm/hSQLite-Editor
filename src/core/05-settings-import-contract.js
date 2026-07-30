@@ -14,7 +14,8 @@ export const SETTINGS_TRANSFER_SCOPES = Object.freeze([
   "theme",
   "locale",
   "session",
-  "tabPreset"
+  "tabPreset",
+  "starterSql"
 ]);
 
 export const SETTINGS_TRANSFER_DATA_KEYS = Object.freeze(new Set(SETTINGS_TRANSFER_SCOPES));
@@ -166,6 +167,11 @@ export function validateSettingsImportPayload(parsed, selectedScopes) {
         throw new Error("tabPreset is not supported.");
       }
       plan.tabPreset = parsed.data.tabPreset;
+    } else if (scope === "starterSql") {
+      if (typeof parsed.data.starterSql !== "boolean") {
+        throw new Error("starterSql must be a boolean.");
+      }
+      plan.starterSql = parsed.data.starterSql;
     }
   }
   return plan;

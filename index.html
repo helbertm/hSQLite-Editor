@@ -1173,6 +1173,9 @@ display: grid;
 
 .modal-options label {
 display: flex;
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
       gap: 9px;
       align-items: center;
       padding: 10px;
@@ -2320,13 +2323,26 @@ font-size: 13px;
       color: var(--foreground);
 }
 
+.cfg-preference-copy {
+display: flex;
+      min-width: 0;
+      flex: 1;
+      flex-direction: column;
+      gap: 3px;
+}
+
+.cfg-preference-copy .small-muted {
+line-height: 1.35;
+}
+
 .cfg-seg-switch {
 position: relative;
       display: inline-flex;
       align-items: center;
 }
 
-.cfg-seg-switch .cfg-scope {
+.cfg-seg-switch .cfg-scope,
+    .cfg-seg-switch .cfg-toggle-input {
 position: absolute;
       opacity: 0;
       pointer-events: none;
@@ -2356,7 +2372,7 @@ width: var(--seg-switch-opt-w);
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.04em;
-      color: color-mix(in srgb, var(--foreground) 44%, transparent);
+      color: var(--mutedText);
       line-height: 1;
       user-select: none;
 }
@@ -2373,14 +2389,23 @@ position: absolute;
       z-index: 1;
 }
 
-.cfg-seg-switch .cfg-scope:checked + .cfg-seg-track .cfg-seg-thumb {
+.cfg-seg-switch .cfg-scope:checked + .cfg-seg-track .cfg-seg-thumb,
+    .cfg-seg-switch .cfg-toggle-input:checked + .cfg-seg-track .cfg-seg-thumb {
 transform: translateX(var(--seg-switch-shift-on));
       background: var(--foreground);
 }
 
 .cfg-seg-switch .cfg-scope:checked + .cfg-seg-track .cfg-seg-option.on,
-    .cfg-seg-switch .cfg-scope:not(:checked) + .cfg-seg-track .cfg-seg-option.off {
+    .cfg-seg-switch .cfg-scope:not(:checked) + .cfg-seg-track .cfg-seg-option.off,
+    .cfg-seg-switch .cfg-toggle-input:checked + .cfg-seg-track .cfg-seg-option.on,
+    .cfg-seg-switch .cfg-toggle-input:not(:checked) + .cfg-seg-track .cfg-seg-option.off {
 color: var(--background);
+}
+
+.cfg-seg-switch .cfg-scope:focus-visible + .cfg-seg-track,
+    .cfg-seg-switch .cfg-toggle-input:focus-visible + .cfg-seg-track {
+outline: 2px solid var(--ring);
+      outline-offset: 2px;
 }
 
 #openSqlBtn,
@@ -5430,10 +5455,7 @@ margin: 8px 0 8px 18px;
           </div>
         </div>
         <div class="editor-wrap">
-          <textarea id="sqlEditor" spellcheck="false" aria-label="Editor de instruções SQL" data-i18n-aria-label="editor.ariaLabel" data-i18n-ignore>select *
-from
-where
-order by</textarea>
+          <textarea id="sqlEditor" spellcheck="false" aria-label="Editor de instruções SQL" data-i18n-aria-label="editor.ariaLabel" data-i18n-ignore></textarea>
           <div class="editor-resize-handle" id="editorResizeHandle" aria-hidden="true" title="Arraste para ajustar a altura do editor" data-i18n-title="editor.resizeTitle"></div>
           <div class="editor-drop-overlay" id="editorDropOverlay">
             <div class="editor-drop-card">
@@ -5803,6 +5825,16 @@ order by</textarea>
           <span style="flex:1;" data-i18n="preferences.tabNames">Nomes das abas</span>
           <select id="tabNamePresetSelect" aria-label="Preset de nomes das abas SQL" data-i18n-aria-label="preferences.tabPreset"></select>
         </label>
+        <label class="cfg-switch-row cfg-preference-row">
+          <span class="cfg-preference-copy">
+            <span id="starterSqlLabel" class="cfg-switch-label" data-i18n="preferences.starterSql">SQL inicial para novas abas</span>
+            <small id="starterSqlHelp" class="small-muted" data-i18n="preferences.starterSqlHelp">ON insere o SQL inicial. OFF inicia novas abas vazias.</small>
+          </span>
+          <span class="cfg-seg-switch">
+            <input id="starterSqlToggle" type="checkbox" class="cfg-toggle-input" role="switch" checked aria-labelledby="starterSqlLabel" aria-describedby="starterSqlHelp">
+            <span class="cfg-seg-track" aria-hidden="true"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
       </div>
       <p data-i18n="settings.transferDescription">Backup e transferência entre navegadores: para importar, selecione o arquivo JSON que foi exportado.</p>
       <div id="lastSettingsExportInfo" class="small-muted" aria-live="polite" style="margin:-4px 0 10px;" data-i18n="settings.lastExportNever">Última exportação: nunca</div>
@@ -5846,6 +5878,13 @@ order by</textarea>
           <span class="cfg-switch-label" data-i18n="preferences.tabPreset">Preset nomes abas</span>
           <span class="cfg-seg-switch">
             <input type="checkbox" class="cfg-scope" value="tabPreset" checked>
+            <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
+          </span>
+        </label>
+        <label class="cfg-switch-row">
+          <span class="cfg-switch-label" data-i18n="settings.starterSqlScope">Preferência de SQL inicial</span>
+          <span class="cfg-seg-switch">
+            <input type="checkbox" class="cfg-scope" value="starterSql" checked>
             <span class="cfg-seg-track"><span class="cfg-seg-option off">OFF</span><span class="cfg-seg-option on">ON</span><span class="cfg-seg-thumb"></span></span>
           </span>
         </label>
@@ -27651,6 +27690,7 @@ window.__HSQLITE_BOOT__ = {
     BOTTOM_TOOLBAR_MIN_ROWS: () => BOTTOM_TOOLBAR_MIN_ROWS,
     CURRENT_STORAGE_SCHEMA_VERSION: () => CURRENT_STORAGE_SCHEMA_VERSION,
     DEFAULT_LOCALE: () => DEFAULT_LOCALE,
+    DEFAULT_SQL_TAB_TEMPLATE: () => DEFAULT_SQL_TAB_TEMPLATE,
     EDITOR_ACTION_HANDLERS: () => EDITOR_ACTION_HANDLERS,
     EMBEDDED_SQLJS_WASM_DATA_URL: () => EMBEDDED_SQLJS_WASM_DATA_URL,
     EMBEDDED_SQLJS_WORKER_SOURCE: () => EMBEDDED_SQLJS_WORKER_SOURCE,
@@ -28000,6 +28040,7 @@ window.__HSQLITE_BOOT__ = {
     getSelectedLocale: () => getSelectedLocale,
     getSelectedOrAllSql: () => getSelectedOrAllSql,
     getSelectedTabNamePreset: () => getSelectedTabNamePreset,
+    getShouldInsertStarterSql: () => getShouldInsertStarterSql,
     getShouldPersistSession: () => getShouldPersistSession,
     getSortState: () => getSortState,
     getSqlErrorKnowledgeBase: () => getSqlErrorKnowledgeBase,
@@ -28099,6 +28140,7 @@ window.__HSQLITE_BOOT__ = {
     loadSqlFile: () => loadSqlFile,
     loadSqlMapPositions: () => loadSqlMapPositions,
     loadSqlTabsFromStorage: () => loadSqlTabsFromStorage,
+    loadStarterSqlSetting: () => loadStarterSqlSetting,
     loadStoredFileHandle: () => loadStoredFileHandle,
     loadTabNamePresetPreference: () => loadTabNamePresetPreference,
     loadTabState: () => loadTabState,
@@ -28302,6 +28344,7 @@ window.__HSQLITE_BOOT__ = {
     setSqlMapState: () => setSqlMapState,
     setSqlRuntime: () => setSqlRuntime,
     setSqlTabsState: () => setSqlTabsState,
+    setStarterSqlEnabled: () => setStarterSqlEnabled,
     setStatus: () => setStatus,
     setTabNamePresetPreference: () => setTabNamePresetPreference,
     setTablePopulationBusy: () => setTablePopulationBusy,
@@ -28394,6 +28437,8 @@ window.__HSQLITE_BOOT__ = {
     sqlTabsOverflowMenu: () => sqlTabsOverflowMenu,
     sqlTabsStorage: () => sqlTabsStorage,
     startInlineTabRename: () => startInlineTabRename,
+    starterSqlController: () => starterSqlController,
+    starterSqlToggle: () => starterSqlToggle,
     statusController: () => statusController,
     statusEl: () => statusEl,
     storage: () => storage,
@@ -28462,6 +28507,7 @@ window.__HSQLITE_BOOT__ = {
   });
 
   // src/core/00-contracts.js
+  var DEFAULT_SQL_TAB_TEMPLATE = "select *\nfrom\nwhere\norder by";
   function createReleaseMetadata(raw = {}) {
     const version = String(raw.version || "0.0.0").trim() || "0.0.0";
     const versions = Array.isArray(raw.versions) && raw.versions.length ? raw.versions.map((item) => String(item || "").trim()).filter(Boolean) : [version];
@@ -28485,7 +28531,7 @@ window.__HSQLITE_BOOT__ = {
     return {
       id: String(raw.id || ""),
       title: String(raw.title || "").trim() || "SQL",
-      sql: String(raw.sql || "select *\nfrom \nwhere\norder by"),
+      sql: raw.sql === void 0 || raw.sql === null ? DEFAULT_SQL_TAB_TEMPLATE : String(raw.sql),
       resultSets: Array.isArray(raw.resultSets) ? raw.resultSets : [],
       activeResultIndex: Number(raw.activeResultIndex || 0),
       filterValue: String(raw.filterValue || "")
@@ -28589,7 +28635,8 @@ window.__HSQLITE_BOOT__ = {
     "theme",
     "locale",
     "session",
-    "tabPreset"
+    "tabPreset",
+    "starterSql"
   ]);
   var SETTINGS_TRANSFER_DATA_KEYS = Object.freeze(new Set(SETTINGS_TRANSFER_SCOPES));
   function isPlainSettingsObject(value) {
@@ -28727,6 +28774,11 @@ window.__HSQLITE_BOOT__ = {
           throw new Error("tabPreset is not supported.");
         }
         plan.tabPreset = parsed.data.tabPreset;
+      } else if (scope === "starterSql") {
+        if (typeof parsed.data.starterSql !== "boolean") {
+          throw new Error("starterSql must be a boolean.");
+        }
+        plan.starterSql = parsed.data.starterSql;
       }
     }
     return plan;
@@ -28820,6 +28872,7 @@ window.__HSQLITE_BOOT__ = {
     STORAGE_SCHEMA_VERSION: "hSQLiteEditorStorageSchemaVersion",
     SQL_TABS: "hSQLiteEditorSqlTabsV1",
     SESSION_PERSISTENCE: "hSQLiteEditorSessionPersistenceV1",
+    STARTER_SQL: "hSQLiteEditorStarterSqlV1",
     FIRST_RUN_DONE: "hSQLiteEditorFirstRunDoneV1",
     QUERY_HISTORY: "hSQLiteEditorQueryHistoryV1",
     FAVORITES: "hSQLiteEditorFavoritesV1",
@@ -28886,7 +28939,7 @@ window.__HSQLITE_BOOT__ = {
       raw.tabs = raw.tabs.map((tab, index) => {
         const id = String(tab && tab.id ? tab.id : `tab_migrated_${index}`);
         const title = String(tab && tab.title ? tab.title : "").trim().slice(0, 50) || `SQL ${index + 1}`;
-        const sql = String(tab && tab.sql ? tab.sql : "select *\nfrom \nwhere\norder by");
+        const sql = tab && tab.sql !== void 0 && tab.sql !== null ? String(tab.sql) : DEFAULT_SQL_TAB_TEMPLATE;
         return { id, title, sql };
       });
       storage.setJSON(STORAGE_KEYS.SQL_TABS, raw);
@@ -29465,6 +29518,7 @@ window.__HSQLITE_BOOT__ = {
     },
     preferences: {
       shouldPersistSession: true,
+      shouldInsertStarterSql: true,
       locale: "en-US",
       tabNamePreset: "tlor",
       schemaCollapsed: false,
@@ -29795,6 +29849,9 @@ window.__HSQLITE_BOOT__ = {
   function getShouldPersistSession() {
     return appState.preferences.shouldPersistSession;
   }
+  function getShouldInsertStarterSql() {
+    return appState.preferences.shouldInsertStarterSql;
+  }
   function getSelectedLocale() {
     return appState.preferences.locale;
   }
@@ -29823,6 +29880,9 @@ window.__HSQLITE_BOOT__ = {
   function setPreferencesState(patch) {
     if (Object.prototype.hasOwnProperty.call(patch, "shouldPersistSession")) {
       appState.preferences.shouldPersistSession = Boolean(patch.shouldPersistSession);
+    }
+    if (Object.prototype.hasOwnProperty.call(patch, "shouldInsertStarterSql")) {
+      appState.preferences.shouldInsertStarterSql = Boolean(patch.shouldInsertStarterSql);
     }
     if (Object.prototype.hasOwnProperty.call(patch, "locale")) {
       const locale = String(patch.locale || "").trim();
@@ -30032,8 +30092,12 @@ window.__HSQLITE_BOOT__ = {
     ["preferences.themeLightActive", "Light theme active", "Tema claro ativo", "Tema claro activo"],
     ["preferences.sessionRestoreOn", "The session will be restored when the editor reopens", "A sess\xE3o ser\xE1 restaurada ao reabrir", "La sesi\xF3n se restaurar\xE1 al volver a abrir"],
     ["preferences.sessionRestoreOff", "The session will not be restored when the editor reopens", "A sess\xE3o n\xE3o ser\xE1 restaurada ao reabrir", "La sesi\xF3n no se restaurar\xE1 al volver a abrir"],
+    ["preferences.starterSql", "Starter SQL for new tabs", "SQL inicial para novas abas", "SQL inicial para nuevas pesta\xF1as"],
+    ["preferences.starterSqlHelp", "ON inserts the starter SQL. OFF starts new tabs empty.", "ON insere o SQL inicial. OFF inicia novas abas vazias.", "ON inserta el SQL inicial. OFF inicia las pesta\xF1as nuevas vac\xEDas."],
     ["status.sessionOff", "The session will not be saved. The editor will start empty when reopened.", "A sess\xE3o n\xE3o ser\xE1 salva. Ao reabrir, o editor come\xE7ar\xE1 vazio.", "La sesi\xF3n no se guardar\xE1. El editor se iniciar\xE1 vac\xEDo al volver a abrir."],
     ["status.sessionOn", "The session will be saved and restored when the editor reopens.", "A sess\xE3o ser\xE1 salva e restaurada ao reabrir.", "La sesi\xF3n se guardar\xE1 y restaurar\xE1 al volver a abrir."],
+    ["status.starterSqlOn", "New SQL tabs will start with the starter SQL.", "Novas abas SQL ser\xE3o iniciadas com o SQL inicial.", "Las pesta\xF1as SQL nuevas se iniciar\xE1n con el SQL inicial."],
+    ["status.starterSqlOff", "New SQL tabs will start empty.", "Novas abas SQL ser\xE3o iniciadas vazias.", "Las pesta\xF1as SQL nuevas se iniciar\xE1n vac\xEDas."],
     ["status.preferencesSaved", "Initial preferences saved.", "Prefer\xEAncias iniciais salvas.", "Preferencias iniciales guardadas."],
     ["status.themeApplied", "{theme} theme applied.", "Tema {theme} aplicado.", "Tema {theme} aplicado."],
     ["theme.dark", "Dark", "escuro", "oscuro"],
@@ -30155,6 +30219,7 @@ window.__HSQLITE_BOOT__ = {
     ["history.searchLabel", "Search query history", "Pesquisar no hist\xF3rico de consultas", "Buscar en el historial de consultas"],
     ["history.clear", "Clear history", "Limpar hist\xF3rico", "Borrar historial"],
     ["settings.sessionScope", "Session and SQL tabs", "Sess\xE3o e abas SQL", "Sesi\xF3n y pesta\xF1as SQL"],
+    ["settings.starterSqlScope", "Starter SQL preference", "Prefer\xEAncia de SQL inicial", "Preferencia de SQL inicial"],
     ["settings.importConfirmTitle", "Confirm import", "Confirmar importa\xE7\xE3o", "Confirmar importaci\xF3n"],
     ["settings.importConfirmDescription", "The selected current settings will be replaced by the imported values.", "As configura\xE7\xF5es atuais selecionadas ser\xE3o substitu\xEDdas pelos valores importados.", "La configuraci\xF3n actual seleccionada ser\xE1 reemplazada por los valores importados."],
     ["shortcuts.quickHistory", "Quick history", "Hist\xF3rico r\xE1pido", "Historial r\xE1pido"],
@@ -31102,6 +31167,7 @@ window.__HSQLITE_BOOT__ = {
   var firstRunTabNamePresetSelect = document.getElementById("firstRunTabNamePresetSelect");
   var themeToggle = document.getElementById("themeToggle");
   var tabNamePresetSelect = document.getElementById("tabNamePresetSelect");
+  var starterSqlToggle = document.getElementById("starterSqlToggle");
   var sessionToggle = document.getElementById("sessionToggle");
   var localeSelect = document.getElementById("localeSelect");
   var firstRunLocaleSelect = document.getElementById("firstRunLocaleSelect");
@@ -31555,7 +31621,7 @@ window.__HSQLITE_BOOT__ = {
     return createTabState({
       id,
       title: title || getNextSqlTabName(),
-      sql: sql ?? "select *\nfrom\nwhere\norder by",
+      sql: sql ?? (getShouldInsertStarterSql() ? DEFAULT_SQL_TAB_TEMPLATE : ""),
       resultSets: [],
       activeResultIndex: 0,
       filterValue: ""
@@ -32861,6 +32927,23 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       this.set(!getShouldPersistSession());
     }
   };
+  var starterSqlController = {
+    load() {
+      const saved = storage.get(STORAGE_KEYS.STARTER_SQL, null);
+      setPreferencesState({ shouldInsertStarterSql: saved !== "false" });
+      this.updateToggleUI();
+    },
+    updateToggleUI() {
+      if (!starterSqlToggle) return;
+      starterSqlToggle.checked = getShouldInsertStarterSql();
+    },
+    set(value) {
+      setPreferencesState({ shouldInsertStarterSql: Boolean(value) });
+      storage.set(STORAGE_KEYS.STARTER_SQL, getShouldInsertStarterSql() ? "true" : "false");
+      this.updateToggleUI();
+      setStatus(t(getShouldInsertStarterSql() ? "status.starterSqlOn" : "status.starterSqlOff"), "ok");
+    }
+  };
   var firstRunController = {
     shouldShow() {
       return storage.get(STORAGE_KEYS.FIRST_RUN_DONE, "false") !== "true";
@@ -32930,6 +33013,12 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
   }
   function loadSessionPersistenceSetting() {
     sessionController.load();
+  }
+  function loadStarterSqlSetting() {
+    starterSqlController.load();
+  }
+  function setStarterSqlEnabled(value) {
+    starterSqlController.set(value);
   }
   function setSessionPersistence(value) {
     sessionController.set(value);
@@ -33118,12 +33207,10 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         if (sqlEditorTitle) sqlEditorTitle.textContent = t("tabs.defaultTitle");
         return;
       }
-      const firstTab = createEmptyTab(null, getEditorValue());
+      const firstTab = createEmptyTab();
       setSqlTabsState({ items: [firstTab], activeTabId: firstTab.id });
-      saveCurrentTabState();
-      renderSqlTabs();
+      loadTabState(firstTab);
       if (sqlEditorTitle) sqlEditorTitle.textContent = t("tabs.defaultTitle");
-      saveSqlTabsToStorage();
     },
     switch(tabId) {
       if (tabId === getActiveSqlTabId()) return;
@@ -36217,6 +36304,11 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         setTabNamePresetPreference(firstRunTabNamePresetSelect.value);
       });
     }
+    if (starterSqlToggle) {
+      starterSqlToggle.addEventListener("change", () => {
+        setStarterSqlEnabled(starterSqlToggle.checked);
+      });
+    }
     sessionToggle.addEventListener("click", toggleSessionPersistence);
     themeToggle.addEventListener("click", handleThemeSwitchClick);
     initKeyboardController();
@@ -36538,6 +36630,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       loadTabNamePresetPreference();
       renderTabNamePresetSelectOptions();
       loadSessionPersistenceSetting();
+      loadStarterSqlSetting();
       loadQueryHistoryFromStorage();
       await initSqlEditor();
       initSqlTabs();
@@ -36576,7 +36669,8 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       locale: getLocale(),
       shouldPersistSession: getShouldPersistSession(),
       sqlTabs: cloneSettingsValue(sqlTabsStorage.load()),
-      tabPreset: getSelectedTabNamePreset()
+      tabPreset: getSelectedTabNamePreset(),
+      starterSql: getShouldInsertStarterSql()
     };
   }
   function restoreSettingsImportSnapshot(snapshot) {
@@ -36590,6 +36684,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     if (snapshot.shouldPersistSession && snapshot.sqlTabs) sqlTabsStorage.save(snapshot.sqlTabs);
     if (!snapshot.shouldPersistSession) sqlTabsStorage.clear();
     setTabNamePresetPreference(snapshot.tabPreset);
+    setStarterSqlEnabled(snapshot.starterSql);
   }
   function applySettingsImportPlan(plan) {
     if (Object.prototype.hasOwnProperty.call(plan, "favorites")) {
@@ -36610,6 +36705,9 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     }
     if (Object.prototype.hasOwnProperty.call(plan, "tabPreset")) {
       setTabNamePresetPreference(plan.tabPreset);
+    }
+    if (Object.prototype.hasOwnProperty.call(plan, "starterSql")) {
+      setStarterSqlEnabled(plan.starterSql);
     }
   }
   function updateSettingsTransferActionsState() {
@@ -36685,6 +36783,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       sqlTabs: sqlTabsStorage.load()
     };
     if (scopes.has("tabPreset")) payload.data.tabPreset = getSelectedTabNamePreset();
+    if (scopes.has("starterSql")) payload.data.starterSql = getShouldInsertStarterSql();
     downloadText(
       `hsqlite-config-${(/* @__PURE__ */ new Date()).toISOString().slice(0, 19).replaceAll(":", "-")}.json`,
       JSON.stringify(payload, null, 2),

@@ -1304,12 +1304,34 @@ function assertSqlTabLifecycleFlows(runtime, context) {
   const closeTabConfirmModal = runtime.elementsById.get("closeTabConfirmModal");
   const closeTabConfirmText = runtime.elementsById.get("closeTabConfirmText");
   const closeTabPreview = runtime.elementsById.get("closeTabPreview");
+  const starterSqlToggle = runtime.elementsById.get("starterSqlToggle");
 
   const baseTab = context.createEmptyTab("Lifecycle Base", "select * from clientes");
   context.replaceSqlTabsItems([baseTab]);
   context.setSqlTabsState({ activeTabId: baseTab.id });
   context.loadTabState(baseTab);
 
+  assert(
+    context.getShouldInsertStarterSql() === true && starterSqlToggle?.checked === true,
+    "Runtime smoke expected the starter-SQL preference to default to ON."
+  );
+
+  context.setStarterSqlEnabled(false);
+  context.addSqlTab();
+  assert(
+    context.getEditorValue() === "" && context.getSqlTabsItems().at(-1)?.sql === "",
+    "Runtime smoke expected a new SQL tab to start empty when starter SQL is OFF."
+  );
+  context.closeAllSqlTabs();
+  assert(
+    context.getSqlTabsItems().length === 1 && context.getEditorValue() === "",
+    "Runtime smoke expected the replacement tab from Close all to honor starter SQL OFF."
+  );
+
+  context.replaceSqlTabsItems([baseTab]);
+  context.setSqlTabsState({ activeTabId: baseTab.id });
+  context.loadTabState(baseTab);
+  context.setStarterSqlEnabled(true);
   context.setEditorValue("select * from clientes");
   context.saveCurrentTabState();
   context.addSqlTab();
@@ -1322,6 +1344,10 @@ function assertSqlTabLifecycleFlows(runtime, context) {
   assert(
     context.getActiveSqlTabId() === lifecycleTabsAfterAdd[1].id,
     "Runtime smoke expected addSqlTab() to activate the newly created tab."
+  );
+  assert(
+    context.getEditorValue() === context.DEFAULT_SQL_TAB_TEMPLATE,
+    "Runtime smoke expected a new SQL tab to receive the canonical starter SQL when the preference is ON."
   );
   assert(
     /Nova aba criada/i.test(runtime.elementsById.get("status")?.textContent || ""),
@@ -1856,11 +1882,11 @@ async function assertSettingsTransferFlows(runtime, context) {
   }
 
   settingsInputs.forEach((input) => {
-    input.checked = ["favorites", "queryHistory", "theme", "session", "tabPreset"].includes(input.value);
+    input.checked = ["favorites", "queryHistory", "theme", "session", "tabPreset", "starterSql"].includes(input.value);
   });
   assert(
-    settingsTransferModal?.querySelectorAll(".cfg-scope:checked")?.length === 5,
-    "Runtime smoke expected five selected config scopes before settings export."
+    settingsTransferModal?.querySelectorAll(".cfg-scope:checked")?.length === 6,
+    "Runtime smoke expected six selected config scopes before settings export."
   );
 
   context.setFavoriteQueriesState([{
@@ -1877,6 +1903,7 @@ async function assertSettingsTransferFlows(runtime, context) {
   context.setTheme("light");
   context.setSessionPersistence(false);
   context.setTabNamePresetPreference("star_wars");
+  context.setStarterSqlEnabled(false);
 
   context.exportSettingsConfig();
   const settingsDownload = runtime.downloads.at(-1);
@@ -1893,6 +1920,10 @@ async function assertSettingsTransferFlows(runtime, context) {
   assert(
     exported.data?.theme === "light" && exported.data?.session?.shouldPersistSession === false,
     "Runtime smoke expected settings export payload to capture theme and session preferences."
+  );
+  assert(
+    exported.data?.starterSql === false,
+    "Runtime smoke expected settings export payload to capture the starter-SQL preference."
   );
   assert(
     Array.isArray(exported.data?.favorites) && exported.data.favorites[0]?.sql === "select * from export_scope",
@@ -1916,6 +1947,7 @@ async function assertSettingsTransferFlows(runtime, context) {
   context.setTheme("dark");
   context.setSessionPersistence(true);
   context.setTabNamePresetPreference("heman");
+  context.setStarterSqlEnabled(true);
 
   await context.importSettingsConfig({
     async text() {
@@ -1942,6 +1974,11 @@ async function assertSettingsTransferFlows(runtime, context) {
   assert(
     context.localStorage.getItem("hSQLiteEditorTabNamePresetV1") === "star_wars",
     "Runtime smoke expected settings import to restore tab name preset."
+  );
+  assert(
+    context.getShouldInsertStarterSql() === false
+      && context.localStorage.getItem("hSQLiteEditorStarterSqlV1") === "false",
+    "Runtime smoke expected settings import to restore the starter-SQL preference."
   );
 
   settingsInputs.forEach((input) => {
@@ -3760,7 +3797,8 @@ function getSettingsScopeInputs(runtime) {
       "queryHistory",
       "theme",
       "session",
-      "tabPreset"
+      "tabPreset",
+      "starterSql"
     ].map((value) => ({
       value,
       checked: true,

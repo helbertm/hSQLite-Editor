@@ -15,6 +15,7 @@ The application can store these entries:
 | `hSQLiteEditorStorageSchemaVersion` | Internal storage schema version. | Clear browser site data. |
 | `hSQLiteEditorSqlTabsV1` | Up to five tab identifiers, titles, SQL text, and active-tab counters when session persistence is enabled. | Turning session persistence off clears this entry. Clearing browser site data also removes it. |
 | `hSQLiteEditorSessionPersistenceV1` | Whether SQL tab restoration is enabled. | Change the setting or clear browser site data. |
+| `hSQLiteEditorStarterSqlV1` | Whether newly created SQL tabs start with the built-in starter SQL. | Change the setting or clear browser site data. |
 | `hSQLiteEditorFirstRunDoneV1` | Whether first-run preferences were completed. | Clear browser site data. |
 | `hSQLiteEditorQueryHistoryV1` | Up to 50 SQL statements with execution time, success/error status, and error text. | Use **Clear history** or clear browser site data. |
 | `hSQLiteEditorFavoritesV1` | Up to 50 saved SQL statements with identifiers and creation times. | Use **Clear favorites** or clear browser site data. |
@@ -43,6 +44,6 @@ Browsers that support the File System Access API can store user-selected file ha
 
 ## Settings transfer and exports
 
-Settings export includes only the scopes selected by the user: favorites, query history, theme, locale, persisted SQL tabs/session preference, and tab-name preset. The JSON file leaves browser storage only through an explicit download. Result exports, saved SQL, SQLite saves, schema exports, and SQL Map PNG files are also explicit downloads.
+Settings export includes only the scopes selected by the user: favorites, query history, theme, locale, persisted SQL tabs/session preference, tab-name preset, and starter-SQL preference. The JSON file leaves browser storage only through an explicit download. Result exports, saved SQL, SQLite saves, schema exports, and SQL Map PNG files are also explicit downloads.
 
 Before sharing an export, inspect it for SQL text, identifiers, error messages, or metadata that may be confidential. Clearing application storage does not delete files already downloaded or copied elsewhere.

@@ -1,6 +1,7 @@
 import { getCurrentTabNamePool, shuffleList } from "./22a-sql-tab-presets.js";
-import { createTabState } from "../core/00-contracts.js";
+import { createTabState, DEFAULT_SQL_TAB_TEMPLATE } from "../core/00-contracts.js";
 import { getNextSqlTabNameIndex, getNextSqlTabNumber, getSqlTabNameBag, getSqlTabsItems, setSqlTabsState } from "../core/11-state-tabs.js";
+import { getShouldInsertStarterSql } from "../core/13-state-preferences.js";
 
 export function getNextSqlTabName() {
   const pool = getCurrentTabNamePool();
@@ -39,7 +40,7 @@ export function createEmptyTab(title = null, sql = null) {
   return createTabState({
     id,
     title: title || getNextSqlTabName(),
-    sql: sql ?? "select *\nfrom\nwhere\norder by",
+    sql: sql ?? (getShouldInsertStarterSql() ? DEFAULT_SQL_TAB_TEMPLATE : ""),
     resultSets: [],
     activeResultIndex: 0,
     filterValue: ""

@@ -2,12 +2,12 @@ import { formatDateTime, getLocale, setLocale, t } from "./03-localization.js";
 import { exportSettingsBtn, importSettingsInput, lastSettingsExportInfo, settingsTransferModal } from "./05-dom-library-settings.js";
 import { modalController } from "./05-modal-controller.js";
 import { setStatus } from "./12-shell-status.js";
-import { setSessionPersistence, setTheme } from "./15-preferences.js";
+import { setSessionPersistence, setStarterSqlEnabled, setTheme } from "./15-preferences.js";
 import { saveQueryHistoryToStorage } from "./20-history-query.js";
 import { favoritesController } from "./21-history-favorites.js";
 import { setTabNamePresetPreference } from "./22a-sql-tab-presets.js";
 import { SETTINGS_TRANSFER_MAX_FILE_CHARS, validateSettingsImportPayload } from "../core/05-settings-import-contract.js";
-import { getSelectedTabNamePreset, getShouldPersistSession } from "../core/13-state-preferences.js";
+import { getSelectedTabNamePreset, getShouldInsertStarterSql, getShouldPersistSession } from "../core/13-state-preferences.js";
 import { getFavoriteQueriesState, getQueryHistoryState, setFavoriteQueriesState, setQueryHistoryState } from "../core/15-state-runtime-library.js";
 import { STORAGE_KEYS, sqlTabsStorage, storage } from "../ports/05-storage.js";
 import { downloadText } from "../ports/10-browser-io.js";
@@ -32,7 +32,8 @@ export function captureSettingsImportSnapshot() {
     locale: getLocale(),
     shouldPersistSession: getShouldPersistSession(),
     sqlTabs: cloneSettingsValue(sqlTabsStorage.load()),
-    tabPreset: getSelectedTabNamePreset()
+    tabPreset: getSelectedTabNamePreset(),
+    starterSql: getShouldInsertStarterSql()
   };
 }
 
@@ -47,6 +48,7 @@ export function restoreSettingsImportSnapshot(snapshot) {
   if (snapshot.shouldPersistSession && snapshot.sqlTabs) sqlTabsStorage.save(snapshot.sqlTabs);
   if (!snapshot.shouldPersistSession) sqlTabsStorage.clear();
   setTabNamePresetPreference(snapshot.tabPreset);
+  setStarterSqlEnabled(snapshot.starterSql);
 }
 
 export function applySettingsImportPlan(plan) {
@@ -68,6 +70,9 @@ export function applySettingsImportPlan(plan) {
   }
   if (Object.prototype.hasOwnProperty.call(plan, "tabPreset")) {
     setTabNamePresetPreference(plan.tabPreset);
+  }
+  if (Object.prototype.hasOwnProperty.call(plan, "starterSql")) {
+    setStarterSqlEnabled(plan.starterSql);
   }
 }
 
@@ -150,6 +155,7 @@ export function exportSettingsConfig() {
     sqlTabs: sqlTabsStorage.load()
   };
   if (scopes.has("tabPreset")) payload.data.tabPreset = getSelectedTabNamePreset();
+  if (scopes.has("starterSql")) payload.data.starterSql = getShouldInsertStarterSql();
 
   downloadText(
     `hsqlite-config-${new Date().toISOString().slice(0, 19).replaceAll(":", "-")}.json`,

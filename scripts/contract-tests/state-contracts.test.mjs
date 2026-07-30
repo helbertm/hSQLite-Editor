@@ -3,7 +3,8 @@ import test from "node:test";
 import {
   createDbSession,
   createReleaseMetadata,
-  createTabState
+  createTabState,
+  DEFAULT_SQL_TAB_TEMPLATE
 } from "../../src/core/00-contracts.js";
 
 globalThis.window = {
@@ -54,6 +55,8 @@ test("normalizes release, database, and tab contracts", () => {
   assert.equal(tab.id, "7");
   assert.equal(tab.title, "SQL");
   assert.equal(tab.activeResultIndex, 2);
+  assert.equal(createTabState({ sql: "" }).sql, "", "Explicitly empty SQL must remain empty.");
+  assert.equal(createTabState().sql, DEFAULT_SQL_TAB_TEMPLATE);
 });
 
 test("state patch functions change only the requested authoritative slices", () => {
@@ -62,7 +65,7 @@ test("state patch functions change only the requested authoritative slices", () 
 
   state.setSqlTabsState({ activeTabId: "tab-2", isSwitching: true });
   state.setGridState({ currentPage: 4, columns: ["id", "name"] });
-  state.setPreferencesState({ locale: "es-ES", schemaCollapsed: true });
+  state.setPreferencesState({ locale: "es-ES", schemaCollapsed: true, shouldInsertStarterSql: false });
 
   assert.equal(state.appState.tabs.activeTabId, "tab-2");
   assert.equal(state.appState.tabs.isSwitching, true);
@@ -72,6 +75,7 @@ test("state patch functions change only the requested authoritative slices", () 
   assert.deepEqual(state.appState.grid.sortStates, original.grid.sortStates);
   assert.equal(state.appState.preferences.locale, "es-ES");
   assert.equal(state.appState.preferences.schemaCollapsed, true);
+  assert.equal(state.getShouldInsertStarterSql(), false);
   assert.deepEqual(state.appState.dbSession, original.dbSession);
   assert.deepEqual(state.appState.sqlMap, original.sqlMap);
 });
