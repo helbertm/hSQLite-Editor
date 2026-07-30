@@ -556,6 +556,39 @@ try {
       const closeTabAction = page.locator(".sql-tab-actions-portal.active [data-tab-close-id]");
       const renameTabAction = page.locator(".sql-tab-actions-portal.active [data-tab-rename-id]");
       const closeAllTabsAction = page.locator("#closeAllTabsBtn");
+      const tabActionTarget = await closeTabAction.evaluate(element => {
+        const targetRect = element.getBoundingClientRect();
+        return {
+          targetWidth: Math.round(targetRect.width),
+          targetHeight: Math.round(targetRect.height)
+        };
+      });
+      assert(
+        tabActionTarget?.targetWidth === 26 && tabActionTarget.targetHeight === 26,
+        `${locale.tag}/${viewport.name}: inline close target is not 26 by 26 CSS pixels (${JSON.stringify(tabActionTarget)}).`
+      );
+      await closeTabAction.hover();
+      const closeHoverFeedback = await closeTabAction.evaluate(element => {
+        const resolveColor = (value) => {
+          const probe = document.createElement("span");
+          probe.style.color = value;
+          document.body.appendChild(probe);
+          const resolved = getComputedStyle(probe).color;
+          probe.remove();
+          return resolved;
+        };
+        const styles = getComputedStyle(element);
+        return {
+          backgroundColor: styles.backgroundColor,
+          color: styles.color,
+          expectedDanger: resolveColor(getComputedStyle(document.documentElement).getPropertyValue("--danger"))
+        };
+      });
+      assert(
+        closeHoverFeedback.backgroundColor === "rgba(0, 0, 0, 0)"
+          && closeHoverFeedback.color === closeHoverFeedback.expectedDanger,
+        `${locale.tag}/${viewport.name}: close hover must keep a transparent hit target and color only the X (${JSON.stringify(closeHoverFeedback)}).`
+      );
       const newTabPlacement = await page.locator("#newSqlTabBtn").evaluate(element => {
         const lastTabItem = document.querySelector("#sqlTabs .sql-tab-item:last-child");
         if (!lastTabItem) return null;
