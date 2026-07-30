@@ -53,6 +53,50 @@ function assert(condition, message) {
 }
 
 try {
+  const fallbackContext = await browser.newContext({
+    locale: "en-US",
+    viewport: viewports[0],
+    reducedMotion: "reduce"
+  });
+  const fallbackPage = await fallbackContext.newPage();
+  await fallbackPage.addInitScript(() => {
+    let editorRuntime;
+    Object.defineProperty(window, "HSQLiteCodeEditor", {
+      configurable: true,
+      get() {
+        return editorRuntime;
+      },
+      set(value) {
+        editorRuntime = {
+          ...value,
+          createSqlEditor() {
+            throw new Error("qa-editor-initialization-failure");
+          }
+        };
+      }
+    });
+    window.__HSQLITE_TEST__ = true;
+    localStorage.setItem("hSQLiteEditorFirstRunDoneV1", "true");
+    localStorage.setItem("hSQLiteEditorLocaleV1", "en-US");
+  });
+  await fallbackPage.goto(baseUrl, { waitUntil: "load" });
+  await fallbackPage.waitForFunction(() => document.body.dataset.bootState === "ready");
+  const fallbackState = await fallbackPage.locator("#sqlEditor").evaluate(element => ({
+    hidden: element.hidden,
+    display: getComputedStyle(element).display,
+    layoutBoxes: element.getClientRects().length,
+    richEditorCount: document.querySelectorAll(".cm-content").length
+  }));
+  assert(!fallbackState.hidden, "Editor startup failure: textarea fallback remained hidden.");
+  assert(fallbackState.display !== "none", "Editor startup failure: textarea fallback remained visually removed.");
+  assert(fallbackState.layoutBoxes > 0, "Editor startup failure: textarea fallback has no layout box.");
+  assert(fallbackState.richEditorCount === 0, "Editor startup failure: partial rich-editor UI remained mounted.");
+  assert(
+    await fallbackPage.getByRole("textbox", { name: locales[0].editorLabel }).count() === 1,
+    "Editor startup failure: expected one accessible textarea fallback."
+  );
+  await fallbackContext.close();
+
   for (const locale of locales) {
     for (const viewport of viewports) {
       const context = await browser.newContext({ locale: locale.tag, viewport, reducedMotion: "reduce" });
@@ -95,6 +139,17 @@ try {
       assert(await editor.getAttribute("aria-multiline") === "true", `${locale.tag}/${viewport.name}: editor is not exposed as multiline.`);
       assert(await editor.getAttribute("aria-autocomplete") === "list", `${locale.tag}/${viewport.name}: editor does not expose list autocomplete semantics.`);
       assert(await editor.getAttribute("aria-controls") === "autocomplete queryHistoryPopover", `${locale.tag}/${viewport.name}: editor does not identify its controlled suggestion surfaces.`);
+      const fallbackEditor = page.locator("#sqlEditor");
+      const fallbackVisibility = await fallbackEditor.evaluate(element => ({
+        hidden: element.hidden,
+        display: getComputedStyle(element).display,
+        layoutBoxes: element.getClientRects().length
+      }));
+      assert(fallbackVisibility.hidden, `${locale.tag}/${viewport.name}: rich-editor mode did not mark the textarea fallback as hidden.`);
+      assert(fallbackVisibility.display === "none", `${locale.tag}/${viewport.name}: the textarea fallback is visibly duplicating the SQL editor.`);
+      assert(fallbackVisibility.layoutBoxes === 0, `${locale.tag}/${viewport.name}: the textarea fallback still occupies editor layout space.`);
+      const accessibleEditors = page.getByRole("textbox", { name: locale.editorLabel });
+      assert(await accessibleEditors.count() === 1, `${locale.tag}/${viewport.name}: expected one accessible SQL editor surface.`);
       assert(await page.evaluate(() => window.HSQLiteCodeEditor?.majorVersion) === 6, `${locale.tag}/${viewport.name}: editor major version is not 6.`);
       assert(await page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches), `${locale.tag}/${viewport.name}: reduced-motion browser preference is not active.`);
 

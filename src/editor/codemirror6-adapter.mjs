@@ -131,7 +131,6 @@ function createSqlEditor(options) {
   const host = document.createElement("div");
   host.className = "hsqlite-editor-host";
   textarea.parentNode.insertBefore(host, textarea);
-  textarea.hidden = true;
 
   const extensions = [
     lineNumbers(),
@@ -181,11 +180,19 @@ function createSqlEditor(options) {
     keymap.of([...defaultKeymap, ...historyKeymap])
   ];
 
-  const view = new EditorView({
-    doc: textarea.value,
-    extensions,
-    parent: host
-  });
+  let view;
+  try {
+    view = new EditorView({
+      doc: textarea.value,
+      extensions,
+      parent: host
+    });
+    textarea.hidden = true;
+  } catch (error) {
+    host.remove();
+    textarea.hidden = false;
+    throw error;
+  }
 
   return {
     focus() {
@@ -292,6 +299,7 @@ function createSqlEditor(options) {
       else view.contentDOM.removeAttribute("aria-activedescendant");
     },
     destroy() {
+      textarea.value = view.state.doc.toString();
       view.destroy();
       host.remove();
       textarea.hidden = false;

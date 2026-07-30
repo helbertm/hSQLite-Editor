@@ -1,4 +1,8 @@
 /* Editor ownership */
+.editor-wrap textarea[hidden] {
+display: none;
+}
+
 .hsqlite-editor-host .cm-editor {
 width: 100%;
       min-height: 180px;

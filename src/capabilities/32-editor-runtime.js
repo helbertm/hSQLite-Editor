@@ -25,20 +25,27 @@ export async function initSqlEditor() {
     setStatus(t("editor.runtimeFallback"), "warn");
     return;
   }
-  setCmEditor(window.HSQLiteCodeEditor.createSqlEditor({
-    textarea: sqlEditor,
-    label: t("editor.ariaLabel"),
-    theme: document.documentElement.dataset.theme || "dark",
-    onKeydown: handleEditorRuntimeKeydown,
-    onChange: handleEditorRuntimeChange,
-    onCursorActivity: handleEditorCursorActivity,
-    onFocus: () => updateAutocomplete(false),
-    onBlur: () => setTimeout(() => {
-      if (cmEditor?.hasFocus()) return;
-      hideAutocomplete();
-      closeQuickQueryHistory();
-    }, 180)
-  }));
+  try {
+    setCmEditor(window.HSQLiteCodeEditor.createSqlEditor({
+      textarea: sqlEditor,
+      label: t("editor.ariaLabel"),
+      theme: document.documentElement.dataset.theme || "dark",
+      onKeydown: handleEditorRuntimeKeydown,
+      onChange: handleEditorRuntimeChange,
+      onCursorActivity: handleEditorCursorActivity,
+      onFocus: () => updateAutocomplete(false),
+      onBlur: () => setTimeout(() => {
+        if (cmEditor?.hasFocus()) return;
+        hideAutocomplete();
+        closeQuickQueryHistory();
+      }, 180)
+    }));
+  } catch (error) {
+    sqlEditor.hidden = false;
+    console.error(`${APP_LOG_PREFIX} editor-runtime-initialization-failed`, error);
+    setStatus(t("editor.runtimeFallback"), "warn");
+    return;
+  }
   setTimeout(() => cmEditor.refresh(), 0);
   debugLog("editor-runtime-ready", {
     engine: window.HSQLiteCodeEditor.engine,
