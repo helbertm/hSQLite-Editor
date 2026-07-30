@@ -149,7 +149,7 @@
               </svg>
             </span>
           </button>
-          <button id="closeActiveSqlTabBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action" type="button" title="Fechar aba" data-i18n-title="tabs.closeLabel" aria-label="Fechar aba" data-i18n-aria-label="tabs.closeLabel" disabled>
+          <button id="closeAllTabsBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action sql-tabs-close-all" type="button" title="Fechar todas as abas" data-i18n-title="tabs.closeAll" aria-label="Fechar todas as abas" data-i18n-aria-label="tabs.closeAll" disabled>
             <span class="sql-tab-icon" aria-hidden="true">
               <svg viewBox="0 0 16 16" focusable="false">
                 <path d="M4 4l8 8"></path>
@@ -204,9 +204,6 @@
                 </button>
                 <button id="clearSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Limpar o editor de consulta (F7)" data-i18n-title="editor.clearTitle">
                   <span class="shortcut-badge" aria-hidden="true">F7</span><span data-i18n="common.clear">Limpar</span>
-                </button>
-                <button id="closeAllTabsBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Fechar todas as abas SQL e abrir uma nova" data-i18n-title="editor.closeAllTitle">
-                  <span data-i18n="editor.closeAll">Fechar todas as abas</span>
                 </button>
                 <button id="clearPasteSqlBtn" class="ui-button ui-button-secondary ui-button-md" type="button" title="Limpar o editor e colar o conteúdo da área de transferência (F8)" data-i18n-title="editor.clearPasteTitle">
                   <span class="shortcut-badge" aria-hidden="true">F8</span><span data-i18n="editor.clearPaste">Limpar e colar</span>
@@ -403,6 +400,17 @@
       <div class="modal-actions modal-actions-split close-tab-confirm-actions">
         <button id="confirmCloseTabBtn" class="ui-button ui-button-destructive ui-button-md close-tab-danger-btn" type="button" data-modal-confirm="true" data-i18n="tabs.close">Fechar aba</button>
         <button id="cancelCloseTabBtn" class="ui-button ui-button-primary ui-button-md close-tab-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.cancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="closeAllTabsConfirmModal">
+    <div class="modal close-tab-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="closeAllTabsTitle" aria-describedby="closeAllTabsConfirmText">
+      <h3 id="closeAllTabsTitle" data-i18n="tabs.closeAllTitleGeneric">Fechar todas as abas?</h3>
+      <p id="closeAllTabsConfirmText" data-i18n="tabs.closeAllWarningGeneric">Todo o texto SQL e os resultados destas abas serão perdidos. Uma nova aba será aberta.</p>
+      <div class="modal-actions modal-actions-split close-tab-confirm-actions">
+        <button id="confirmCloseAllTabsBtn" class="ui-button ui-button-destructive ui-button-md close-tab-danger-btn" type="button" data-modal-confirm="true" data-i18n="tabs.closeAll">Fechar todas as abas</button>
+        <button id="cancelCloseAllTabsBtn" class="ui-button ui-button-primary ui-button-md close-tab-cancel-btn" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.cancel">Cancelar</button>
       </div>
     </div>
   </div>

@@ -6,7 +6,7 @@ import { setStatus } from "./12-shell-status.js";
 import { toggleSchemaPanel } from "./13-schema-panel.js";
 import { applyFirstRunPreferences, handleThemeSwitchClick, previewFirstRunTheme, setStarterSqlEnabled, toggleSessionPersistence } from "./15-preferences.js";
 import { setTabNamePresetPreference } from "./22a-sql-tab-presets.js";
-import { addSqlTab, closeAllSqlTabs } from "./23-sql-tabs-state.js";
+import { addSqlTab, requestCloseAllSqlTabs } from "./23-sql-tabs-state.js";
 import { updateSqlTabsOverflow } from "./24-sql-tabs-render.js";
 import { bindDatabaseMenuActions, bindEditorMoreActions, bindSqlTabsShellActions, initKeyboardController } from "./25-shell-shortcuts.js";
 import { loadSqlFile, openSqlFilePicker } from "./36-editor-file-workflow.js";
@@ -59,6 +59,6 @@ export function bindShellBootstrapUi() {
   });
   copySqlBtn.addEventListener("click", copyFullSql);
   clearSqlBtn.addEventListener("click", clearSqlEditor);
-  if (closeAllTabsBtn) closeAllTabsBtn.addEventListener("click", closeAllSqlTabs);
+  if (closeAllTabsBtn) closeAllTabsBtn.addEventListener("click", requestCloseAllSqlTabs);
   clearPasteSqlBtn.addEventListener("click", clearAndPasteSql);
 }

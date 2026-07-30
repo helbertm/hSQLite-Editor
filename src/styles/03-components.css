@@ -1529,7 +1529,8 @@ display: inline-flex;
       align-items: center;
       gap: 9px;
       min-width: 0;
-      width: 100%;
+      width: auto;
+      flex: 1 1 auto;
       min-height: 32px;
       padding: 0 10px 0 12px;
       border: 0;
@@ -1618,11 +1619,72 @@ display: flex;
 display: none;
 }
 
+.sql-tab-inline-actions {
+display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      width: 28px;
+      min-width: 28px;
+      margin-right: 3px;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.sql-tab-item:hover .sql-tab-inline-actions,
+    .sql-tab-item:focus-within .sql-tab-inline-actions {
+opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+}
+
+.sql-tab-item.is-editing .sql-tab-inline-actions {
+display: none;
+}
+
+.sql-tab-inline-action {
+width: 26px;
+      height: 26px;
+      min-width: 26px;
+      min-height: 26px;
+      padding: 0;
+      border-color: transparent;
+      background: transparent;
+      color: var(--mutedText);
+}
+
+.sql-tab-inline-action:hover {
+border-color: color-mix(in srgb, var(--danger) 28%, var(--border));
+      background: color-mix(in srgb, var(--danger) 9%, var(--input-bg));
+      color: var(--danger);
+}
+
 .sql-tab-header-action {
 width: 30px;
       height: 30px;
       padding: 0;
       flex: 0 0 auto;
+}
+
+.sql-tabs-close-all {
+border-color: transparent;
+      background: color-mix(in srgb, var(--border) 35%, transparent);
+      color: var(--mutedText);
+}
+
+.sql-tabs-close-all:not(:disabled):hover {
+border-color: color-mix(in srgb, var(--border) 70%, transparent);
+      background: color-mix(in srgb, var(--border) 55%, transparent);
+      color: var(--foreground);
+}
+
+@media (hover: none), (pointer: coarse) {
+.sql-tab-item.active .sql-tab-inline-actions {
+opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+}
 }
 
 .new-sql-tab-btn {

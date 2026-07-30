@@ -87,9 +87,10 @@ if (!tabButtonTemplate || /<input\b/.test(tabButtonTemplate)) {
 const requiredTabContracts = [
   [/renameField\.innerHTML[\s\S]*<input class="sql-tab-title-input"/, "sibling tab-rename field"],
   [/(?:aria-label=.*tabs\.renameNamedLabel|setAttribute\("aria-label",\s*t\("tabs\.renameNamedLabel)/, "tab-specific rename-button name"],
-  [/setAttribute\("aria-label",\s*t\("tabs\.closeNamedLabel/, "tab-specific close-button name"],
+  [/closeButton\.setAttribute\("aria-label",\s*t\("tabs\.closeNamedLabel/, "tab-specific close-button name"],
   [/if \(renameField\) item\.appendChild\(renameField\)/, "rename field outside the tab button"],
-  [template, /id="sqlTabs"[^>]*role="tablist"[^>]*><\/div>\s*<button id="renameActiveSqlTabBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action"/, "active-tab commands outside the tablist"]
+  [/item\.appendChild\(inlineActions\)/, "close command outside the tab button"],
+  [template, /id="sqlTabs"[^>]*role="tablist"[^>]*><\/div>\s*<button id="renameActiveSqlTabBtn" class="ui-button ui-button-icon ui-button-sm sql-tab-header-action"/, "active-tab rename command outside the tablist"]
 ];
 for (const contract of requiredTabContracts) {
   const [sourceOrPattern, patternOrLabel, optionalLabel] = contract;
