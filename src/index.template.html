@@ -101,12 +101,12 @@
           <input class="schema-search" id="schemaSearch" placeholder="Filtrar objetos do schema..." data-i18n-placeholder="schema.filter" aria-label="Filtrar objetos do schema" data-i18n-aria-label="schema.filter" />
           <button id="clearSchemaSearchBtn" class="ui-button ui-button-icon ui-button-sm ui-inline-clear clear-schema-search-btn" title="Limpar filtro do schema" data-i18n-title="schema.clearFilter" aria-label="Limpar filtro do schema" data-i18n-aria-label="schema.clearFilter" type="button">×</button>
         </div>
-        <div class="schema-type-filters" id="schemaTypeFilters" aria-label="Filtro por tipo de objeto do schema" data-i18n-aria-label="schema.filterTypes">
-          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeAllBtn">ALL</button>
-          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeTableBtn">TABLE</button>
-          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeViewBtn">VIEW</button>
+        <div class="schema-type-filters" id="schemaTypeFilters" role="group" aria-label="Filtro por tipo de objeto do schema" data-i18n-aria-label="schema.filterTypes">
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeAllBtn" aria-pressed="false">ALL</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeTableBtn" aria-pressed="false">TABLE</button>
+          <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeViewBtn" aria-pressed="false">VIEW</button>
           <div class="schema-other-filter">
-            <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeOtherBtn" data-i18n="schema.other">Outros</button>
+            <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn" id="schemaTypeOtherBtn" data-i18n="schema.other" aria-pressed="false" aria-expanded="false" aria-controls="schemaOtherMenu">Outros</button>
             <div class="schema-other-menu" id="schemaOtherMenu"></div>
           </div>
           <button type="button" class="ui-button ui-button-ghost ui-button-sm schema-type-filter-btn schema-clear-filters-btn" id="clearSchemaFiltersBtn" data-i18n="schema.clearFilters">Limpar filtros</button>
