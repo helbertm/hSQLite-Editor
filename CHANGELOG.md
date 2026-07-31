@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.6.1...hsqlite-editor-v0.7.0) (2026-07-31)
+
+
+### Features
+
+* **help:** redesign help documentation ([15790f1](https://github.com/helbertm/hSQLite-Editor/commit/15790f1c4558ffde758cfac610b928c894d69578))
+
 ## [0.6.1](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.6.0...hsqlite-editor-v0.6.1) (2026-07-30)
 
 
