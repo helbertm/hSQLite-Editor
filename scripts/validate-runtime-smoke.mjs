@@ -304,9 +304,9 @@ function assertAdvancedLocalizationFlows(runtime, context) {
     "es-ES": "Copia local"
   };
   const localizedHelpHeadings = {
-    "en-US": "Local data and backups",
-    "pt-BR": "Dados locais e backups",
-    "es-ES": "Datos locales y copias de seguridad"
+    "en-US": "Backup and offline mode",
+    "pt-BR": "Backup e modo offline",
+    "es-ES": "Copia de seguridad y modo sin conexión"
   };
   for (const locale of ["en-US", "pt-BR", "es-ES"]) {
     context.setLocale(locale, { persist: false });
@@ -324,8 +324,8 @@ function assertAdvancedLocalizationFlows(runtime, context) {
       `Runtime smoke expected concise local-backup guidance in the Quick guide for ${locale}.`
     );
     assert(
-      context.t("help.gridHtml").includes(localizedHelpHeadings[locale]) &&
-        context.t("help.gridHtml").includes("JSON"),
+      context.t("help.backupTitle") === localizedHelpHeadings[locale] &&
+        context.t("help.backupHtml").includes("JSON"),
       `Runtime smoke expected detailed local-backup guidance in Help for ${locale}.`
     );
     const textStrategies = context.getTablePopulationStrategyOptions({
