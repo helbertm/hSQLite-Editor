@@ -31,9 +31,9 @@ The product is distributed as one standalone `index.html` artifact and is offlin
 
 ## Privacy and trust boundary
 
-hSQLite Editor has no application backend and does not intentionally upload databases, queries, history, or settings. Files and browser storage remain on the device unless the user explicitly exports or shares them.
+hSQLite Editor has no application backend and does not intentionally upload databases, queries, history, or settings. The downloaded standalone HTML, `file://` use, and local development contain no usage tracker. Only the official GitHub Pages deployment conditionally loads Umami for minimized pageview statistics, including an editor-version tag; it excludes URL query parameters and fragments and honors DNT and GPC.
 
-The browser, browser extensions, operating system, downloaded artifact, and files selected by the user remain outside the project's trust boundary. Browser storage is not an encrypted secrets vault. The complete localStorage, IndexedDB, recent-file metadata, clearing, and permission-revocation inventory is in [docs/privacy.md](docs/privacy.md). See [SECURITY.md](SECURITY.md) and [security_posture.md](security_posture.md).
+The browser, browser extensions, operating system, downloaded artifact, files selected by the user, and hosted analytics provider remain outside the project's trust boundary. Browser storage is not an encrypted secrets vault. The complete hosted-statistics boundary, localStorage and IndexedDB inventory, recent-file metadata, clearing behavior, and permission-revocation guidance are in [docs/privacy.md](docs/privacy.md). See [SECURITY.md](SECURITY.md) and [security_posture.md](security_posture.md).
 
 ## Browser support
 
@@ -66,6 +66,7 @@ npm run validate:source
 npm run validate:i18n
 npm run validate:accessibility
 npm run validate:privacy
+npm run validate:pages
 npm run validate:artifact
 npm run validate:artifact:structure
 npm run validate:runtime
@@ -80,6 +81,8 @@ npm run quality:security:docker
 ```
 
 Do not edit generated `index.html` or `dist/` artifacts manually. Change source under `src/`, then rebuild.
+
+The GitHub Pages workflow creates a separate `_site/index.html` with `npm run prepare:pages`. That command requires the public `UMAMI_WEBSITE_ID` variable and injects the reviewed Pages-only analytics loader after all standalone gates pass.
 
 ## Architecture
 

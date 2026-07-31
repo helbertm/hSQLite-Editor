@@ -33,11 +33,9 @@ jobs:
           npm run validate:full:ci
 
       - name: Prepare site
-        run: |
-          mkdir -p _site
-          cp index.html _site/index.html
-          cp CHANGELOG.md _site/CHANGELOG.md
-          cp .release-please-manifest.json _site/.release-please-manifest.json
+        env:
+          UMAMI_WEBSITE_ID: ${{ vars.UMAMI_WEBSITE_ID }}
+        run: npm run prepare:pages
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0

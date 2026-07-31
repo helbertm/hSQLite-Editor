@@ -6,8 +6,9 @@ hSQLite Editor is a static, local-first browser application. It parses user-sele
 
 ## Current controls
 
-- No application backend or required telemetry endpoint.
+- No application backend or required telemetry endpoint for the standalone artifact.
 - No required runtime network requests in the standalone artifact.
+- The official GitHub Pages deployment alone adds a fixed, reviewed Umami loader for minimized pageviews; origin/path, DNT/GPC, URL search/hash exclusion, version tagging, and forbidden-feature controls are validated after injection.
 - SQL work is isolated in a Web Worker and uses request-scoped messages.
 - Mutating worker operations adopt database bytes only after success.
 - Vendored runtime assets are pinned and verified with SHA-256 digests.

@@ -406,6 +406,7 @@ font-size: 18px;
 
 .app-footer {
 display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       align-items: center;
       gap: 8px;
@@ -5895,6 +5896,8 @@ margin: 8px 0 8px 18px;
       <a href="https://github.com/helbertm/hSQLite-Editor" target="_blank" rel="noopener noreferrer" data-i18n-ignore>GitHub</a>
       <span aria-hidden="true">·</span>
       <a href="https://github.com/helbertm/hSQLite-Editor/blob/master/LICENSE" target="_blank" rel="noopener noreferrer" data-i18n-ignore>MIT</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/helbertm/hSQLite-Editor/blob/master/docs/privacy.md" target="_blank" rel="noopener noreferrer" data-i18n="footer.privacy">Privacidade</a>
     </footer>
   </div>
 
@@ -6316,6 +6319,7 @@ margin: 8px 0 8px 18px;
           <a href="#helpSqlMap" data-i18n="help.sqlMapTitle">Mapa SQL</a>
           <a href="#helpContinuity" data-i18n="help.continuityTitle">Sessão e atualizações</a>
           <a href="#helpBackupOffline" data-i18n="help.backupTitle">Backup e modo offline</a>
+          <a href="#helpPrivacy" data-i18n="help.privacyTitle">Privacidade e estatísticas</a>
           <a href="#helpSupport" data-i18n="help.supportTitle">Suporte e sugestões</a>
         </nav>
         <div class="help-content">
@@ -6430,6 +6434,14 @@ margin: 8px 0 8px 18px;
             <h4 data-i18n="help.backupTitle">Backup e modo offline</h4>
             <p data-i18n-html="help.backupHtml">Exporte periodicamente um backup JSON em Configurações. Ele pode conter SQL, histórico, favoritas, preferências e abas, mas <strong>não inclui o banco SQLite</strong>; salve o banco separadamente em <code>.db</code>. Limpar dados do site, usar janela privativa ou trocar de navegador, perfil ou dispositivo pode tornar os dados locais indisponíveis.</p>
             <p data-i18n-html="help.offlineHtml">O HTML standalone oficial funciona em <code>file://</code>. Dependendo do navegador, mudar o nome ou o caminho do HTML pode criar outro armazenamento local; exporte o backup antes de substituir o arquivo.</p>
+          </section>
+
+          <section id="helpPrivacy" tabindex="-1">
+            <h4 data-i18n="help.privacyTitle">Privacidade e estatísticas</h4>
+            <p data-i18n-html="help.privacyStandalone">O HTML standalone baixado, o uso por <code>file://</code> e a execução local não enviam estatísticas de uso.</p>
+            <p data-i18n="help.privacyPages">Somente o site oficial no GitHub Pages usa Umami para medir visualizações, origem de referência, navegador, sistema, dispositivo, idioma, tamanho da tela, país e versão do editor. Parâmetros e fragmentos da URL são excluídos, e DNT e GPC são respeitados.</p>
+            <p data-i18n="help.privacyNoContent">Nenhum banco, SQL, nome de arquivo, consulta, histórico, favorita, configuração ou conteúdo de aba é enviado para essas estatísticas.</p>
+            <a href="https://github.com/helbertm/hSQLite-Editor/blob/master/docs/privacy.md" target="_blank" rel="noopener noreferrer" data-i18n="help.privacyNotice">Ler o aviso de privacidade completo</a>
           </section>
 
           <section id="helpSupport" tabindex="-1">
@@ -30783,6 +30795,11 @@ window.__HSQLITE_BOOT__ = {
     ["help.backupTitle", "Backup and offline mode", "Backup e modo offline", "Copia de seguridad y modo sin conexi\xF3n"],
     ["help.backupHtml", "Periodically export a JSON backup from Settings. It may contain SQL, history, favorites, preferences, and tabs, but <strong>does not include the SQLite database</strong>; save the database separately as <code>.db</code>. Clearing site data, using a private window, or changing browser, profile, or device can make local data unavailable.", "Exporte periodicamente um backup JSON em Configura\xE7\xF5es. Ele pode conter SQL, hist\xF3rico, favoritas, prefer\xEAncias e abas, mas <strong>n\xE3o inclui o banco SQLite</strong>; salve o banco separadamente em <code>.db</code>. Limpar dados do site, usar janela privativa ou trocar de navegador, perfil ou dispositivo pode tornar os dados locais indispon\xEDveis.", "Exporte peri\xF3dicamente una copia JSON desde Configuraci\xF3n. Puede contener SQL, historial, favoritas, preferencias y pesta\xF1as, pero <strong>no incluye la base de datos SQLite</strong>; guarde la base por separado como <code>.db</code>. Borrar los datos del sitio, usar una ventana privada o cambiar de navegador, perfil o dispositivo puede hacer que los datos locales no est\xE9n disponibles."],
     ["help.offlineHtml", "The official standalone HTML works from <code>file://</code>. Depending on the browser, changing the HTML name or path may create separate local storage; export a backup before replacing the file.", "O HTML standalone oficial funciona em <code>file://</code>. Dependendo do navegador, mudar o nome ou o caminho do HTML pode criar outro armazenamento local; exporte o backup antes de substituir o arquivo.", "El HTML aut\xF3nomo oficial funciona desde <code>file://</code>. Seg\xFAn el navegador, cambiar el nombre o la ruta del HTML puede crear otro almacenamiento local; exporte la copia antes de sustituir el archivo."],
+    ["help.privacyTitle", "Privacy and usage statistics", "Privacidade e estat\xEDsticas de uso", "Privacidad y estad\xEDsticas de uso"],
+    ["help.privacyStandalone", "The downloaded standalone HTML, <code>file://</code> use, and local development do not send usage statistics.", "O HTML standalone baixado, o uso por <code>file://</code> e a execu\xE7\xE3o local n\xE3o enviam estat\xEDsticas de uso.", "El HTML aut\xF3nomo descargado, el uso mediante <code>file://</code> y la ejecuci\xF3n local no env\xEDan estad\xEDsticas de uso."],
+    ["help.privacyPages", "Only the official GitHub Pages site uses Umami to measure pageviews, referrers, browser, operating system, device, language, screen size, country, and editor version. URL query parameters and fragments are excluded, and DNT and GPC are respected.", "Somente o site oficial no GitHub Pages usa Umami para medir visualiza\xE7\xF5es, origem de refer\xEAncia, navegador, sistema operacional, dispositivo, idioma, tamanho da tela, pa\xEDs e vers\xE3o do editor. Par\xE2metros e fragmentos da URL s\xE3o exclu\xEDdos, e DNT e GPC s\xE3o respeitados.", "Solo el sitio oficial de GitHub Pages usa Umami para medir visitas, referencias, navegador, sistema operativo, dispositivo, idioma, tama\xF1o de pantalla, pa\xEDs y versi\xF3n del editor. Se excluyen los par\xE1metros y fragmentos de la URL, y se respetan DNT y GPC."],
+    ["help.privacyNoContent", "No database, SQL text, file name, query, history entry, favorite, setting, or tab content is sent for these statistics.", "Nenhum banco, texto SQL, nome de arquivo, consulta, item do hist\xF3rico, favorita, configura\xE7\xE3o ou conte\xFAdo de aba \xE9 enviado para essas estat\xEDsticas.", "No se env\xEDa ninguna base de datos, texto SQL, nombre de archivo, consulta, elemento del historial, favorito, configuraci\xF3n ni contenido de pesta\xF1a para estas estad\xEDsticas."],
+    ["help.privacyNotice", "Read the complete privacy notice", "Ler o aviso de privacidade completo", "Leer el aviso de privacidad completo"],
     ["help.supportTitle", "Support and suggestions", "Suporte e sugest\xF5es", "Soporte y sugerencias"],
     ["help.supportBody", "Use Report a bug for reproducible defects. Suggest improvement opens the scoped GitHub Feature request form.", "Use Reportar erro para defeitos reproduz\xEDveis. Sugerir melhoria abre o formul\xE1rio espec\xEDfico Feature request do GitHub.", "Use Informar de un error para defectos reproducibles. Sugerir una mejora abre el formulario espec\xEDfico Feature request de GitHub."],
     ["offline.description", "This artifact is expected to work entirely offline. This screen means the file is incomplete or corrupted.", "Este artefato deve funcionar totalmente offline. Esta tela indica que o arquivo est\xE1 incompleto ou corrompido.", "Este artefacto debe funcionar totalmente sin conexi\xF3n. Esta pantalla indica que el archivo est\xE1 incompleto o da\xF1ado."],
@@ -31082,6 +31099,7 @@ window.__HSQLITE_BOOT__ = {
     ["results.csvFilename", "sqlite_result.csv", "resultado_sqlite.csv", "resultado_sqlite.csv"],
     ["results.jsonFilename", "sqlite_result.json", "resultado_sqlite.json", "resultado_sqlite.json"],
     ["sqlMap.pngFilenamePrefix", "sql-map-er", "mapa-sql-der", "mapa-sql-der"],
+    ["footer.privacy", "Privacy", "Privacidade", "Privacidad"],
     ["database.filePickerDescription", "SQLite database", "Banco de dados SQLite", "Base de datos SQLite"]
   ]);
   var I18N_ADDITIONAL_MESSAGES = Object.freeze(Object.fromEntries(

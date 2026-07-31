@@ -2,7 +2,7 @@
 
 ## Product boundary
 
-hSQLite Editor is one browser application distributed as one offline-capable HTML file. SQLite execution, persistence, import/export, and UI behavior run locally in the browser. There is no application backend and no remote data service.
+hSQLite Editor is one browser application distributed as one offline-capable HTML file. SQLite execution, persistence, import/export, and UI behavior run locally in the browser. There is no application backend or remote database service. The GitHub Pages deployment is a narrow hosting satellite that adds minimized Umami pageview analytics after the standalone artifact passes validation.
 
 ## Source ownership
 
@@ -25,6 +25,7 @@ hSQLite Editor is one browser application distributed as one offline-capable HTM
 5. `src/app.mjs` is the sole production entry point. Every cross-file dependency is an ESM import/export, and module cycles are blocking failures.
 6. User-facing copy and locale formatting are owned by the localization capability.
 7. Generated `index.html` and `dist/` files are outputs, not hand-maintained source.
+8. Hosted analytics exists only in generated `_site/index.html`, runs only on the exact official Pages origin and path, and never enters tracked standalone or release artifacts.
 
 ## Build composition
 
@@ -35,6 +36,8 @@ The application keeps one authoritative `appState` in `src/core/10-state-root.js
 DOM registries and styles are split by owned surface. Numeric filenames define deterministic CSS cascade order only; release chronology is recorded in `CHANGELOG.md`.
 
 The Linux filesystem stage is a packaging satellite over the same versioned HTML artifact. It adds no second runtime, service, persistence layer, file association, or protocol handler. Its launcher resolves the packaged HTML relative to the installed prefix and delegates that one local path to `xdg-open`; [linux-packaging.md](linux-packaging.md) defines the complete boundary.
+
+The GitHub Pages stage is a second deployment satellite over the same validated `index.html`. `scripts/prepare-pages-site.mjs` copies that artifact to `_site`, injects one fixed-origin Umami loader, attaches the package version as a pageview tag, and validates the hosted result. Only the public website ID comes from a GitHub variable. The loader checks the exact Pages origin and project path and honors DNT and GPC before requesting the third-party script. `_site` is generated and never becomes a standalone or release source.
 
 ## Architectural change policy
 

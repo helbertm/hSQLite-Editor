@@ -7,17 +7,19 @@
 5. Inspect both readable `index.html` and minified `dist/hSQLite-Editor-v<version>.html` artifacts.
 6. Run the browser locale/accessibility matrix on the generated artifact.
 7. Run `npm run validate:native:chromium`, then open the final artifact directly with `file://` in current Safari and complete changed assistive-technology spot checks.
-8. Confirm no runtime network request is required and no machine-local path is present.
+8. Confirm the standalone and release artifacts make no runtime network request and contain no machine-local path or hosted analytics loader.
 9. Run `npm run validate:linux`; when publishing a distribution-specific Linux package, complete the host-native installation and desktop-session check defined in [linux-packaging.md](linux-packaging.md).
 10. Merge the release PR only after all required GitHub checks pass. Release Please must create the exact tag and a draft release, never a public incomplete release.
 11. The publication job rebuilds the created tag, validates the release, creates both attestations, uploads the exact HTML, `sbom.spdx.json`, and `SHA256SUMS` without overwrite semantics, then publishes the draft release last. Any earlier failure must leave the release unpublished as a draft.
-12. Verify the GitHub release attachment and Pages deployment match the `hsqlite-editor-v<version>` tag.
+12. Verify the GitHub release attachment and Pages deployment match the `hsqlite-editor-v<version>` tag. Confirm the Pages deployment contains exactly one Umami loader tagged with that version, while the release attachment contains none.
 13. Run `GH_TOKEN=<read-only-token> npm run validate:github-controls -- --confirm-pages-admin-bypass-disabled` and require exit code `0`.
 14. Verify both the provenance and SPDX SBOM attestations cryptographically for the exact HTML artifact.
 
 The exact order and ownership of static, contract, artifact/runtime, browser, security, and host-native checks is defined in [validation.md](validation.md). Do not replace a failed focused layer with a passing broader layer.
 
 `index.html` and `sbom.spdx.json` are tracked, reproducible release evidence. Versioned `dist/` artifacts, `SHA256SUMS`, and the temporary Pages `_site/` tree are generated outputs and must not be committed as release history.
+
+The Pages workflow requires the public repository variable `UMAMI_WEBSITE_ID`. `scripts/prepare-pages-site.mjs` rejects a missing or malformed UUID, fixes the reviewed Umami Cloud script URL in source, and validates `_site/index.html` after injection. Do not place executable HTML, a script URL, or tracking configuration in a mutable GitHub variable.
 
 Generate and verify the portable checksum file with `npm run generate:release-checksums` and `npm run validate:release-assets`. Published checksum entries use release asset basenames, so users can download the HTML, SBOM, and `SHA256SUMS` into one directory and run `shasum -a 256 -c SHA256SUMS`. After publication, verify provenance with `gh attestation verify dist/hSQLite-Editor-v<version>.html --repo <owner>/<repository>`. Verify the associated SPDX predicate by adding `--predicate-type https://spdx.dev/Document/v2.3`.
 

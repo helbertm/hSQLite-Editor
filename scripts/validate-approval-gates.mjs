@@ -90,6 +90,8 @@ const requiredFiles = [
   "scripts/validate-module-graph.mjs",
   "scripts/validate-dependencies.mjs",
   "scripts/validate-privacy-docs.mjs",
+  "scripts/prepare-pages-site.mjs",
+  "scripts/validate-pages-analytics.mjs",
   "scripts/validate-workflows.mjs",
   "scripts/validate-repository-state.mjs",
   "scripts/validate-settings-transfer.mjs",
@@ -98,6 +100,7 @@ const requiredFiles = [
   "scripts/contract-tests/database-file-validation.test.mjs",
   "scripts/contract-tests/state-contracts.test.mjs",
   "scripts/contract-tests/github-controls.test.mjs",
+  "scripts/contract-tests/pages-analytics.test.mjs",
   "scripts/validate-security-update.sh",
   "packaging/linux/hsqlite-editor",
   "packaging/linux/io.github.helbertm.hsqlite-editor.desktop",
@@ -108,6 +111,7 @@ const requiredFiles = [
 const requiredScripts = [
   "build",
   "build:release",
+  "prepare:pages",
   "generate:release-checksums",
   "generate:linux-metadata",
   "serve:artifact",
@@ -122,6 +126,7 @@ const requiredScripts = [
   "validate:accessibility",
   "validate:dependencies",
   "validate:privacy",
+  "validate:pages",
   "validate:runtime-components",
   "validate:sbom",
   "validate:workflows",
@@ -185,6 +190,7 @@ for (const scriptName of requiredScripts) {
 }
 
 const scriptContracts = [
+  ["validate:static", ["validate:pages"]],
   ["validate:artifact", ["validate:artifact:structure", "validate:runtime:all"]],
   ["validate:release", ["validate:release:structure", "validate:release:runtime"]],
   ["validate:quality:offline", ["validate:static", "test:contract", "build", "build:release", "validate:linux", "validate:approval"]],
@@ -381,6 +387,9 @@ if (!linuxMetainfoUpdater) {
 
 const pagesWorkflow = readText(".github/workflows/pages.yml");
 requireRegex(pagesWorkflow, /npm run validate:dependencies/, "Pages workflow must consume the repo-owned dependency vulnerability gate.");
+requireRegex(pagesWorkflow, /UMAMI_WEBSITE_ID:\s*\$\{\{ vars\.UMAMI_WEBSITE_ID \}\}/, "Pages workflow must source only the public Umami website ID from GitHub variables.");
+requireRegex(pagesWorkflow, /npm run prepare:pages/, "Pages workflow must consume the repo-owned deploy-only preparation command.");
+forbidRegex(pagesWorkflow, /UMAMI_SCRIPT_URL:\s*\$\{\{/, "Pages workflow must not accept a mutable analytics script URL.");
 
 const dependencyReviewWorkflow = readText(".github/workflows/dependency-review.yml");
 requireRegex(dependencyReviewWorkflow, /^  dependency-review:\n    name: Dependency Review$/m, "Dependency-review workflow must emit the stable Dependency Review check name.");

@@ -54,7 +54,7 @@ test("Help uses a semantic document layout for session continuity", () => {
   assert.match(helpDialog, /aria-describedby="helpIntro"/);
   assert.match(helpDocument, /<nav class="help-index"[^>]+data-i18n-aria-label="help\.navLabel"/);
   assert.match(helpDocument, /href="#helpGettingStarted" data-modal-initial="true"/);
-  assert.equal((helpDocument.match(/<section id="help/g) || []).length, 8);
+  assert.equal((helpDocument.match(/<section id="help/g) || []).length, 9);
   assert.match(helpDocument, /href="#helpHistoryFavorites"[^>]+data-i18n="help\.historyTitle"/);
   assert.match(helpDocument, /href="#helpSqlMap"[^>]+data-i18n="help\.sqlMapTitle"/);
   assert.match(helpDocument, /<section id="helpHistoryFavorites" tabindex="-1">/);
@@ -66,6 +66,9 @@ test("Help uses a semantic document layout for session continuity", () => {
   assert.equal((helpDocument.match(/<th scope="row"/g) || []).length, 3);
   assert.match(helpDocument, /data-i18n="help\.notRestoredDatabase"/);
   assert.match(helpDocument, /data-i18n-html="help\.backupHtml"/);
+  assert.match(helpDocument, /href="#helpPrivacy"[^>]+data-i18n="help\.privacyTitle"/);
+  assert.match(helpDocument, /<section id="helpPrivacy" tabindex="-1">/);
+  assert.match(helpDocument, /data-i18n="help\.privacyNoContent"/);
   assert.doesNotMatch(template.match(/<button id="closeHelpBtn"[^>]+>/)?.[0] || "", /data-modal-initial/);
   assert.doesNotMatch(template, /class="help-grid"/);
   assert.doesNotMatch(additionalLocalization, /\["help\.gridHtml"/);
