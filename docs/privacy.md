@@ -2,9 +2,19 @@
 
 ## Data flow
 
-hSQLite Editor runs in the browser and has no application backend, analytics service, or required telemetry endpoint. The standalone artifact does not intentionally upload database bytes, SQL text, history, favorites, settings, or file metadata. Data leaves the browser only when the user explicitly downloads, exports, copies, or shares it, or when browser/extension/operating-system behavior outside the project trust boundary does so.
+hSQLite Editor runs in the browser and has no application backend. The downloaded standalone artifact, `file://` use, local development, and nonofficial hosts do not load an analytics service or intentionally upload database bytes, SQL text, history, favorites, settings, file names, or file metadata. Data leaves those surfaces only when the user explicitly downloads, exports, copies, or shares it, or when browser, extension, or operating-system behavior outside the project trust boundary does so.
 
 Browser storage is local to a browser profile and origin. It is not encrypted application storage and must not be treated as a secrets vault. Storage behavior for `file://` pages varies by browser; use the browser's site-data controls for the artifact origin when removing all data.
+
+## GitHub Pages usage statistics
+
+Only the official deployment at `https://helbertm.github.io/hSQLite-Editor/` conditionally loads the reviewed Umami Cloud tracker. The loader checks the exact origin and project path before making a request. It does not run on `file://`, localhost, local IP addresses, copied HTML, or another domain. It also makes no analytics request when the browser enables Do Not Track or Global Privacy Control.
+
+The hosted deployment records automatic pageviews. Umami can use ordinary pageview and browser metadata to report the page path, referring site, browser, operating system, device category, language, screen size, country, date, and time. URL query parameters and fragments are excluded. The current editor version is attached as a tag such as `hsqlite-editor-v0.7.0`, which allows maintainers to compare aggregate use by version.
+
+The integration does not call custom tracking or identification functions and does not enable custom events, performance collection, session replay, or heatmaps. It does not intentionally send SQLite database contents, database bytes, SQL text, queries, file names, history, favorites, settings, recent-file metadata, exported data, or tab content. Umami Cloud is a third-party hosted service; its network processing, retention, and country derivation are governed by the service configuration and terms rather than by the standalone editor.
+
+The deployment fails closed when the public Umami website ID is absent or malformed. The tracker URL and minimization settings are fixed in reviewed repository code rather than mutable GitHub variables. Analytics being blocked or unavailable does not prevent the editor from starting or working.
 
 ## localStorage inventory
 

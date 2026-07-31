@@ -4,7 +4,9 @@ hSQLite Editor separates checks by failure ownership. A passing broader layer ne
 
 ## Static policy
 
-Run `npm run validate:static` for source composition, localization ownership, accessibility contracts, privacy documentation, SPDX reproducibility, and workflow syntax. These checks inspect owned files without starting the application.
+Run `npm run validate:static` for source composition, localization ownership, accessibility contracts, privacy documentation, GitHub Pages analytics isolation, SPDX reproducibility, and workflow syntax. These checks inspect owned files without starting the application.
+
+`npm run validate:pages` proves that tracked standalone and generated release artifacts contain no tracker, the Pages workflow owns deploy-time preparation, the vendor script URL is fixed in reviewed code, only the website UUID is configurable, the exact official origin and path are enforced, URL query/hash data is excluded, DNT/GPC is honored, and privacy documentation covers the hosted boundary. The Pages preparation command performs a second validation against the generated `_site/index.html`.
 
 ## Deterministic unit and contract tests
 
@@ -43,6 +45,8 @@ Run `npm run validate:github-controls` as a separate read-only operator audit. I
 CodeQL analyzes the owned `src/` and `scripts/` trees. Generated standalone artifacts, vendored dependencies, dependency installations, and build output remain outside that source-analysis scope and are covered by their dedicated provenance, integrity, artifact, dependency, and runtime gates. Branch rules require both the `CodeQL Analysis` workflow job and the aggregate `CodeQL` result so a successful upload cannot mask a newly detected alert.
 
 This command is intentionally outside `validate:full`, `validate:full:ci`, and normal pull-request CI. Hosted state is networked, permission-sensitive, and non-deterministic. A missing token or manual confirmation is `UNVERIFIED`, never a pass; verified drift and transport failures use different exit codes so operators do not misclassify access failures as product defects.
+
+After a Pages deployment, inspect browser network traffic on the exact public URL. With DNT and GPC disabled, expect one reviewed Umami script and one automatic pageview tagged `hsqlite-editor-v<version>`; verify that query strings, URL fragments, and application content are absent. With DNT or GPC enabled, expect no Umami request. Repeat from localhost and `file://` and expect no Umami request. Vendor-account dashboards and retention settings remain hosted evidence and are not proven by repo-local tests.
 
 ## Orchestration
 
