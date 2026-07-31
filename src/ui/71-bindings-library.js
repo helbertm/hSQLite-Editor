@@ -42,8 +42,20 @@ export function bindSettingsAndHelpUi() {
   shortcutsHelpBtn.addEventListener("click", () => modalController.open(shortcutsHelpModal));
   closeReleaseNotesBtn.addEventListener("click", () => modalController.close(releaseNotesModal));
   closeShortcutsHelpBtn.addEventListener("click", () => modalController.close(shortcutsHelpModal));
-  helpBtn.addEventListener("click", () => modalController.open(helpModal));
+  helpBtn.addEventListener("click", () => {
+    helpModal.querySelector(".help-document").scrollTop = 0;
+    modalController.open(helpModal);
+  });
   closeHelpBtn.addEventListener("click", () => modalController.close(helpModal));
+  helpModal.querySelectorAll(".help-index a").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const target = helpModal.querySelector(link.getAttribute("href"));
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ block: "start" });
+      target.focus({ preventScroll: true });
+    });
+  });
   exportSettingsBtn.addEventListener("click", exportSettingsConfig);
 
   importSettingsTrigger.addEventListener("click", (event) => {

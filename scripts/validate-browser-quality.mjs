@@ -14,7 +14,9 @@ const locales = [
     populationTitle: "Populate table for QA", exportTitle: "Export result", historyTitle: "Query history",
     favoritesTitle: "Favorite queries", closeTabTitle: "Close tab?", closeAllTabsTitle: "Close all 2 tabs?", renameTabPrefix: "Rename tab", closeTabPrefix: "Close tab", missingTableCause: "a table or view name was not found",
     settingsTitle: "Settings", starterSqlLabel: "Starter SQL for new tabs", starterSqlHelp: "ON inserts the starter SQL. OFF starts new tabs empty.",
-    helpTitle: "hSQLite Editor help", suggestImprovement: "Suggest improvement: open the GitHub Feature request form in a new tab",
+    helpTitle: "hSQLite Editor help", helpFilesTitle: "SQLite files", helpHistoryTitle: "History and favorites", helpSqlMapTitle: "SQL Map",
+    helpContinuityTitle: "Session and updates", helpEventsCaption: "What happens in each situation",
+    suggestImprovement: "Suggest improvement: open the GitHub Feature request form in a new tab",
     helpPrefix: "https://learn.microsoft.com/en-us/", csvFilename: "sqlite_result.csv"
   },
   {
@@ -27,7 +29,9 @@ const locales = [
     populationTitle: "Popular tabela para QA", exportTitle: "Exportar resultado", historyTitle: "Histórico de consultas",
     favoritesTitle: "Consultas favoritas", closeTabTitle: "Fechar aba?", closeAllTabsTitle: "Fechar todas as 2 abas?", renameTabPrefix: "Renomear aba", closeTabPrefix: "Fechar aba", missingTableCause: "uma tabela ou view não foi encontrada",
     settingsTitle: "Configurações", starterSqlLabel: "SQL inicial para novas abas", starterSqlHelp: "ON insere o SQL inicial. OFF inicia novas abas vazias.",
-    helpTitle: "Ajuda do hSQLite Editor", suggestImprovement: "Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba",
+    helpTitle: "Ajuda do hSQLite Editor", helpFilesTitle: "Arquivos SQLite", helpHistoryTitle: "Histórico e favoritas", helpSqlMapTitle: "Mapa SQL",
+    helpContinuityTitle: "Sessão e atualizações", helpEventsCaption: "O que acontece em cada situação",
+    suggestImprovement: "Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba",
     helpPrefix: "https://learn.microsoft.com/pt-br/", csvFilename: "resultado_sqlite.csv"
   },
   {
@@ -40,7 +44,9 @@ const locales = [
     populationTitle: "Poblar tabla para QA", exportTitle: "Exportar resultado", historyTitle: "Historial de consultas",
     favoritesTitle: "Consultas favoritas", closeTabTitle: "¿Cerrar pestaña?", closeAllTabsTitle: "¿Cerrar las 2 pestañas?", renameTabPrefix: "Renombrar pestaña", closeTabPrefix: "Cerrar pestaña", missingTableCause: "no se encontró una tabla o vista",
     settingsTitle: "Configuración", starterSqlLabel: "SQL inicial para nuevas pestañas", starterSqlHelp: "ON inserta el SQL inicial. OFF inicia las pestañas nuevas vacías.",
-    helpTitle: "Ayuda de hSQLite Editor", suggestImprovement: "Sugerir una mejora: abrir el formulario Feature request de GitHub en una pestaña nueva",
+    helpTitle: "Ayuda de hSQLite Editor", helpFilesTitle: "Archivos SQLite", helpHistoryTitle: "Historial y favoritas", helpSqlMapTitle: "Mapa SQL",
+    helpContinuityTitle: "Sesión y actualizaciones", helpEventsCaption: "Qué ocurre en cada situación",
+    suggestImprovement: "Sugerir una mejora: abrir el formulario Feature request de GitHub en una pestaña nueva",
     helpPrefix: "https://learn.microsoft.com/es-es/", csvFilename: "resultado_sqlite.csv"
   }
 ];
@@ -267,6 +273,16 @@ try {
       await page.locator("#helpBtn").click();
       await page.locator("#helpModal").waitFor({ state: "visible" });
       assert(await page.getByRole("dialog", { name: locale.helpTitle }).count() === 1, `${locale.tag}/${viewport.name}: Help dialog name is not localized.`);
+      assert(await page.getByRole("heading", { name: locale.helpFilesTitle }).count() === 1, `${locale.tag}/${viewport.name}: SQLite file Help section is missing or not localized.`);
+      assert(await page.getByRole("heading", { name: locale.helpHistoryTitle }).count() === 1, `${locale.tag}/${viewport.name}: History and favorites Help section is missing or not localized.`);
+      assert(await page.getByRole("heading", { name: locale.helpSqlMapTitle }).count() === 1, `${locale.tag}/${viewport.name}: SQL Map Help section is missing or not localized.`);
+      assert(await page.getByRole("heading", { name: locale.helpContinuityTitle }).count() === 1, `${locale.tag}/${viewport.name}: Session continuity Help section is missing or not localized.`);
+      assert(await page.getByRole("table", { name: locale.helpEventsCaption }).count() === 1, `${locale.tag}/${viewport.name}: Help event matrix is missing or not localized.`);
+      assert(
+        JSON.stringify(await page.locator("#helpSqliteFiles .help-extension-list code").allTextContents())
+          === JSON.stringify([".db", ".sqlite", ".sqlite3", ".db3", ".s3db", ".sl3", ".sqlite.db"]),
+        `${locale.tag}/${viewport.name}: Help extension list is not aligned with the SQLite file contract.`
+      );
       const suggestImprovementLink = page.getByRole("link", { name: locale.suggestImprovement });
       assert(await suggestImprovementLink.count() === 1, `${locale.tag}/${viewport.name}: Suggest improvement link is missing or ambiguously named.`);
       assert(
@@ -275,6 +291,58 @@ try {
       );
       assert(await suggestImprovementLink.getAttribute("target") === "_blank", `${locale.tag}/${viewport.name}: Suggest improvement does not open in a new tab.`);
       assert(await suggestImprovementLink.getAttribute("rel") === "noopener noreferrer", `${locale.tag}/${viewport.name}: Suggest improvement lacks safe new-tab isolation.`);
+      const helpDockedState = await page.evaluate(() => {
+        const dialog = document.querySelector("#helpModal .help-modal");
+        const body = dialog.querySelector(".help-document");
+        const footer = dialog.querySelector(".modal-actions");
+        const dialogRect = dialog.getBoundingClientRect();
+        const footerRect = footer.getBoundingClientRect();
+        return {
+          dialogOverflow: getComputedStyle(dialog).overflowY,
+          bodyOverflow: getComputedStyle(body).overflowY,
+          bodyScrollTop: body.scrollTop,
+          bodyScrollable: body.scrollHeight > body.clientHeight,
+          footerVisible: footerRect.height > 0
+            && footerRect.top >= dialogRect.top - 1
+            && footerRect.bottom <= dialogRect.bottom + 1
+        };
+      });
+      assert(helpDockedState.dialogOverflow === "hidden", `${locale.tag}/${viewport.name}: Help dialog still owns scrolling.`);
+      assert(helpDockedState.bodyOverflow === "auto", `${locale.tag}/${viewport.name}: Help document is not the scrolling region.`);
+      assert(helpDockedState.bodyScrollTop === 0, `${locale.tag}/${viewport.name}: Help document did not reopen at the beginning.`);
+      assert(helpDockedState.bodyScrollable, `${locale.tag}/${viewport.name}: Help document did not establish an internal scroll region.`);
+      assert(helpDockedState.footerVisible, `${locale.tag}/${viewport.name}: Help actions are not visible before scrolling.`);
+      await page.locator(".help-document").evaluate(element => {
+        element.scrollTop = element.scrollHeight;
+      });
+      assert(
+        await page.locator("#helpModal .modal-actions").evaluate((footer) => {
+          const dialogRect = footer.closest(".help-modal").getBoundingClientRect();
+          const footerRect = footer.getBoundingClientRect();
+          return footerRect.height > 0
+            && footerRect.top >= dialogRect.top - 1
+            && footerRect.bottom <= dialogRect.bottom + 1;
+        }),
+        `${locale.tag}/${viewport.name}: Help actions moved out of view after scrolling.`
+      );
+      await suggestImprovementLink.focus();
+      assert(
+        await suggestImprovementLink.evaluate(element => element === document.activeElement),
+        `${locale.tag}/${viewport.name}: Suggest improvement is not keyboard focusable in the docked footer.`
+      );
+      const closeHelpButton = page.locator("#closeHelpBtn");
+      await closeHelpButton.focus();
+      assert(
+        await closeHelpButton.evaluate(element => element === document.activeElement),
+        `${locale.tag}/${viewport.name}: Close is not keyboard focusable in the docked footer.`
+      );
+      const continuityTopicLink = page.locator('.help-index a[href="#helpContinuity"]');
+      await continuityTopicLink.focus();
+      await page.keyboard.press("Enter");
+      assert(
+        await page.locator("#helpContinuity").evaluate(element => element === document.activeElement),
+        `${locale.tag}/${viewport.name}: Help topic navigation did not move focus to the selected section.`
+      );
 
       const helpAxe = await new AxeBuilder({ page })
         .include("#helpModal")
@@ -289,10 +357,20 @@ try {
       await page.waitForTimeout(50);
       const helpReflow = await page.evaluate(() => ({
         pageOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
-        modalOverflow: document.querySelector("#helpModal .modal")?.scrollWidth > document.querySelector("#helpModal .modal")?.clientWidth + 1
+        modalOverflow: document.querySelector("#helpModal .modal")?.scrollWidth > document.querySelector("#helpModal .modal")?.clientWidth + 1,
+        footerVisible: (() => {
+          const dialog = document.querySelector("#helpModal .help-modal");
+          const footer = dialog.querySelector(".modal-actions");
+          const dialogRect = dialog.getBoundingClientRect();
+          const footerRect = footer.getBoundingClientRect();
+          return footerRect.height > 0
+            && footerRect.top >= dialogRect.top - 1
+            && footerRect.bottom <= dialogRect.bottom + 1;
+        })()
       }));
       assert(!helpReflow.pageOverflow, `${locale.tag}/${viewport.name}: Help causes horizontal page overflow at 320 CSS px.`);
       assert(!helpReflow.modalOverflow, `${locale.tag}/${viewport.name}: Help content overflows its modal at 320 CSS px.`);
+      assert(helpReflow.footerVisible, `${locale.tag}/${viewport.name}: Help actions are not visible at 320 CSS px.`);
       await page.setViewportSize(helpViewport);
 
       await page.keyboard.press("Escape");

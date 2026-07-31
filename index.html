@@ -1584,28 +1584,285 @@ width: 100%;
 }
 
 .help-modal {
-width: min(860px, 100%);
-      max-height: min(86vh, 900px);
-      overflow: auto;
+width: min(960px, 100%);
+      height: min(90vh, 940px);
+      height: min(90dvh, 940px);
+      max-height: min(90vh, 940px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
 }
 
-.help-grid {
+.help-modal > p {
+flex: 0 0 auto;
+      max-width: 72ch;
+}
+
+.help-document {
 display: grid;
-      gap: 10px;
-      margin: 8px 0 14px;
+      grid-template-columns: minmax(150px, 190px) minmax(0, 1fr);
+      gap: 24px;
+      flex: 1 1 auto;
+      min-height: 0;
+      margin: 8px 0 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      border-top: 1px solid var(--border);
 }
 
-.help-grid section {
-border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--input-bg);
-      padding: 10px 12px;
+.help-index {
+position: sticky;
+      top: 0;
+      align-self: start;
+      display: grid;
+      gap: 2px;
+      padding: 16px 16px 0 0;
+      border-right: 1px solid var(--border);
+      background: var(--panel);
+      z-index: 1;
 }
 
-.help-grid h4 {
+.help-index a {
+display: block;
+      padding: 7px 8px;
+      border-left: 2px solid transparent;
+      color: var(--mutedText);
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+}
+
+.help-index a:hover {
+border-left-color: var(--accent);
+      color: var(--foreground);
+}
+
+.help-index a:focus-visible {
+outline: 2px solid var(--ring);
+      outline-offset: 1px;
+}
+
+.help-content {
+min-width: 0;
+}
+
+.help-content section {
+padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      scroll-margin-top: 16px;
+}
+
+.help-content section:last-child {
+border-bottom: 0;
+}
+
+.help-content h4 {
+margin: 0 0 8px;
+      font-size: 15px;
+      color: var(--foreground);
+}
+
+.help-content h5 {
 margin: 0 0 6px;
       font-size: 13px;
       color: var(--foreground);
+}
+
+.help-content p {
+margin: 0 0 10px;
+      color: var(--mutedText);
+      line-height: 1.55;
+}
+
+.help-content p:last-child {
+margin-bottom: 0;
+}
+
+.help-content ul {
+margin: 0;
+      padding-left: 18px;
+      color: var(--mutedText);
+      line-height: 1.5;
+}
+
+.help-extension-list {
+display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      padding: 0 !important;
+      margin: 0 0 12px !important;
+      list-style: none;
+}
+
+.help-extension-list code {
+font-weight: 750;
+}
+
+.help-persistence-columns {
+display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin: 14px 0 18px;
+}
+
+.help-persistence-columns ul {
+font-size: 14px;
+      line-height: 1.55;
+}
+
+.help-persistence-columns > div + div {
+padding-left: 20px;
+      border-left: 1px solid var(--border);
+}
+
+.help-event-table {
+width: 100%;
+      min-width: 0;
+      table-layout: fixed;
+      border: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      font-size: 13px;
+}
+
+.help-event-table caption {
+padding: 0 0 8px;
+      color: var(--foreground);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: left;
+}
+
+.help-event-table th,
+.help-event-table td {
+padding: 9px 10px;
+      border: 0;
+      border-top: 1px solid var(--border);
+      color: var(--mutedText);
+      line-height: 1.45;
+      overflow: visible;
+      text-align: left;
+      text-overflow: clip;
+      vertical-align: top;
+      white-space: normal;
+      overflow-wrap: anywhere;
+}
+
+.help-event-table thead th {
+color: var(--foreground);
+      font-size: 12px;
+      font-weight: 800;
+}
+
+.help-event-table tbody th {
+width: 19%;
+      color: var(--foreground);
+      font-weight: 750;
+}
+
+.help-event-table tbody td {
+background: transparent;
+}
+
+.help-mobile-cell-label {
+display: none;
+}
+
+.help-modal > .modal-actions {
+flex: 0 0 auto;
+      gap: 10px;
+      margin: 0 -18px -18px;
+      padding: 12px 18px;
+      border-top: 1px solid var(--border);
+      background: var(--panel);
+}
+
+@media (max-width: 640px) {
+.help-document {
+display: block;
+}
+
+.help-index {
+position: static;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      padding: 12px 0;
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+}
+
+.help-index a {
+padding: 6px;
+}
+
+.help-persistence-columns {
+display: block;
+}
+
+.help-persistence-columns > div + div {
+padding: 14px 0 0;
+      margin-top: 14px;
+      border-top: 1px solid var(--border);
+      border-left: 0;
+}
+
+.help-event-table,
+.help-event-table tbody,
+.help-event-table tr,
+.help-event-table th,
+.help-event-table td {
+display: block;
+      width: 100%;
+      box-sizing: border-box;
+}
+
+.help-event-table caption {
+display: block;
+      width: 100%;
+      box-sizing: border-box;
+}
+
+.help-event-table thead {
+position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+}
+
+.help-event-table tbody tr {
+padding: 10px 0;
+      border-top: 1px solid var(--border);
+}
+
+.help-event-table tbody th,
+.help-event-table tbody td {
+padding: 3px 0;
+      border: 0;
+}
+
+.help-event-table tbody th {
+width: 100%;
+      margin-bottom: 4px;
+      overflow-wrap: normal;
+}
+
+.help-event-table tbody td {
+display: grid;
+      grid-template-columns: minmax(74px, 0.34fr) minmax(0, 1fr);
+      gap: 8px;
+}
+
+.help-mobile-cell-label {
+display: block;
+      color: var(--foreground);
+      font-size: 11px;
+      font-weight: 800;
+}
 }
 
 .top-command-bar {
@@ -6047,45 +6304,145 @@ margin: 8px 0 8px 18px;
   </div>
 
   <div class="modal-backdrop" id="helpModal">
-    <div class="modal help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="modal help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" aria-describedby="helpIntro">
       <h3 id="helpTitle" data-i18n="help.title">Ajuda Geral do hSQLite Editor</h3>
-      <p data-i18n="help.intro">Ferramenta para análise de bases SQLite com foco em suporte/TI e uso didático em aulas de banco de dados.</p>
-      <div class="help-grid" data-i18n-html="help.gridHtml">
-        <section>
-          <h4>1. Começando</h4>
-          <div>Use <span class="kbd">Escolher .db</span> para abrir uma base. Depois escreva SQL e execute com <span class="kbd">F5</span>.</div>
-          <div class="small-muted" style="margin-top:6px;">Extensões aceitas para bancos SQLite: <code>.db</code>, <code>.sqlite</code>, <code>.sqlite3</code>, <code>.db3</code>, <code>.s3db</code>, <code>.sl3</code>, <code>.sqlite.db</code>.</div>
-        </section>
-        <section>
-          <h4>2. Área SQL</h4>
-          <div>Abas independentes, histórico, favoritos, abrir/salvar arquivo SQL e atalhos para fluxo rápido.</div>
-        </section>
-        <section>
-          <h4>3. Schema</h4>
-          <div>Filtre objetos por nome e por tipo. Clique em colunas para inserir <code>objeto.coluna</code> no editor.</div>
-        </section>
-        <section>
-          <h4>4. Resultados</h4>
-          <div>Ordenação multi-coluna, paginação, seleção de linhas, exportação CSV/JSON e cabeçalho sempre visível.</div>
-        </section>
-        <section>
-          <h4>5. Dados locais e backups</h4>
-          <div>Dados da sessão, histórico, favoritas e preferências ficam armazenados apenas no perfil atual deste navegador. Exporte-os periodicamente em Configurações para evitar perdas. Importe esse backup JSON para continuar em outro navegador. Limpar os dados do site, usar uma janela privativa ou mudar de perfil pode tornar os dados locais indisponíveis. Backups podem conter textos SQL, identificadores, histórico, favoritas e conteúdo das abas abertas; revise-os antes de compartilhar.</div>
-        </section>
-        <section>
-          <h4>6. Modo offline</h4>
-          <div>O arquivo oficial deve abrir direto no navegador como um HTML standalone, inclusive em <code>file://</code>.</div>
-        </section>
-        <section>
-          <h4>7. Problemas e sugestões</h4>
-          <div>Use Reportar erro para defeitos reproduzíveis. Sugerir melhoria abre o formulário específico Feature request do GitHub.</div>
-        </section>
+      <p id="helpIntro" data-i18n="help.intro">Conheça os arquivos SQLite compatíveis, as ferramentas do editor e o que permanece ou precisa ser reaberto ao atualizar, recarregar ou voltar.</p>
+      <div class="help-document">
+        <nav class="help-index" aria-label="Tópicos da ajuda" data-i18n-aria-label="help.navLabel">
+          <a href="#helpGettingStarted" data-modal-initial="true" data-i18n="help.startTitle">Primeiros passos</a>
+          <a href="#helpSqliteFiles" data-i18n="help.filesTitle">Arquivos SQLite</a>
+          <a href="#helpWorkspace" data-i18n="help.workspaceTitle">Área de trabalho</a>
+          <a href="#helpHistoryFavorites" data-i18n="help.historyTitle">Histórico e favoritas</a>
+          <a href="#helpSqlMap" data-i18n="help.sqlMapTitle">Mapa SQL</a>
+          <a href="#helpContinuity" data-i18n="help.continuityTitle">Sessão e atualizações</a>
+          <a href="#helpBackupOffline" data-i18n="help.backupTitle">Backup e modo offline</a>
+          <a href="#helpSupport" data-i18n="help.supportTitle">Suporte e sugestões</a>
+        </nav>
+        <div class="help-content">
+          <section id="helpGettingStarted" tabindex="-1">
+            <h4 data-i18n="help.startTitle">Primeiros passos</h4>
+            <p data-i18n-html="help.startHtml">Abra um arquivo SQLite, escreva SQL em uma aba e pressione <span class="kbd">F5</span>. Use o Schema para explorar objetos e inserir nomes no editor.</p>
+          </section>
+
+          <section id="helpSqliteFiles" tabindex="-1">
+            <h4 data-i18n="help.filesTitle">Arquivos SQLite</h4>
+            <p data-i18n="help.filesExtensions">Extensões aceitas:</p>
+            <ul class="help-extension-list" aria-label="Extensões SQLite aceitas" data-i18n-aria-label="help.filesExtensionsLabel">
+              <li><code data-i18n-ignore>.db</code></li>
+              <li><code data-i18n-ignore>.sqlite</code></li>
+              <li><code data-i18n-ignore>.sqlite3</code></li>
+              <li><code data-i18n-ignore>.db3</code></li>
+              <li><code data-i18n-ignore>.s3db</code></li>
+              <li><code data-i18n-ignore>.sl3</code></li>
+              <li><code data-i18n-ignore>.sqlite.db</code></li>
+            </ul>
+            <p data-i18n-html="help.filesFormatHtml">Além da extensão, o arquivo precisa ser um banco SQLite 3 válido e conter a assinatura <code>SQLite format 3</code>. Apenas renomear outro arquivo para <code>.db</code> não o torna compatível. Arquivos SQLite 1 e 2 não são abertos.</p>
+          </section>
+
+          <section id="helpWorkspace" tabindex="-1">
+            <h4 data-i18n="help.workspaceTitle">Área de trabalho</h4>
+            <p data-i18n="help.workspaceBody">Use abas SQL independentes para organizar consultas. No Schema, filtre objetos e insira identificadores qualificados. Nos resultados, ordene, pagine, selecione e exporte registros como CSV ou JSON.</p>
+          </section>
+
+          <section id="helpHistoryFavorites" tabindex="-1">
+            <h4 data-i18n="help.historyTitle">Histórico e favoritas</h4>
+            <p data-i18n="help.historyBody">O Histórico registra consultas executadas recentemente, incluindo sucessos e erros. Pesquise ou carregue uma entrada na aba ativa. Consultas executadas com sucesso podem ser salvas como favoritas para reutilização.</p>
+            <p data-i18n="help.historyLoadNote">Ao carregar uma entrada do Histórico ou das Favoritas, o SQL atual da aba ativa é substituído. Ambos ficam armazenados somente no perfil atual deste navegador.</p>
+          </section>
+
+          <section id="helpSqlMap" tabindex="-1">
+            <h4 data-i18n="help.sqlMapTitle">Mapa SQL</h4>
+            <p data-i18n-html="help.sqlMapBodyHtml">O Mapa SQL apresenta o schema atual como um diagrama entidade-relacionamento interativo. Use-o para identificar tabelas, campos, chaves e caminhos entre relacionamentos, selecionar dados relacionados e comparar as instruções <code>SELECT</code> e <code>JOIN</code> geradas.</p>
+            <h5 data-i18n="help.sqlMapTeachingTitle">Uso didático</h5>
+            <p data-i18n="help.sqlMapTeachingBody">Em aulas de bancos de dados relacionais, explore a diferença entre chave primária e estrangeira, direção dos relacionamentos, caminhos de junção e efeitos de vínculos ausentes ou incorretos. Exporte o diagrama como PNG para discussão ou atividades.</p>
+            <h5 data-i18n="help.sqlMapVirtualTitle">Relacionamentos virtuais</h5>
+            <p data-i18n="help.sqlMapVirtualBody">Crie relacionamentos virtuais para testar hipóteses sem alterar o schema do banco. Eles aparecem como linhas pontilhadas, passam por verificações de compatibilidade e existem somente na sessão atual.</p>
+          </section>
+
+          <section id="helpContinuity" tabindex="-1">
+            <h4 data-i18n="help.continuityTitle">Sessão e atualizações</h4>
+            <p data-i18n="help.continuityIntro">Os itens persistidos ficam somente no armazenamento local do perfil atual deste navegador.</p>
+            <div class="help-persistence-columns">
+              <div>
+                <h5 data-i18n="help.storedTitle">Permanece neste navegador</h5>
+                <ul>
+                  <li data-i18n="help.storedLibrary">Histórico, favoritas, tema, idioma, preferências e metadados de bancos recentes.</li>
+                  <li data-i18n="help.storedSession">Com Salvar sessão ativado: abas abertas, nomes das abas, aba ativa e rascunhos SQL.</li>
+                </ul>
+              </div>
+              <div>
+                <h5 data-i18n="help.notRestoredTitle">Não é restaurado automaticamente</h5>
+                <ul>
+                  <li data-i18n="help.notRestoredDatabase">O banco carregado em memória e alterações ainda não salvas em um arquivo .db.</li>
+                  <li data-i18n="help.notRestoredRuntime">Resultados, seleções, paginação e relacionamentos virtuais temporários do Mapa SQL.</li>
+                </ul>
+              </div>
+            </div>
+
+            <table class="help-event-table">
+              <caption data-i18n="help.eventsCaption">O que acontece em cada situação</caption>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="help.eventColumn">Situação</th>
+                  <th scope="col" data-i18n="help.keptColumn">O que permanece</th>
+                  <th scope="col" data-i18n="help.actionColumn">O que exige atenção</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" data-i18n="help.eventRelease">Nova versão</th>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.keptColumn">O que permanece</span>
+                    <span data-i18n="help.eventReleaseKept">Os dados locais continuam disponíveis ao usar o mesmo endereço, navegador e perfil.</span>
+                  </td>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.actionColumn">O que exige atenção</span>
+                    <span data-i18n="help.eventReleaseAction">Salve alterações do banco em .db antes de atualizar.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" data-i18n="help.eventRefresh">Atualizar a página</th>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.keptColumn">O que permanece</span>
+                    <span data-i18n="help.eventRefreshKept">Dados locais e, com Salvar sessão ativado, abas e rascunhos SQL.</span>
+                  </td>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.actionColumn">O que exige atenção</span>
+                    <span data-i18n="help.eventRefreshAction">Reabra o banco; resultados e estado temporário não retornam.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" data-i18n="help.eventReopen">Fechar e abrir novamente</th>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.keptColumn">O que permanece</span>
+                    <span data-i18n="help.eventReopenKept">Os mesmos dados locais; abas e rascunhos retornam quando Salvar sessão está ativado.</span>
+                  </td>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.actionColumn">O que exige atenção</span>
+                    <span data-i18n="help.eventReopenAction">Escolha o banco novamente ou use Recentes; o navegador pode pedir permissão.</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="helpBackupOffline" tabindex="-1">
+            <h4 data-i18n="help.backupTitle">Backup e modo offline</h4>
+            <p data-i18n-html="help.backupHtml">Exporte periodicamente um backup JSON em Configurações. Ele pode conter SQL, histórico, favoritas, preferências e abas, mas <strong>não inclui o banco SQLite</strong>; salve o banco separadamente em <code>.db</code>. Limpar dados do site, usar janela privativa ou trocar de navegador, perfil ou dispositivo pode tornar os dados locais indisponíveis.</p>
+            <p data-i18n-html="help.offlineHtml">O HTML standalone oficial funciona em <code>file://</code>. Dependendo do navegador, mudar o nome ou o caminho do HTML pode criar outro armazenamento local; exporte o backup antes de substituir o arquivo.</p>
+          </section>
+
+          <section id="helpSupport" tabindex="-1">
+            <h4 data-i18n="help.supportTitle">Suporte e sugestões</h4>
+            <p data-i18n="help.supportBody">Use Reportar erro para defeitos reproduzíveis. Sugerir melhoria abre o formulário específico Feature request do GitHub.</p>
+          </section>
+        </div>
       </div>
       <div class="modal-actions modal-actions-split">
         <a id="suggestImprovementLink" class="ui-button ui-button-secondary ui-button-md" href="https://github.com/helbertm/hSQLite-Editor/issues/new?template=feature.yml" target="_blank" rel="noopener noreferrer" title="Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba" aria-label="Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba" data-i18n-title="issues.suggestTooltip" data-i18n-aria-label="issues.suggestTooltip">
           <span data-i18n="issues.suggest">Sugerir melhoria</span>
         </a>
-        <button id="closeHelpBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.close">Fechar</button>
+        <button id="closeHelpBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-i18n="common.close">Fechar</button>
       </div>
     </div>
   </div>
@@ -30379,8 +30736,51 @@ window.__HSQLITE_BOOT__ = {
     ["settings.importConfirmDescription", "The selected current settings will be replaced by the imported values.", "As configura\xE7\xF5es atuais selecionadas ser\xE3o substitu\xEDdas pelos valores importados.", "La configuraci\xF3n actual seleccionada ser\xE1 reemplazada por los valores importados."],
     ["shortcuts.quickHistory", "Quick history", "Hist\xF3rico r\xE1pido", "Historial r\xE1pido"],
     ["help.title", "hSQLite Editor help", "Ajuda do hSQLite Editor", "Ayuda de hSQLite Editor"],
-    ["help.intro", "A local-first SQLite analysis tool for support, teaching, and technical investigation.", "Uma ferramenta local-first para an\xE1lise de SQLite em suporte, ensino e investiga\xE7\xE3o t\xE9cnica.", "Una herramienta local-first para analizar SQLite en soporte, docencia e investigaci\xF3n t\xE9cnica."],
-    ["help.gridHtml", '<section><h4>1. Getting started</h4><div>Open a SQLite file, write SQL, and press <span class="kbd">F5</span>.</div></section><section><h4>2. SQL workspace</h4><div>Use independent tabs, history, favorites, SQL files, and keyboard shortcuts.</div></section><section><h4>3. Schema</h4><div>Filter objects by name and type. Select columns to insert qualified identifiers.</div></section><section><h4>4. Results</h4><div>Sort, paginate, select, and export rows as CSV or JSON.</div></section><section><h4>5. Local data and backups</h4><div>Session data, history, favorites, and preferences are stored only in the current browser profile. Export them periodically from Settings to prevent loss. Import that JSON backup to continue in another browser. Clearing site data, using a private window, or changing browser profiles can make local data unavailable. Backups may contain SQL text, identifiers, history, favorites, and open-tab content; review them before sharing.</div></section><section><h4>6. Offline mode</h4><div>The official standalone HTML works directly from <code>file://</code>.</div></section><section><h4>7. Issues and suggestions</h4><div>Use Report a bug for reproducible defects. Suggest improvement opens the scoped GitHub Feature request form.</div></section>', '<section><h4>1. Primeiros passos</h4><div>Abra um arquivo SQLite, escreva SQL e pressione <span class="kbd">F5</span>.</div></section><section><h4>2. \xC1rea SQL</h4><div>Use abas independentes, hist\xF3rico, favoritas, arquivos SQL e atalhos de teclado.</div></section><section><h4>3. Schema</h4><div>Filtre objetos por nome e tipo. Selecione colunas para inserir identificadores qualificados.</div></section><section><h4>4. Resultados</h4><div>Ordene, pagine, selecione e exporte registros como CSV ou JSON.</div></section><section><h4>5. Dados locais e backups</h4><div>Dados da sess\xE3o, hist\xF3rico, favoritas e prefer\xEAncias ficam armazenados apenas no perfil atual deste navegador. Exporte-os periodicamente em Configura\xE7\xF5es para evitar perdas. Importe esse backup JSON para continuar em outro navegador. Limpar os dados do site, usar uma janela privativa ou mudar de perfil pode tornar os dados locais indispon\xEDveis. Backups podem conter textos SQL, identificadores, hist\xF3rico, favoritas e conte\xFAdo das abas abertas; revise-os antes de compartilhar.</div></section><section><h4>6. Modo offline</h4><div>O HTML standalone oficial funciona diretamente em <code>file://</code>.</div></section><section><h4>7. Problemas e sugest\xF5es</h4><div>Use Reportar erro para defeitos reproduz\xEDveis. Sugerir melhoria abre o formul\xE1rio espec\xEDfico Feature request do GitHub.</div></section>', '<section><h4>1. Primeros pasos</h4><div>Abra un archivo SQLite, escriba SQL y pulse <span class="kbd">F5</span>.</div></section><section><h4>2. \xC1rea SQL</h4><div>Use pesta\xF1as independientes, historial, favoritas, archivos SQL y atajos de teclado.</div></section><section><h4>3. Esquema</h4><div>Filtre objetos por nombre y tipo. Seleccione columnas para insertar identificadores cualificados.</div></section><section><h4>4. Resultados</h4><div>Ordene, pagine, seleccione y exporte filas como CSV o JSON.</div></section><section><h4>5. Datos locales y copias de seguridad</h4><div>Los datos de la sesi\xF3n, el historial, las favoritas y las preferencias se almacenan solo en el perfil actual de este navegador. Exp\xF3rtelos peri\xF3dicamente desde Configuraci\xF3n para evitar p\xE9rdidas. Importe esa copia JSON para continuar en otro navegador. Borrar los datos del sitio, usar una ventana privada o cambiar de perfil puede hacer que los datos locales no est\xE9n disponibles. Las copias pueden contener texto SQL, identificadores, historial, favoritas y contenido de las pesta\xF1as abiertas; rev\xEDselas antes de compartirlas.</div></section><section><h4>6. Modo sin conexi\xF3n</h4><div>El HTML aut\xF3nomo oficial funciona directamente desde <code>file://</code>.</div></section><section><h4>7. Problemas y sugerencias</h4><div>Use Informar de un error para defectos reproducibles. Sugerir una mejora abre el formulario espec\xEDfico Feature request de GitHub.</div></section>'],
+    ["help.intro", "Learn about supported SQLite files, editor tools, and what stays or must be reopened when you update, refresh, or return.", "Conhe\xE7a os arquivos SQLite compat\xEDveis, as ferramentas do editor e o que permanece ou precisa ser reaberto ao atualizar, recarregar ou voltar.", "Conozca los archivos SQLite compatibles, las herramientas del editor y lo que permanece o debe volver a abrirse al actualizar, recargar o regresar."],
+    ["help.navLabel", "Help topics", "T\xF3picos da ajuda", "Temas de ayuda"],
+    ["help.startTitle", "Getting started", "Primeiros passos", "Primeros pasos"],
+    ["help.startHtml", 'Open a SQLite file, write SQL in a tab, and press <span class="kbd">F5</span>. Use Schema to explore objects and insert names into the editor.', 'Abra um arquivo SQLite, escreva SQL em uma aba e pressione <span class="kbd">F5</span>. Use o Schema para explorar objetos e inserir nomes no editor.', 'Abra un archivo SQLite, escriba SQL en una pesta\xF1a y pulse <span class="kbd">F5</span>. Use Esquema para explorar objetos e insertar nombres en el editor.'],
+    ["help.filesTitle", "SQLite files", "Arquivos SQLite", "Archivos SQLite"],
+    ["help.filesExtensions", "Accepted extensions:", "Extens\xF5es aceitas:", "Extensiones aceptadas:"],
+    ["help.filesExtensionsLabel", "Accepted SQLite extensions", "Extens\xF5es SQLite aceitas", "Extensiones SQLite aceptadas"],
+    ["help.filesFormatHtml", "Besides the extension, the file must be a valid SQLite 3 database with the <code>SQLite format 3</code> signature. Renaming another file to <code>.db</code> does not make it compatible. SQLite 1 and 2 files are not supported.", "Al\xE9m da extens\xE3o, o arquivo precisa ser um banco SQLite 3 v\xE1lido e conter a assinatura <code>SQLite format 3</code>. Apenas renomear outro arquivo para <code>.db</code> n\xE3o o torna compat\xEDvel. Arquivos SQLite 1 e 2 n\xE3o s\xE3o abertos.", "Adem\xE1s de la extensi\xF3n, el archivo debe ser una base de datos SQLite 3 v\xE1lida y contener la firma <code>SQLite format 3</code>. Cambiar el nombre de otro archivo a <code>.db</code> no lo hace compatible. Los archivos SQLite 1 y 2 no son compatibles."],
+    ["help.workspaceTitle", "Workspace", "\xC1rea de trabalho", "\xC1rea de trabajo"],
+    ["help.workspaceBody", "Use independent SQL tabs to organize queries. In Schema, filter objects and insert qualified identifiers. In results, sort, paginate, select, and export rows as CSV or JSON.", "Use abas SQL independentes para organizar consultas. No Schema, filtre objetos e insira identificadores qualificados. Nos resultados, ordene, pagine, selecione e exporte registros como CSV ou JSON.", "Use pesta\xF1as SQL independientes para organizar consultas. En Esquema, filtre objetos e inserte identificadores cualificados. En los resultados, ordene, pagine, seleccione y exporte filas como CSV o JSON."],
+    ["help.historyTitle", "History and favorites", "Hist\xF3rico e favoritas", "Historial y favoritas"],
+    ["help.historyBody", "History records recently executed queries, including successful runs and errors. Search or load an entry into the active tab. Successfully executed queries can be saved as favorites for reuse.", "O Hist\xF3rico registra consultas executadas recentemente, incluindo sucessos e erros. Pesquise ou carregue uma entrada na aba ativa. Consultas executadas com sucesso podem ser salvas como favoritas para reutiliza\xE7\xE3o.", "El Historial registra las consultas ejecutadas recientemente, incluidos resultados correctos y errores. Busque o cargue una entrada en la pesta\xF1a activa. Las consultas ejecutadas correctamente pueden guardarse como favoritas para reutilizarlas."],
+    ["help.historyLoadNote", "Loading an entry from History or Favorites replaces the current SQL in the active tab. Both are stored only in this browser profile.", "Ao carregar uma entrada do Hist\xF3rico ou das Favoritas, o SQL atual da aba ativa \xE9 substitu\xEDdo. Ambos ficam armazenados somente no perfil atual deste navegador.", "Al cargar una entrada del Historial o de Favoritas, se sustituye el SQL actual de la pesta\xF1a activa. Ambos se almacenan \xFAnicamente en este perfil del navegador."],
+    ["help.sqlMapTitle", "SQL Map", "Mapa SQL", "Mapa SQL"],
+    ["help.sqlMapBodyHtml", "SQL Map presents the current schema as an interactive entity-relationship diagram. Use it to identify tables, fields, keys, and relationship paths, select related data, and compare the generated <code>SELECT</code> and <code>JOIN</code> statements.", "O Mapa SQL apresenta o schema atual como um diagrama entidade-relacionamento interativo. Use-o para identificar tabelas, campos, chaves e caminhos entre relacionamentos, selecionar dados relacionados e comparar as instru\xE7\xF5es <code>SELECT</code> e <code>JOIN</code> geradas.", "El Mapa SQL presenta el esquema actual como un diagrama entidad-relaci\xF3n interactivo. \xDAselo para identificar tablas, campos, claves y rutas entre relaciones, seleccionar datos relacionados y comparar las sentencias <code>SELECT</code> y <code>JOIN</code> generadas."],
+    ["help.sqlMapTeachingTitle", "Teaching use", "Uso did\xE1tico", "Uso did\xE1ctico"],
+    ["help.sqlMapTeachingBody", "In relational database classes, explore the difference between primary and foreign keys, relationship direction, join paths, and the effects of missing or incorrect links. Export the diagram as PNG for discussion or assignments.", "Em aulas de bancos de dados relacionais, explore a diferen\xE7a entre chave prim\xE1ria e estrangeira, dire\xE7\xE3o dos relacionamentos, caminhos de jun\xE7\xE3o e efeitos de v\xEDnculos ausentes ou incorretos. Exporte o diagrama como PNG para discuss\xE3o ou atividades.", "En clases de bases de datos relacionales, explore la diferencia entre claves primarias y for\xE1neas, la direcci\xF3n de las relaciones, las rutas de uni\xF3n y los efectos de v\xEDnculos ausentes o incorrectos. Exporte el diagrama como PNG para debates o actividades."],
+    ["help.sqlMapVirtualTitle", "Virtual relationships", "Relacionamentos virtuais", "Relaciones virtuales"],
+    ["help.sqlMapVirtualBody", "Create virtual relationships to test hypotheses without changing the database schema. They appear as dotted lines, undergo compatibility checks, and exist only for the current session.", "Crie relacionamentos virtuais para testar hip\xF3teses sem alterar o schema do banco. Eles aparecem como linhas pontilhadas, passam por verifica\xE7\xF5es de compatibilidade e existem somente na sess\xE3o atual.", "Cree relaciones virtuales para probar hip\xF3tesis sin cambiar el esquema de la base de datos. Aparecen como l\xEDneas de puntos, pasan por comprobaciones de compatibilidad y existen \xFAnicamente durante la sesi\xF3n actual."],
+    ["help.continuityTitle", "Session and updates", "Sess\xE3o e atualiza\xE7\xF5es", "Sesi\xF3n y actualizaciones"],
+    ["help.continuityIntro", "Persisted items stay only in the local storage of this browser profile.", "Os itens persistidos ficam somente no armazenamento local do perfil atual deste navegador.", "Los elementos persistidos permanecen \xFAnicamente en el almacenamiento local de este perfil del navegador."],
+    ["help.storedTitle", "Stays in this browser", "Permanece neste navegador", "Permanece en este navegador"],
+    ["help.storedLibrary", "History, favorites, theme, language, preferences, and recent-database metadata.", "Hist\xF3rico, favoritas, tema, idioma, prefer\xEAncias e metadados de bancos recentes.", "Historial, favoritas, tema, idioma, preferencias y metadatos de bases de datos recientes."],
+    ["help.storedSession", "With Save session enabled: open tabs, tab names, the active tab, and draft SQL.", "Com Salvar sess\xE3o ativado: abas abertas, nomes das abas, aba ativa e rascunhos SQL.", "Con Guardar sesi\xF3n activado: pesta\xF1as abiertas, nombres de pesta\xF1as, pesta\xF1a activa y borradores SQL."],
+    ["help.notRestoredTitle", "Not restored automatically", "N\xE3o \xE9 restaurado automaticamente", "No se restaura autom\xE1ticamente"],
+    ["help.notRestoredDatabase", "The database loaded in memory and changes not yet saved to a .db file.", "O banco carregado em mem\xF3ria e altera\xE7\xF5es ainda n\xE3o salvas em um arquivo .db.", "La base de datos cargada en memoria y los cambios que a\xFAn no se han guardado en un archivo .db."],
+    ["help.notRestoredRuntime", "Results, selections, pagination, and temporary virtual relationships in SQL Map.", "Resultados, sele\xE7\xF5es, pagina\xE7\xE3o e relacionamentos virtuais tempor\xE1rios do Mapa SQL.", "Resultados, selecciones, paginaci\xF3n y relaciones virtuales temporales del Mapa SQL."],
+    ["help.eventsCaption", "What happens in each situation", "O que acontece em cada situa\xE7\xE3o", "Qu\xE9 ocurre en cada situaci\xF3n"],
+    ["help.eventColumn", "Situation", "Situa\xE7\xE3o", "Situaci\xF3n"],
+    ["help.keptColumn", "What stays", "O que permanece", "Lo que permanece"],
+    ["help.actionColumn", "What needs attention", "O que exige aten\xE7\xE3o", "Lo que requiere atenci\xF3n"],
+    ["help.eventRelease", "New version", "Nova vers\xE3o", "Nueva versi\xF3n"],
+    ["help.eventReleaseKept", "Local data remains available when you use the same address, browser, and profile.", "Os dados locais continuam dispon\xEDveis ao usar o mesmo endere\xE7o, navegador e perfil.", "Los datos locales siguen disponibles al usar la misma direcci\xF3n, navegador y perfil."],
+    ["help.eventReleaseAction", "Save database changes to .db before updating.", "Salve altera\xE7\xF5es do banco em .db antes de atualizar.", "Guarde los cambios de la base de datos en .db antes de actualizar."],
+    ["help.eventRefresh", "Refresh the page", "Atualizar a p\xE1gina", "Actualizar la p\xE1gina"],
+    ["help.eventRefreshKept", "Local data and, with Save session enabled, tabs and draft SQL.", "Dados locais e, com Salvar sess\xE3o ativado, abas e rascunhos SQL.", "Datos locales y, con Guardar sesi\xF3n activado, pesta\xF1as y borradores SQL."],
+    ["help.eventRefreshAction", "Reopen the database; results and temporary state do not return.", "Reabra o banco; resultados e estado tempor\xE1rio n\xE3o retornam.", "Vuelva a abrir la base de datos; los resultados y el estado temporal no regresan."],
+    ["help.eventReopen", "Close and reopen", "Fechar e abrir novamente", "Cerrar y volver a abrir"],
+    ["help.eventReopenKept", "The same local data; tabs and drafts return when Save session is enabled.", "Os mesmos dados locais; abas e rascunhos retornam quando Salvar sess\xE3o est\xE1 ativado.", "Los mismos datos locales; las pesta\xF1as y los borradores regresan cuando Guardar sesi\xF3n est\xE1 activado."],
+    ["help.eventReopenAction", "Choose the database again or use Recent; the browser may request permission.", "Escolha o banco novamente ou use Recentes; o navegador pode pedir permiss\xE3o.", "Elija de nuevo la base de datos o use Recientes; el navegador puede solicitar permiso."],
+    ["help.backupTitle", "Backup and offline mode", "Backup e modo offline", "Copia de seguridad y modo sin conexi\xF3n"],
+    ["help.backupHtml", "Periodically export a JSON backup from Settings. It may contain SQL, history, favorites, preferences, and tabs, but <strong>does not include the SQLite database</strong>; save the database separately as <code>.db</code>. Clearing site data, using a private window, or changing browser, profile, or device can make local data unavailable.", "Exporte periodicamente um backup JSON em Configura\xE7\xF5es. Ele pode conter SQL, hist\xF3rico, favoritas, prefer\xEAncias e abas, mas <strong>n\xE3o inclui o banco SQLite</strong>; salve o banco separadamente em <code>.db</code>. Limpar dados do site, usar janela privativa ou trocar de navegador, perfil ou dispositivo pode tornar os dados locais indispon\xEDveis.", "Exporte peri\xF3dicamente una copia JSON desde Configuraci\xF3n. Puede contener SQL, historial, favoritas, preferencias y pesta\xF1as, pero <strong>no incluye la base de datos SQLite</strong>; guarde la base por separado como <code>.db</code>. Borrar los datos del sitio, usar una ventana privada o cambiar de navegador, perfil o dispositivo puede hacer que los datos locales no est\xE9n disponibles."],
+    ["help.offlineHtml", "The official standalone HTML works from <code>file://</code>. Depending on the browser, changing the HTML name or path may create separate local storage; export a backup before replacing the file.", "O HTML standalone oficial funciona em <code>file://</code>. Dependendo do navegador, mudar o nome ou o caminho do HTML pode criar outro armazenamento local; exporte o backup antes de substituir o arquivo.", "El HTML aut\xF3nomo oficial funciona desde <code>file://</code>. Seg\xFAn el navegador, cambiar el nombre o la ruta del HTML puede crear otro almacenamiento local; exporte la copia antes de sustituir el archivo."],
+    ["help.supportTitle", "Support and suggestions", "Suporte e sugest\xF5es", "Soporte y sugerencias"],
+    ["help.supportBody", "Use Report a bug for reproducible defects. Suggest improvement opens the scoped GitHub Feature request form.", "Use Reportar erro para defeitos reproduz\xEDveis. Sugerir melhoria abre o formul\xE1rio espec\xEDfico Feature request do GitHub.", "Use Informar de un error para defectos reproducibles. Sugerir una mejora abre el formulario espec\xEDfico Feature request de GitHub."],
     ["offline.description", "This artifact is expected to work entirely offline. This screen means the file is incomplete or corrupted.", "Este artefato deve funcionar totalmente offline. Esta tela indica que o arquivo est\xE1 incompleto ou corrompido.", "Este artefacto debe funcionar totalmente sin conexi\xF3n. Esta pantalla indica que el archivo est\xE1 incompleto o da\xF1ado."],
     ["offline.guideHtml", "<strong>Expected:</strong> the standalone HTML contains every required resource.<br><br><strong>Verify:</strong><ul><li>Build the artifact again with the repository build command.</li><li>Replace old HTML copies with a fresh artifact from the same release.</li><li>If the file was modified manually, restore the official generated artifact.</li></ul>Then open the local file again.", "<strong>Esperado:</strong> o HTML standalone cont\xE9m todos os recursos necess\xE1rios.<br><br><strong>Verifique:</strong><ul><li>Gere o artefato novamente com o comando de build do reposit\xF3rio.</li><li>Substitua c\xF3pias antigas do HTML por um artefato novo do mesmo release.</li><li>Se o arquivo foi modificado manualmente, restaure o artefato oficial gerado.</li></ul>Depois abra o arquivo local novamente.", "<strong>Esperado:</strong> el HTML aut\xF3nomo contiene todos los recursos necesarios.<br><br><strong>Compruebe:</strong><ul><li>Genere de nuevo el artefacto con el comando de compilaci\xF3n del repositorio.</li><li>Sustituya las copias antiguas del HTML por un artefacto nuevo de la misma versi\xF3n.</li><li>Si el archivo se modific\xF3 manualmente, restaure el artefacto oficial generado.</li></ul>Despu\xE9s vuelva a abrir el archivo local."],
     ["tabs.renameLabel", "Rename tab", "Renomear aba", "Renombrar pesta\xF1a"],
@@ -38668,8 +39068,20 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     shortcutsHelpBtn.addEventListener("click", () => modalController.open(shortcutsHelpModal));
     closeReleaseNotesBtn.addEventListener("click", () => modalController.close(releaseNotesModal));
     closeShortcutsHelpBtn.addEventListener("click", () => modalController.close(shortcutsHelpModal));
-    helpBtn.addEventListener("click", () => modalController.open(helpModal));
+    helpBtn.addEventListener("click", () => {
+      helpModal.querySelector(".help-document").scrollTop = 0;
+      modalController.open(helpModal);
+    });
     closeHelpBtn.addEventListener("click", () => modalController.close(helpModal));
+    helpModal.querySelectorAll(".help-index a").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const target = helpModal.querySelector(link.getAttribute("href"));
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ block: "start" });
+        target.focus({ preventScroll: true });
+      });
+    });
     exportSettingsBtn.addEventListener("click", exportSettingsConfig);
     importSettingsTrigger.addEventListener("click", (event) => {
       if (event.target === importSettingsInput || bypassImportConfirmOnce) {

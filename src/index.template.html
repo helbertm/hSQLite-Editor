@@ -723,45 +723,145 @@
   </div>
 
   <div class="modal-backdrop" id="helpModal">
-    <div class="modal help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+    <div class="modal help-modal" role="dialog" aria-modal="true" aria-labelledby="helpTitle" aria-describedby="helpIntro">
       <h3 id="helpTitle" data-i18n="help.title">Ajuda Geral do hSQLite Editor</h3>
-      <p data-i18n="help.intro">Ferramenta para análise de bases SQLite com foco em suporte/TI e uso didático em aulas de banco de dados.</p>
-      <div class="help-grid" data-i18n-html="help.gridHtml">
-        <section>
-          <h4>1. Começando</h4>
-          <div>Use <span class="kbd">Escolher .db</span> para abrir uma base. Depois escreva SQL e execute com <span class="kbd">F5</span>.</div>
-          <div class="small-muted" style="margin-top:6px;">Extensões aceitas para bancos SQLite: <code>.db</code>, <code>.sqlite</code>, <code>.sqlite3</code>, <code>.db3</code>, <code>.s3db</code>, <code>.sl3</code>, <code>.sqlite.db</code>.</div>
-        </section>
-        <section>
-          <h4>2. Área SQL</h4>
-          <div>Abas independentes, histórico, favoritos, abrir/salvar arquivo SQL e atalhos para fluxo rápido.</div>
-        </section>
-        <section>
-          <h4>3. Schema</h4>
-          <div>Filtre objetos por nome e por tipo. Clique em colunas para inserir <code>objeto.coluna</code> no editor.</div>
-        </section>
-        <section>
-          <h4>4. Resultados</h4>
-          <div>Ordenação multi-coluna, paginação, seleção de linhas, exportação CSV/JSON e cabeçalho sempre visível.</div>
-        </section>
-        <section>
-          <h4>5. Dados locais e backups</h4>
-          <div>Dados da sessão, histórico, favoritas e preferências ficam armazenados apenas no perfil atual deste navegador. Exporte-os periodicamente em Configurações para evitar perdas. Importe esse backup JSON para continuar em outro navegador. Limpar os dados do site, usar uma janela privativa ou mudar de perfil pode tornar os dados locais indisponíveis. Backups podem conter textos SQL, identificadores, histórico, favoritas e conteúdo das abas abertas; revise-os antes de compartilhar.</div>
-        </section>
-        <section>
-          <h4>6. Modo offline</h4>
-          <div>O arquivo oficial deve abrir direto no navegador como um HTML standalone, inclusive em <code>file://</code>.</div>
-        </section>
-        <section>
-          <h4>7. Problemas e sugestões</h4>
-          <div>Use Reportar erro para defeitos reproduzíveis. Sugerir melhoria abre o formulário específico Feature request do GitHub.</div>
-        </section>
+      <p id="helpIntro" data-i18n="help.intro">Conheça os arquivos SQLite compatíveis, as ferramentas do editor e o que permanece ou precisa ser reaberto ao atualizar, recarregar ou voltar.</p>
+      <div class="help-document">
+        <nav class="help-index" aria-label="Tópicos da ajuda" data-i18n-aria-label="help.navLabel">
+          <a href="#helpGettingStarted" data-modal-initial="true" data-i18n="help.startTitle">Primeiros passos</a>
+          <a href="#helpSqliteFiles" data-i18n="help.filesTitle">Arquivos SQLite</a>
+          <a href="#helpWorkspace" data-i18n="help.workspaceTitle">Área de trabalho</a>
+          <a href="#helpHistoryFavorites" data-i18n="help.historyTitle">Histórico e favoritas</a>
+          <a href="#helpSqlMap" data-i18n="help.sqlMapTitle">Mapa SQL</a>
+          <a href="#helpContinuity" data-i18n="help.continuityTitle">Sessão e atualizações</a>
+          <a href="#helpBackupOffline" data-i18n="help.backupTitle">Backup e modo offline</a>
+          <a href="#helpSupport" data-i18n="help.supportTitle">Suporte e sugestões</a>
+        </nav>
+        <div class="help-content">
+          <section id="helpGettingStarted" tabindex="-1">
+            <h4 data-i18n="help.startTitle">Primeiros passos</h4>
+            <p data-i18n-html="help.startHtml">Abra um arquivo SQLite, escreva SQL em uma aba e pressione <span class="kbd">F5</span>. Use o Schema para explorar objetos e inserir nomes no editor.</p>
+          </section>
+
+          <section id="helpSqliteFiles" tabindex="-1">
+            <h4 data-i18n="help.filesTitle">Arquivos SQLite</h4>
+            <p data-i18n="help.filesExtensions">Extensões aceitas:</p>
+            <ul class="help-extension-list" aria-label="Extensões SQLite aceitas" data-i18n-aria-label="help.filesExtensionsLabel">
+              <li><code data-i18n-ignore>.db</code></li>
+              <li><code data-i18n-ignore>.sqlite</code></li>
+              <li><code data-i18n-ignore>.sqlite3</code></li>
+              <li><code data-i18n-ignore>.db3</code></li>
+              <li><code data-i18n-ignore>.s3db</code></li>
+              <li><code data-i18n-ignore>.sl3</code></li>
+              <li><code data-i18n-ignore>.sqlite.db</code></li>
+            </ul>
+            <p data-i18n-html="help.filesFormatHtml">Além da extensão, o arquivo precisa ser um banco SQLite 3 válido e conter a assinatura <code>SQLite format 3</code>. Apenas renomear outro arquivo para <code>.db</code> não o torna compatível. Arquivos SQLite 1 e 2 não são abertos.</p>
+          </section>
+
+          <section id="helpWorkspace" tabindex="-1">
+            <h4 data-i18n="help.workspaceTitle">Área de trabalho</h4>
+            <p data-i18n="help.workspaceBody">Use abas SQL independentes para organizar consultas. No Schema, filtre objetos e insira identificadores qualificados. Nos resultados, ordene, pagine, selecione e exporte registros como CSV ou JSON.</p>
+          </section>
+
+          <section id="helpHistoryFavorites" tabindex="-1">
+            <h4 data-i18n="help.historyTitle">Histórico e favoritas</h4>
+            <p data-i18n="help.historyBody">O Histórico registra consultas executadas recentemente, incluindo sucessos e erros. Pesquise ou carregue uma entrada na aba ativa. Consultas executadas com sucesso podem ser salvas como favoritas para reutilização.</p>
+            <p data-i18n="help.historyLoadNote">Ao carregar uma entrada do Histórico ou das Favoritas, o SQL atual da aba ativa é substituído. Ambos ficam armazenados somente no perfil atual deste navegador.</p>
+          </section>
+
+          <section id="helpSqlMap" tabindex="-1">
+            <h4 data-i18n="help.sqlMapTitle">Mapa SQL</h4>
+            <p data-i18n-html="help.sqlMapBodyHtml">O Mapa SQL apresenta o schema atual como um diagrama entidade-relacionamento interativo. Use-o para identificar tabelas, campos, chaves e caminhos entre relacionamentos, selecionar dados relacionados e comparar as instruções <code>SELECT</code> e <code>JOIN</code> geradas.</p>
+            <h5 data-i18n="help.sqlMapTeachingTitle">Uso didático</h5>
+            <p data-i18n="help.sqlMapTeachingBody">Em aulas de bancos de dados relacionais, explore a diferença entre chave primária e estrangeira, direção dos relacionamentos, caminhos de junção e efeitos de vínculos ausentes ou incorretos. Exporte o diagrama como PNG para discussão ou atividades.</p>
+            <h5 data-i18n="help.sqlMapVirtualTitle">Relacionamentos virtuais</h5>
+            <p data-i18n="help.sqlMapVirtualBody">Crie relacionamentos virtuais para testar hipóteses sem alterar o schema do banco. Eles aparecem como linhas pontilhadas, passam por verificações de compatibilidade e existem somente na sessão atual.</p>
+          </section>
+
+          <section id="helpContinuity" tabindex="-1">
+            <h4 data-i18n="help.continuityTitle">Sessão e atualizações</h4>
+            <p data-i18n="help.continuityIntro">Os itens persistidos ficam somente no armazenamento local do perfil atual deste navegador.</p>
+            <div class="help-persistence-columns">
+              <div>
+                <h5 data-i18n="help.storedTitle">Permanece neste navegador</h5>
+                <ul>
+                  <li data-i18n="help.storedLibrary">Histórico, favoritas, tema, idioma, preferências e metadados de bancos recentes.</li>
+                  <li data-i18n="help.storedSession">Com Salvar sessão ativado: abas abertas, nomes das abas, aba ativa e rascunhos SQL.</li>
+                </ul>
+              </div>
+              <div>
+                <h5 data-i18n="help.notRestoredTitle">Não é restaurado automaticamente</h5>
+                <ul>
+                  <li data-i18n="help.notRestoredDatabase">O banco carregado em memória e alterações ainda não salvas em um arquivo .db.</li>
+                  <li data-i18n="help.notRestoredRuntime">Resultados, seleções, paginação e relacionamentos virtuais temporários do Mapa SQL.</li>
+                </ul>
+              </div>
+            </div>
+
+            <table class="help-event-table">
+              <caption data-i18n="help.eventsCaption">O que acontece em cada situação</caption>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="help.eventColumn">Situação</th>
+                  <th scope="col" data-i18n="help.keptColumn">O que permanece</th>
+                  <th scope="col" data-i18n="help.actionColumn">O que exige atenção</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" data-i18n="help.eventRelease">Nova versão</th>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.keptColumn">O que permanece</span>
+                    <span data-i18n="help.eventReleaseKept">Os dados locais continuam disponíveis ao usar o mesmo endereço, navegador e perfil.</span>
+                  </td>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.actionColumn">O que exige atenção</span>
+                    <span data-i18n="help.eventReleaseAction">Salve alterações do banco em .db antes de atualizar.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" data-i18n="help.eventRefresh">Atualizar a página</th>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.keptColumn">O que permanece</span>
+                    <span data-i18n="help.eventRefreshKept">Dados locais e, com Salvar sessão ativado, abas e rascunhos SQL.</span>
+                  </td>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.actionColumn">O que exige atenção</span>
+                    <span data-i18n="help.eventRefreshAction">Reabra o banco; resultados e estado temporário não retornam.</span>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row" data-i18n="help.eventReopen">Fechar e abrir novamente</th>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.keptColumn">O que permanece</span>
+                    <span data-i18n="help.eventReopenKept">Os mesmos dados locais; abas e rascunhos retornam quando Salvar sessão está ativado.</span>
+                  </td>
+                  <td>
+                    <span class="help-mobile-cell-label" aria-hidden="true" data-i18n="help.actionColumn">O que exige atenção</span>
+                    <span data-i18n="help.eventReopenAction">Escolha o banco novamente ou use Recentes; o navegador pode pedir permissão.</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section id="helpBackupOffline" tabindex="-1">
+            <h4 data-i18n="help.backupTitle">Backup e modo offline</h4>
+            <p data-i18n-html="help.backupHtml">Exporte periodicamente um backup JSON em Configurações. Ele pode conter SQL, histórico, favoritas, preferências e abas, mas <strong>não inclui o banco SQLite</strong>; salve o banco separadamente em <code>.db</code>. Limpar dados do site, usar janela privativa ou trocar de navegador, perfil ou dispositivo pode tornar os dados locais indisponíveis.</p>
+            <p data-i18n-html="help.offlineHtml">O HTML standalone oficial funciona em <code>file://</code>. Dependendo do navegador, mudar o nome ou o caminho do HTML pode criar outro armazenamento local; exporte o backup antes de substituir o arquivo.</p>
+          </section>
+
+          <section id="helpSupport" tabindex="-1">
+            <h4 data-i18n="help.supportTitle">Suporte e sugestões</h4>
+            <p data-i18n="help.supportBody">Use Reportar erro para defeitos reproduzíveis. Sugerir melhoria abre o formulário específico Feature request do GitHub.</p>
+          </section>
+        </div>
       </div>
       <div class="modal-actions modal-actions-split">
         <a id="suggestImprovementLink" class="ui-button ui-button-secondary ui-button-md" href="https://github.com/helbertm/hSQLite-Editor/issues/new?template=feature.yml" target="_blank" rel="noopener noreferrer" title="Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba" aria-label="Sugerir melhoria: abrir o formulário Feature request do GitHub em uma nova aba" data-i18n-title="issues.suggestTooltip" data-i18n-aria-label="issues.suggestTooltip">
           <span data-i18n="issues.suggest">Sugerir melhoria</span>
         </a>
-        <button id="closeHelpBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-modal-initial="true" data-i18n="common.close">Fechar</button>
+        <button id="closeHelpBtn" class="ui-button ui-button-primary ui-button-md" type="button" data-modal-cancel="true" data-i18n="common.close">Fechar</button>
       </div>
     </div>
   </div>
