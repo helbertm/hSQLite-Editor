@@ -5,8 +5,14 @@
 
 ### Features
 
-* **analytics:** add Pages-only usage statistics ([e9e4401](https://github.com/helbertm/hSQLite-Editor/commit/e9e44016ffb9b774d5607a56703bef00227cef96))
-* improve SQLite support workflows and data integrity ([#37](https://github.com/helbertm/hSQLite-Editor/issues/37)) ([2eabe4e](https://github.com/helbertm/hSQLite-Editor/commit/2eabe4ed9253161c0f9acce0fd08d667c20f11ea))
+* Open multiple SQL files in separate named tabs without replacing active drafts; work with up to 20 tabs.
+* Search up to 30 recent databases and keep up to 200 history entries and favorites, with database names in query history.
+* Confirm before discarding unsaved database changes and preserve the active session when database opens fail or overlap.
+* Handle large query results with bounded memory, paginated rendering, and fewer copies of unchanged databases.
+* Preserve exact 64-bit SQLite identifiers and distinguish duplicate result columns in grids and exports.
+* Execute trigger scripts and complete transactions reliably, detect CTE and PRAGMA changes, and preserve data when queries fail or are cancelled.
+* Export spreadsheet-safe CSV files, validate settings backups before downloading, tolerate storage quota failures, and improve text contrast.
+* Add privacy-conscious usage statistics only to the official hosted demo; downloaded standalone files remain offline and analytics-free.
 
 ## [0.7.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.6.1...hsqlite-editor-v0.7.0) (2026-07-31)
 
