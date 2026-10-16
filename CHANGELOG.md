@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.7.0...hsqlite-editor-v0.8.0) (2026-10-16)
+
+
+### Features
+
+* **analytics:** add Pages-only usage statistics ([e9e4401](https://github.com/helbertm/hSQLite-Editor/commit/e9e44016ffb9b774d5607a56703bef00227cef96))
+* improve SQLite support workflows and data integrity ([#37](https://github.com/helbertm/hSQLite-Editor/issues/37)) ([2eabe4e](https://github.com/helbertm/hSQLite-Editor/commit/2eabe4ed9253161c0f9acce0fd08d667c20f11ea))
+
 ## [0.7.0](https://github.com/helbertm/hSQLite-Editor/compare/hsqlite-editor-v0.6.1...hsqlite-editor-v0.7.0) (2026-07-31)
 
 
