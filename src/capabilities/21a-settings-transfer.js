@@ -6,7 +6,9 @@ import { setSessionPersistence, setStarterSqlEnabled, setTheme } from "./15-pref
 import { saveQueryHistoryToStorage } from "./20-history-query.js";
 import { favoritesController } from "./21-history-favorites.js";
 import { setTabNamePresetPreference } from "./22a-sql-tab-presets.js";
-import { SETTINGS_TRANSFER_MAX_FILE_CHARS, validateSettingsImportPayload } from "../core/05-settings-import-contract.js";
+import { serializeSqlTabs } from "./22-sql-tabs-storage.js";
+import { saveCurrentTabState } from "./22c-active-tab-sync.js";
+import { SETTINGS_TRANSFER_MAX_FILE_CHARS, serializeSettingsExportPayload, validateSettingsImportPayload } from "../core/05-settings-import-contract.js";
 import { getSelectedTabNamePreset, getShouldInsertStarterSql, getShouldPersistSession } from "../core/13-state-preferences.js";
 import { getFavoriteQueriesState, getQueryHistoryState, setFavoriteQueriesState, setQueryHistoryState } from "../core/15-state-runtime-library.js";
 import { STORAGE_KEYS, sqlTabsStorage, storage } from "../ports/05-storage.js";
@@ -139,32 +141,40 @@ export function exportSettingsConfig() {
     setStatus(t("settings.scopeRequiredExport"), "warn");
     return;
   }
-  const scopes = new Set(getSelectedConfigScopes());
-  const payload = {
-    version: 1,
-    exportedAt: new Date().toISOString(),
-    scopes: Array.from(scopes),
-    data: {}
-  };
-  if (scopes.has("favorites")) payload.data.favorites = getFavoriteQueriesState();
-  if (scopes.has("queryHistory")) payload.data.queryHistory = getQueryHistoryState();
-  if (scopes.has("theme")) payload.data.theme = document.documentElement.dataset.theme || "dark";
-  if (scopes.has("locale")) payload.data.locale = getLocale();
-  if (scopes.has("session")) payload.data.session = {
-    shouldPersistSession: getShouldPersistSession(),
-    sqlTabs: sqlTabsStorage.load()
-  };
-  if (scopes.has("tabPreset")) payload.data.tabPreset = getSelectedTabNamePreset();
-  if (scopes.has("starterSql")) payload.data.starterSql = getShouldInsertStarterSql();
+  try {
+    saveCurrentTabState();
+    const scopes = new Set(getSelectedConfigScopes());
+    const payload = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      scopes: Array.from(scopes),
+      data: {}
+    };
+    if (scopes.has("favorites")) payload.data.favorites = getFavoriteQueriesState();
+    if (scopes.has("queryHistory")) payload.data.queryHistory = getQueryHistoryState();
+    if (scopes.has("theme")) payload.data.theme = document.documentElement.dataset.theme || "dark";
+    if (scopes.has("locale")) payload.data.locale = getLocale();
+    if (scopes.has("session")) payload.data.session = {
+      shouldPersistSession: getShouldPersistSession(),
+      sqlTabs: serializeSqlTabs()
+    };
+    if (scopes.has("tabPreset")) payload.data.tabPreset = getSelectedTabNamePreset();
+    if (scopes.has("starterSql")) payload.data.starterSql = getShouldInsertStarterSql();
 
-  downloadText(
-    `hsqlite-config-${new Date().toISOString().slice(0, 19).replaceAll(":", "-")}.json`,
-    JSON.stringify(payload, null, 2),
-    "application/json;charset=utf-8"
-  );
-  storage.set(STORAGE_KEYS.LAST_SETTINGS_EXPORT_AT, payload.exportedAt);
-  renderLastSettingsExportInfo();
-  setStatus(t("settings.exported"), "ok");
+    downloadText(
+      `hsqlite-config-${new Date().toISOString().slice(0, 19).replaceAll(":", "-")}.json`,
+      serializeSettingsExportPayload(payload),
+      "application/json;charset=utf-8"
+    );
+    try {
+      storage.set(STORAGE_KEYS.LAST_SETTINGS_EXPORT_AT, payload.exportedAt);
+      renderLastSettingsExportInfo();
+    } catch (error) { console.warn("settings-export-timestamp-save-failed", error); }
+    setStatus(t("settings.exported"), "ok");
+  } catch (error) {
+    console.warn("Settings export rejected.", error);
+    setStatus(t("settings.exportFailed"), "error");
+  }
 }
 
 export async function importSettingsConfig(file) {
@@ -175,6 +185,7 @@ export async function importSettingsConfig(file) {
     return;
   }
   try {
+    if (file.size > SETTINGS_TRANSFER_MAX_FILE_CHARS * 4) throw new Error("settings-file-too-large");
     const raw = await file.text();
     if (raw.length > SETTINGS_TRANSFER_MAX_FILE_CHARS) {
       throw new Error(`Settings file exceeds ${SETTINGS_TRANSFER_MAX_FILE_CHARS} characters.`);

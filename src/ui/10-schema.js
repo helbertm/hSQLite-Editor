@@ -88,7 +88,7 @@ export function normalizeSchemaType(type) {
   export const schemaController = {
     load() {
       const activeDb = getActiveDatabase();
-      const nextSchemaObjects = {};
+      const nextSchemaObjects = Object.create(null);
       const nextSchemaTypes = [];
       try {
         const objectsRes = activeDb.exec(`

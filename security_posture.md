@@ -41,3 +41,12 @@ For deterministic tracked evidence, the SPDX `creationInfo.created` field intent
 
 - Keep release checksums, exact-artifact build-provenance attestations, and SPDX SBOM attestations current.
 - Keep the accepted CodeMirror 6 adapter boundary, runtime-component provenance, and exact locked bundle dependencies current.
+
+## Support workflow data-integrity controls
+
+- Database replacement validates the SQLite catalog before retiring the active database, rejects stale asynchronous opens, blocks replacement during execution, and confirms unsaved-change discard.
+- SQL uses the native SQLite statement iterator, including trigger bodies. Unfinished transactions are rejected before export. Worker cancellation, errors, and result-budget failures never adopt partial database changes.
+- Aggregate worker result budgets limit returned rows, cells, and approximate value payload. These are application safeguards, not a complete memory sandbox for untrusted SQL or oversized input databases.
+- Persistent-byte comparison detects changes from CTE writes and PRAGMAs. History-storage failures do not suppress the dirty flag.
+- CSV export quotes cells and prefixes formula-like text with an apostrophe; JSON preserves original text. Spreadsheet re-saving can remove protective quoting, so exported CSV is not a universal formula-execution security boundary. See [OWASP CSV Injection](https://community.owasp.org/attacks/CSV_Injection).
+- Unsafe-range SQLite integers are represented as decimal strings to avoid JavaScript precision loss; duplicate and reserved result-column labels are disambiguated before mapping rows.

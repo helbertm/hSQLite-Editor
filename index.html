@@ -24,6 +24,7 @@
       --accent: #2a3441;
       --accent-foreground: #e6edf3;
       --destructive: #da3633;
+      --destructive-text: #ff938a;
       --destructive-foreground: #ffffff;
       --border: #37414c;
       --input: #242d38;
@@ -72,6 +73,7 @@ html[data-theme="light"] {
       --accent: #dee4eb;
       --accent-foreground: #2a313a;
       --destructive: #b42318;
+      --destructive-text: #b42318;
       --destructive-foreground: #fff6f5;
       --border: #cdd4dd;
       --input: #e4e9ef;
@@ -730,7 +732,7 @@ background: transparent;
 
 .ui-button-destructive {
 background: color-mix(in srgb, var(--destructive) 11%, transparent);
-      color: var(--destructive);
+      color: var(--destructive-text);
       border-color: color-mix(in srgb, var(--destructive) 35%, var(--border));
 }
 
@@ -747,7 +749,7 @@ color: var(--foreground);
 
 .ui-button-primary:hover {
 color: var(--primary-foreground);
-      background: color-mix(in srgb, var(--primary) 88%, var(--foreground));
+      background: color-mix(in srgb, var(--primary) 88%, black);
 }
 
 .ui-button-destructive:hover {
@@ -2627,7 +2629,7 @@ background: color-mix(in srgb, var(--info) 20%, transparent);
       padding: 0 2px;
 }
 
-#queryHistorySearch {
+#queryHistorySearch, #recentDbSearch {
 -webkit-appearance: none;
       appearance: none;
 }
@@ -5590,6 +5592,401 @@ margin: 8px 0 8px 18px;
   }
 }
 
+
+/* Temporary footer comparison surface */
+.app-footer {
+flex-direction: column;
+      gap: 10px;
+}
+
+.app-footer-links {
+display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+}
+
+.footer-svg-symbols {
+position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+}
+
+.footer-signature-options {
+width: min(100%, 480px);
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding-top: 2px;
+      padding-inline: 0;
+      list-style: none;
+      --footer-coffee-underline: #9a613c;
+}
+
+html[data-theme="light"] .footer-signature-options {
+--footer-coffee-underline: #6f3f24;
+}
+
+.footer-signature-option {
+position: relative;
+      min-height: 28px;
+      display: grid;
+      place-items: center;
+      padding-inline: 26px;
+      --footer-underline-duration: 900ms;
+}
+
+.footer-signature-option:not(:nth-child(5)):not(:nth-child(6)) {
+display: none;
+}
+
+.footer-signature-option-wide {
+padding-inline: 0;
+}
+
+.footer-variant-label {
+position: absolute;
+      left: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--mutedText);
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+}
+
+.footer-signature-copy {
+display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      max-width: 40ch;
+      color: var(--mutedText);
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: center;
+}
+
+.footer-signature-copy-wide {
+max-width: 48ch;
+}
+
+.footer-signature-lead,
+.footer-minas-link {
+display: inline-flex;
+      align-items: center;
+}
+
+.footer-signature-lead {
+gap: 5px;
+}
+
+.footer-coffee-art {
+width: 34px;
+      height: 24px;
+      flex: 0 0 34px;
+      display: inline-grid;
+      place-items: center;
+      color: var(--mutedText);
+}
+
+.footer-coffee-art svg {
+width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+}
+
+.coffee-bean-fill,
+.coffee-bean-mini {
+fill: #8b4e2f;
+}
+
+.coffee-bean-seam,
+.coffee-bean-mini-seam {
+fill: none;
+      stroke: #e7c19c;
+      stroke-width: 1.35;
+      stroke-linecap: round;
+}
+
+.coffee-highlight {
+fill: none;
+      stroke: #f0d4b9;
+      stroke-width: 1.1;
+      stroke-linecap: round;
+}
+
+.coffee-serra-steam {
+fill: none;
+      stroke: #a96a43;
+      stroke-width: 1.55;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+}
+
+.coffee-cup-outline,
+.coffee-kettle-line,
+.coffee-enamel-handle {
+fill: none;
+      stroke: currentColor;
+      stroke-width: 1.45;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+}
+
+.coffee-liquid {
+fill: none;
+      stroke: #8b4e2f;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+}
+
+.coffee-kettle {
+fill: #4f78a8;
+      stroke: #315678;
+      stroke-width: 1.2;
+      stroke-linejoin: round;
+}
+
+.coffee-pour {
+fill: none;
+      stroke: #a96a43;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+}
+
+.coffee-filter-cloth {
+fill: #eee3cd;
+      stroke: #9c7d5b;
+      stroke-width: 1.2;
+      stroke-linejoin: round;
+}
+
+.coffee-enamel-steam {
+fill: none;
+      stroke: #a96a43;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+}
+
+.coffee-enamel-body {
+fill: #f5f0e5;
+      stroke: #3d68a6;
+      stroke-width: 1.5;
+      stroke-linejoin: round;
+}
+
+.coffee-enamel-rim {
+fill: none;
+      stroke: #3d68a6;
+      stroke-width: 1.45;
+      stroke-linecap: round;
+}
+
+.coffee-liquid-fill {
+fill: #8b4e2f;
+}
+
+.coffee-enamel-speck {
+fill: #3d68a6;
+}
+
+.coffee-branch-line {
+fill: none;
+      stroke: #6b573d;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+}
+
+.coffee-leaf {
+fill: #4f8057;
+      stroke: #35613e;
+      stroke-width: 1;
+      stroke-linejoin: round;
+}
+
+.coffee-cherry {
+fill: #ad3434;
+      stroke: #7b2525;
+      stroke-width: .9;
+}
+
+.coffee-cherry-light {
+fill: #d65745;
+}
+
+.coffee-takeaway-body {
+fill: #f3e7d6;
+      stroke: #9a6a43;
+      stroke-width: 1.35;
+      stroke-linejoin: round;
+}
+
+.coffee-takeaway-lid {
+fill: #4f3528;
+}
+
+.coffee-takeaway-sleeve {
+fill: #b57a56;
+}
+
+.coffee-takeaway-bean {
+fill: #f3e7d6;
+}
+
+.coffee-takeaway-bean-line {
+fill: none;
+      stroke: #b57a56;
+      stroke-width: 1;
+      stroke-linecap: round;
+}
+
+.app-footer .footer-coffee-link {
+width: 32px;
+      height: 28px;
+      flex: 0 0 32px;
+      display: inline-grid;
+      place-items: center;
+      margin-inline: -3px;
+      color: inherit;
+      text-decoration: none;
+      border-radius: 4px;
+}
+
+.app-footer .footer-coffee-link:hover {
+color: inherit;
+      text-decoration: none;
+}
+
+.footer-coffee-link .footer-coffee-takeaway {
+width: 30px;
+      height: 22px;
+      transform: translateY(-1px);
+}
+
+.footer-coffee-link .footer-coffee-takeaway svg {
+width: 24px;
+      height: 22px;
+}
+
+.footer-coffee-badge {
+width: 68px;
+      height: 28px;
+      flex-basis: 68px;
+}
+
+.coffee-badge-body {
+fill: #5b3a29;
+      stroke: #9a6a43;
+      stroke-width: 1.6;
+      stroke-linejoin: round;
+}
+
+.coffee-badge-accent {
+fill: #b57a56;
+}
+
+.coffee-badge-bean-line {
+fill: none;
+      stroke: #f6ecdf;
+      stroke-width: 1;
+      stroke-linecap: round;
+}
+
+.coffee-badge-word {
+fill: #f6ecdf;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-anchor: middle;
+}
+
+.footer-minas-link {
+gap: 6px;
+      color: var(--foreground);
+      font-weight: 750;
+      text-decoration: none;
+      border-radius: 2px;
+}
+
+.app-footer .footer-minas-link:hover {
+color: var(--foreground);
+      text-decoration: none;
+}
+
+.footer-minas-name {
+position: relative;
+      display: inline-block;
+      white-space: nowrap;
+}
+
+.footer-minas-name-flagged {
+display: inline-flex;
+      align-items: center;
+      gap: 6px;
+}
+
+.footer-minas-name::after {
+content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      border-radius: 1px;
+      background: var(--footer-coffee-underline);
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      transition: transform var(--footer-underline-duration, 300ms) cubic-bezier(.22, 1, .36, 1);
+      will-change: transform;
+}
+
+.footer-minas-link:hover .footer-minas-name::after,
+.footer-minas-link:focus-visible .footer-minas-name::after {
+transform: scaleX(1);
+}
+
+.footer-coffee-link:focus-visible,
+.footer-minas-link:focus-visible {
+border-color: var(--ring);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
+      outline: 2px solid color-mix(in srgb, var(--ring) 75%, transparent);
+      outline-offset: 1px;
+}
+
+.footer-minas-flag {
+width: 21px;
+      height: 16px;
+      flex: 0 0 21px;
+      display: block;
+      overflow: visible;
+}
+
+@media (max-width: 350px) {
+.footer-signature-option {
+padding-inline: 20px;
+}
+
+.footer-signature-option-wide {
+padding-inline: 0;
+}
+
+.footer-variant-label {
+left: 0;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+.footer-minas-name::after {
+transition: none;
+}
+}
+
 </style>
 </head>
 
@@ -5665,7 +6062,7 @@ margin: 8px 0 8px 18px;
           </div>
         </details>
         <input type="file" id="dbFile" accept=".db,.sqlite,.sqlite3,.db3,.s3db,.sl3,.sqlite.db,application/x-sqlite3,application/octet-stream" style="display:none" />
-        <input type="file" id="sqlFileInput" accept=".sql,.txt,text/plain,application/sql" style="display:none" />
+        <input type="file" id="sqlFileInput" multiple accept=".sql,.txt,text/plain,application/sql" style="display:none" />
 
       </div>
     </div>
@@ -5891,13 +6288,207 @@ margin: 8px 0 8px 18px;
       </main>
     </div>
     <footer class="app-footer">
-      <span data-i18n-ignore>hSQLite Editor</span>
-      <span aria-hidden="true">·</span>
-      <a href="https://github.com/helbertm/hSQLite-Editor" target="_blank" rel="noopener noreferrer" data-i18n-ignore>GitHub</a>
-      <span aria-hidden="true">·</span>
-      <a href="https://github.com/helbertm/hSQLite-Editor/blob/master/LICENSE" target="_blank" rel="noopener noreferrer" data-i18n-ignore>MIT</a>
-      <span aria-hidden="true">·</span>
-      <a href="https://github.com/helbertm/hSQLite-Editor/blob/master/docs/privacy.md" target="_blank" rel="noopener noreferrer" data-i18n="footer.privacy">Privacidade</a>
+      <div class="app-footer-links">
+        <span data-i18n-ignore>hSQLite Editor</span>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/helbertm/hSQLite-Editor" target="_blank" rel="noopener noreferrer" data-i18n-ignore>GitHub</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/helbertm/hSQLite-Editor/blob/master/LICENSE" target="_blank" rel="noopener noreferrer" data-i18n-ignore>MIT</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/helbertm/hSQLite-Editor/blob/master/docs/privacy.md" target="_blank" rel="noopener noreferrer" data-i18n="footer.privacy">Privacidade</a>
+      </div>
+
+      <svg class="footer-svg-symbols" aria-hidden="true" focusable="false">
+        <symbol id="footer-minas-flag-symbol" viewBox="0 0 30 22">
+          <path d="M4 4.2c6-2.7 12 2.4 22-.4v14c-10 2.8-16-2.3-22 .4Z" fill="#fff" stroke="#aeb7c2" stroke-width="1.2"></path>
+          <path d="M4 4.2v16.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+          <path d="m15 7.1 6 8.2H9Z" fill="#d62828"></path>
+          <path d="M5.8 5.2c5.3-1.2 10.7 2 18.3.1" fill="none" stroke="#e2e6ea" stroke-width=".8" stroke-linecap="round"></path>
+        </symbol>
+      </svg>
+
+      <ol class="footer-signature-options" aria-label="Opções de café no rodapé" data-i18n-aria-label="footer.variantsLabel">
+        <li class="footer-signature-option">
+          <span class="visually-hidden" data-i18n="footer.variantA">Opção A, coração de grãos</span>
+          <span class="footer-variant-label" aria-hidden="true" data-i18n-ignore>A</span>
+          <div class="footer-signature-copy">
+            <span class="footer-signature-lead">
+              <span data-i18n="footer.madeWith">Feito com</span>
+              <span class="visually-hidden" data-i18n="footer.coffee">café</span>
+              <span class="footer-coffee-art footer-coffee-beans" aria-hidden="true">
+                <svg viewBox="0 0 34 26" focusable="false">
+                  <path class="coffee-bean-fill" d="M16.7 13.2C12.5 5.4 3.3 5.1 2.6 12.1c-.6 6.2 6.2 9.8 14.1 12.1 7.9-2.3 14.7-5.9 14.1-12.1-.7-7-9.9-6.7-14.1 1.1Z"></path>
+                  <path class="coffee-bean-seam" d="M16.7 13.2c-3.6 1.2-5.7 4.5-5.3 8.5M16.7 13.2c3.6 1.2 5.7 4.5 5.3 8.5"></path>
+                  <path class="coffee-highlight" d="M7.1 10.2c1.3-2.1 4.2-2.1 6.3.2"></path>
+                </svg>
+              </span>
+              <span data-i18n="footer.in">em</span>
+            </span>
+            <a class="footer-minas-link" href="https://en.wikipedia.org/wiki/Minas_Gerais" target="_blank" rel="noopener noreferrer" title="Conhecer Minas Gerais na Wikipédia" data-i18n-title="footer.minasLinkTitle" data-minas-wikipedia-link>
+              <span class="footer-minas-name" data-i18n-ignore>Minas Gerais</span>
+              <svg class="footer-minas-flag" viewBox="0 0 30 22" aria-hidden="true" focusable="false"><use href="#footer-minas-flag-symbol"></use></svg>
+            </a>
+          </div>
+        </li>
+
+        <li class="footer-signature-option">
+          <span class="visually-hidden" data-i18n="footer.variantB">Opção B, xícara com vapor de serra</span>
+          <span class="footer-variant-label" aria-hidden="true" data-i18n-ignore>B</span>
+          <div class="footer-signature-copy">
+            <span class="footer-signature-lead">
+              <span data-i18n="footer.madeWith">Feito com</span>
+              <span class="visually-hidden" data-i18n="footer.coffee">café</span>
+              <span class="footer-coffee-art footer-coffee-serra" aria-hidden="true">
+                <svg viewBox="0 0 36 26" focusable="false">
+                  <path class="coffee-serra-steam" d="M6.5 10.2c2.2-3.9 4.1-3.9 6.2 0 2.3-7 5.2-7 7.5 0 2.1-3.9 4-3.9 6.2 0"></path>
+                  <path class="coffee-cup-outline" d="M6 12.5h22v4.2a7 7 0 0 1-7 7h-8a7 7 0 0 1-7-7Z"></path>
+                  <path class="coffee-liquid" d="M8.4 13.3c5.8 1.5 11.6-1.5 17.3 0"></path>
+                  <path class="coffee-cup-outline" d="M28 14.3h1.7a3.6 3.6 0 0 1 0 7.2H26.8"></path>
+                </svg>
+              </span>
+              <span data-i18n="footer.in">em</span>
+            </span>
+            <a class="footer-minas-link" href="https://en.wikipedia.org/wiki/Minas_Gerais" target="_blank" rel="noopener noreferrer" title="Conhecer Minas Gerais na Wikipédia" data-i18n-title="footer.minasLinkTitle" data-minas-wikipedia-link>
+              <span class="footer-minas-name" data-i18n-ignore>Minas Gerais</span>
+              <svg class="footer-minas-flag" viewBox="0 0 30 22" aria-hidden="true" focusable="false"><use href="#footer-minas-flag-symbol"></use></svg>
+            </a>
+          </div>
+        </li>
+
+        <li class="footer-signature-option">
+          <span class="visually-hidden" data-i18n="footer.variantC">Opção C, coador de pano tradicional</span>
+          <span class="footer-variant-label" aria-hidden="true" data-i18n-ignore>C</span>
+          <div class="footer-signature-copy">
+            <span class="footer-signature-lead">
+              <span data-i18n="footer.madeWith">Feito com</span>
+              <span class="visually-hidden" data-i18n="footer.coffee">café</span>
+              <span class="footer-coffee-art footer-coffee-filter" aria-hidden="true">
+                <svg viewBox="0 0 42 28" focusable="false">
+                  <path class="coffee-kettle" d="M2.5 9h9a4.5 4.5 0 0 1 4.5 4.5v5H7a4.5 4.5 0 0 1-4.5-4.5Z"></path>
+                  <path class="coffee-kettle-line" d="M5.2 9V7.4a3.1 3.1 0 0 1 6.2 0V9M16 12.2c4.4.1 5.2-3.9 9.3-3.6l1.2 1.7c-3.7.2-4.7 4.2-9.8 4.1"></path>
+                  <path class="coffee-pour" d="M26.4 11.8c1 1.1 1 2.1.3 3.2"></path>
+                  <path class="coffee-filter-cloth" d="M24 15h10l-2.3 6h-5.4Z"></path>
+                  <path class="coffee-pour" d="M29 21v1.7"></path>
+                  <path class="coffee-cup-outline" d="M23 23h12v.5a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3Z"></path>
+                  <path class="coffee-cup-outline" d="M35 23.5h1.4a1.7 1.7 0 0 1 0 3.4h-2.2"></path>
+                </svg>
+              </span>
+              <span data-i18n="footer.in">em</span>
+            </span>
+            <a class="footer-minas-link" href="https://en.wikipedia.org/wiki/Minas_Gerais" target="_blank" rel="noopener noreferrer" title="Conhecer Minas Gerais na Wikipédia" data-i18n-title="footer.minasLinkTitle" data-minas-wikipedia-link>
+              <span class="footer-minas-name" data-i18n-ignore>Minas Gerais</span>
+              <svg class="footer-minas-flag" viewBox="0 0 30 22" aria-hidden="true" focusable="false"><use href="#footer-minas-flag-symbol"></use></svg>
+            </a>
+          </div>
+        </li>
+
+        <li class="footer-signature-option">
+          <span class="visually-hidden" data-i18n="footer.variantD">Opção D, caneca esmaltada</span>
+          <span class="footer-variant-label" aria-hidden="true" data-i18n-ignore>D</span>
+          <div class="footer-signature-copy">
+            <span class="footer-signature-lead">
+              <span data-i18n="footer.madeWith">Feito com</span>
+              <span class="visually-hidden" data-i18n="footer.coffee">café</span>
+              <span class="footer-coffee-art footer-coffee-enamel" aria-hidden="true">
+                <svg viewBox="0 0 36 28" focusable="false">
+                  <path class="coffee-enamel-steam" d="M11 8c-2-2.2 1.2-3.3-.2-5.7M17 8c-2-2.2 1.2-3.3-.2-5.7"></path>
+                  <path class="coffee-enamel-body" d="M5 9.5h23v8.2a7.8 7.8 0 0 1-7.8 7.8h-7.4A7.8 7.8 0 0 1 5 17.7Z"></path>
+                  <path class="coffee-enamel-rim" d="M5 10c6.2-2 16.8-2 23 0M6.5 12c5.5-1.5 14.5-1.5 20 0"></path>
+                  <path class="coffee-liquid-fill" d="M7.4 11.1c5.1-1.2 13.8-1.2 18.9 0-5.1 1.4-13.8 1.4-18.9 0Z"></path>
+                  <path class="coffee-enamel-handle" d="M28 12h1.7a4.4 4.4 0 0 1 0 8.8h-3.2"></path>
+                  <circle class="coffee-enamel-speck" cx="9.5" cy="17.5" r=".9"></circle>
+                  <circle class="coffee-enamel-speck" cx="23.5" cy="20.5" r=".7"></circle>
+                </svg>
+              </span>
+              <span data-i18n="footer.in">em</span>
+            </span>
+            <a class="footer-minas-link" href="https://en.wikipedia.org/wiki/Minas_Gerais" target="_blank" rel="noopener noreferrer" title="Conhecer Minas Gerais na Wikipédia" data-i18n-title="footer.minasLinkTitle" data-minas-wikipedia-link>
+              <span class="footer-minas-name" data-i18n-ignore>Minas Gerais</span>
+              <svg class="footer-minas-flag" viewBox="0 0 30 22" aria-hidden="true" focusable="false"><use href="#footer-minas-flag-symbol"></use></svg>
+            </a>
+          </div>
+        </li>
+
+        <li class="footer-signature-option">
+          <span class="visually-hidden" data-i18n="footer.variantE">Opção E, ramo e frutos de café</span>
+          <span class="footer-variant-label" aria-hidden="true" data-i18n-ignore>E</span>
+          <div class="footer-signature-copy">
+            <span class="footer-signature-lead">
+              <span data-i18n="footer.madeWith">Feito com</span>
+              <span class="visually-hidden" data-i18n="footer.coffee">café</span>
+              <span class="footer-coffee-art footer-coffee-branch" aria-hidden="true">
+                <svg viewBox="0 0 38 28" focusable="false">
+                  <path class="coffee-branch-line" d="M5 24C12 16 20 11 33 5"></path>
+                  <path class="coffee-leaf" d="M12.2 18.2C7 18.8 4.7 15.5 4.1 11.3c4.8-.2 8 1.7 8.1 6.9ZM20.7 13.2c-1.1-5 1.8-7.9 6-9-0.1 4.8-1.7 8.2-6 9Z"></path>
+                  <path class="coffee-leaf" d="M26.5 9.1c2.1-4.1 5.7-4.6 9.2-3.2-2.2 3.8-5.1 5.7-9.2 3.2Z"></path>
+                  <circle class="coffee-cherry" cx="15.7" cy="17.2" r="3"></circle>
+                  <circle class="coffee-cherry coffee-cherry-light" cx="21.4" cy="14.4" r="2.7"></circle>
+                  <path class="coffee-bean-mini" d="M27 20.5c2.7-3.9 8.3-2 7.3 2.1-.9 3.8-6.5 4.4-8.4 1.1-.6-1-.2-2.2 1.1-3.2Z"></path>
+                  <path class="coffee-bean-mini-seam" d="M27.8 24.3c1.4-1.7 3.1-2.7 5.4-2.9"></path>
+                </svg>
+              </span>
+              <span data-i18n="footer.in">em</span>
+            </span>
+            <a class="footer-minas-link" href="https://en.wikipedia.org/wiki/Minas_Gerais" target="_blank" rel="noopener noreferrer" title="Conhecer Minas Gerais na Wikipédia" data-i18n-title="footer.minasLinkTitle" data-minas-wikipedia-link>
+              <span class="footer-minas-name footer-minas-name-flagged" data-i18n-ignore>
+                <span>Minas</span>
+                <svg class="footer-minas-flag" viewBox="0 0 30 22" aria-hidden="true" focusable="false"><use href="#footer-minas-flag-symbol"></use></svg>
+                <span>Gerais</span>
+              </span>
+            </a>
+          </div>
+        </li>
+
+        <li class="footer-signature-option">
+          <span class="visually-hidden" data-i18n="footer.variantF">Opção F, copo de café para viagem</span>
+          <span class="footer-variant-label" aria-hidden="true" data-i18n-ignore>F</span>
+          <div class="footer-signature-copy">
+            <span class="footer-signature-lead">
+              <span data-i18n="footer.madeWith">Feito com</span>
+              <a class="footer-coffee-link" href="https://en.wikipedia.org/wiki/Coffee" target="_blank" rel="noopener noreferrer" aria-label="Café na Wikipédia" title="Conhecer o café na Wikipédia" data-i18n-aria-label="footer.coffeeLinkLabel" data-i18n-title="footer.coffeeLinkTitle" data-coffee-wikipedia-link>
+                <span class="footer-coffee-art footer-coffee-takeaway" aria-hidden="true">
+                  <svg viewBox="0 0 32 30" focusable="false">
+                    <path class="coffee-takeaway-body" d="M7.2 8.8h17.6l-1.9 17.1c-.1 1.1-1 1.9-2.1 1.9h-9.6c-1.1 0-2-.8-2.1-1.9Z"></path>
+                    <path class="coffee-takeaway-lid" d="M6 5.1c0-1.2 1-2.2 2.2-2.2h15.6c1.2 0 2.2 1 2.2 2.2v1.2h1.2v3H4.8v-3H6Z"></path>
+                    <path class="coffee-takeaway-sleeve" d="M8.3 14.1h15.4l-.9 8.2H9.2Z"></path>
+                    <path class="coffee-takeaway-bean" d="M16 15.7c3.7 0 4.2 4.6 0 5.2-4.2-.6-3.7-5.2 0-5.2Z"></path>
+                    <path class="coffee-takeaway-bean-line" d="M16 16.3c-1.1 1.1-1.1 2.6 0 4"></path>
+                  </svg>
+                </span>
+              </a>
+              <span data-i18n="footer.in">em</span>
+            </span>
+            <a class="footer-minas-link" href="https://en.wikipedia.org/wiki/Minas_Gerais" target="_blank" rel="noopener noreferrer" title="Conhecer Minas Gerais na Wikipédia" data-i18n-title="footer.minasLinkTitle" data-minas-wikipedia-link>
+              <span class="footer-minas-name" data-i18n-ignore>Minas Gerais</span>
+              <svg class="footer-minas-flag" viewBox="0 0 30 22" aria-hidden="true" focusable="false"><use href="#footer-minas-flag-symbol"></use></svg>
+            </a>
+          </div>
+        </li>
+
+        <li class="footer-signature-option footer-signature-option-wide">
+          <span class="visually-hidden" data-i18n="footer.variantG">Opção G, emblema de café localizado</span>
+          <span class="footer-variant-label" aria-hidden="true" data-i18n-ignore>G</span>
+          <div class="footer-signature-copy footer-signature-copy-wide">
+            <span class="footer-signature-lead">
+              <span data-i18n="footer.madeWith">Feito com</span>
+              <span class="visually-hidden" data-i18n="footer.coffee">café</span>
+              <span class="footer-coffee-art footer-coffee-badge" aria-hidden="true">
+                <svg viewBox="0 0 74 28" focusable="false">
+                  <path class="coffee-badge-body" d="M8 3h58l5 5v12l-5 5H8l-5-5V8Z"></path>
+                  <path class="coffee-badge-accent" d="M12 7.4c4.1-3.2 9.1.7 6.2 4.8-4.8 1.8-7.8-1.4-6.2-4.8Z"></path>
+                  <path class="coffee-badge-bean-line" d="M12.7 11.2c1.4-1.9 3-3 5.1-3.4"></path>
+                  <text class="coffee-badge-word" x="45" y="17.6" data-i18n="footer.badgeWord">Café</text>
+                </svg>
+              </span>
+              <span data-i18n="footer.in">em</span>
+            </span>
+            <a class="footer-minas-link" href="https://en.wikipedia.org/wiki/Minas_Gerais" target="_blank" rel="noopener noreferrer" title="Conhecer Minas Gerais na Wikipédia" data-i18n-title="footer.minasLinkTitle" data-minas-wikipedia-link>
+              <span class="footer-minas-name" data-i18n-ignore>Minas Gerais</span>
+              <svg class="footer-minas-flag" viewBox="0 0 30 22" aria-hidden="true" focusable="false"><use href="#footer-minas-flag-symbol"></use></svg>
+            </a>
+          </div>
+        </li>
+      </ol>
     </footer>
   </div>
 
@@ -6161,6 +6752,9 @@ margin: 8px 0 8px 18px;
   <div class="modal-backdrop" id="recentDbModal">
     <div class="modal query-history-modal" role="dialog" aria-modal="true" aria-labelledby="recentDbTitle">
       <h3 id="recentDbTitle" data-i18n="recent.title">Bancos recentes</h3>
+      <div class="query-history-search-wrap">
+        <input type="search" id="recentDbSearch" placeholder="Buscar banco por nome" aria-label="Buscar banco por nome" data-i18n-placeholder="recent.search" data-i18n-aria-label="recent.search" autocomplete="off" spellcheck="false" />
+      </div>
       <div id="recentDbList" class="query-history-list">
         <div class="query-history-empty" data-i18n="recent.empty">Nenhum banco recente.</div>
       </div>
@@ -28208,8 +28802,10 @@ window.__HSQLITE_BOOT__ = {
     INLINE_BADGE_TONES: () => INLINE_BADGE_TONES,
     LOCALE_LABELS: () => LOCALE_LABELS,
     LOCALIZED_ATTRIBUTES: () => LOCALIZED_ATTRIBUTES,
+    MAX_SQL_FILE_BYTES: () => MAX_SQL_FILE_BYTES,
     MAX_SQL_TABS: () => MAX_SQL_TABS,
     QUERY_HISTORY_LIMIT: () => QUERY_HISTORY_LIMIT,
+    RECENT_DATABASE_LIMIT: () => RECENT_DATABASE_LIMIT,
     SCHEMA_COMMON_TYPES: () => SCHEMA_COMMON_TYPES,
     SCHEMA_KNOWN_TYPES: () => SCHEMA_KNOWN_TYPES,
     SCHEMA_TYPE_LABELS: () => SCHEMA_TYPE_LABELS,
@@ -28222,6 +28818,7 @@ window.__HSQLITE_BOOT__ = {
     SQL: () => SQL,
     SQLITE_HEADER_TEXT: () => SQLITE_HEADER_TEXT,
     SQL_MAP_DIAGNOSTIC_PREVIEW_LIMIT: () => SQL_MAP_DIAGNOSTIC_PREVIEW_LIMIT,
+    SQL_RESULT_LIMITS: () => SQL_RESULT_LIMITS,
     SQL_TAB_NAME_PRESETS: () => SQL_TAB_NAME_PRESETS,
     SQL_TAB_NAME_PRESET_LABELS: () => SQL_TAB_NAME_PRESET_LABELS,
     STORAGE_KEYS: () => STORAGE_KEYS,
@@ -28646,6 +29243,7 @@ window.__HSQLITE_BOOT__ = {
     loadSchemaFiltersPreference: () => loadSchemaFiltersPreference,
     loadSessionPersistenceSetting: () => loadSessionPersistenceSetting,
     loadSqlFile: () => loadSqlFile,
+    loadSqlFiles: () => loadSqlFiles,
     loadSqlMapPositions: () => loadSqlMapPositions,
     loadSqlTabsFromStorage: () => loadSqlTabsFromStorage,
     loadStarterSqlSetting: () => loadStarterSqlSetting,
@@ -28728,6 +29326,7 @@ window.__HSQLITE_BOOT__ = {
     readTablePopulationNumber: () => readTablePopulationNumber,
     recentDbList: () => recentDbList,
     recentDbModal: () => recentDbModal,
+    recentDbSearch: () => recentDbSearch,
     recentDbStorage: () => recentDbStorage,
     refreshFeatureLocalization: () => refreshFeatureLocalization,
     refreshLocalizedUi: () => refreshLocalizedUi,
@@ -28818,6 +29417,7 @@ window.__HSQLITE_BOOT__ = {
     schemaTypeOtherBtn: () => schemaTypeOtherBtn,
     schemaTypeTableBtn: () => schemaTypeTableBtn,
     schemaTypeViewBtn: () => schemaTypeViewBtn,
+    serializeSettingsExportPayload: () => serializeSettingsExportPayload,
     serializeSqlTabs: () => serializeSqlTabs,
     sessionController: () => sessionController,
     sessionToggle: () => sessionToggle,
@@ -29055,8 +29655,11 @@ window.__HSQLITE_BOOT__ = {
   var DEFAULT_LOCALE = "en-US";
 
   // src/core/03-app-limits.js
-  var MAX_SQL_TABS = 5;
-  var QUERY_HISTORY_LIMIT = 50;
+  var MAX_SQL_TABS = 20;
+  var QUERY_HISTORY_LIMIT = 200;
+  var RECENT_DATABASE_LIMIT = 30;
+  var MAX_SQL_FILE_BYTES = 5 * 1024 * 1024;
+  var SQL_RESULT_LIMITS = Object.freeze({ rows: 1e5, cells: 1e6, bytes: 32 * 1024 * 1024 });
 
   // src/core/04-tab-name-presets.js
   var SQL_TAB_NAME_PRESETS = Object.freeze({
@@ -29139,8 +29742,14 @@ window.__HSQLITE_BOOT__ = {
 
   // src/core/05-settings-import-contract.js
   var SETTINGS_TRANSFER_VERSION = 1;
-  var SETTINGS_TRANSFER_MAX_FILE_CHARS = 2e6;
-  var SETTINGS_TRANSFER_MAX_SQL_CHARS = 25e4;
+  var SETTINGS_TRANSFER_MAX_FILE_CHARS = 32 * 1024 * 1024;
+  var SETTINGS_TRANSFER_MAX_SQL_CHARS = MAX_SQL_FILE_BYTES;
+  function serializeSettingsExportPayload(payload) {
+    validateSettingsImportPayload(payload, payload.scopes);
+    const json = JSON.stringify(payload, null, 2);
+    if (json.length > SETTINGS_TRANSFER_MAX_FILE_CHARS) throw new Error("settings-export-too-large");
+    return json;
+  }
   var SETTINGS_TRANSFER_SCOPES = Object.freeze([
     "favorites",
     "queryHistory",
@@ -29175,7 +29784,7 @@ window.__HSQLITE_BOOT__ = {
     return items.map((item, index) => {
       if (!isPlainSettingsObject(item)) throw new Error(`${scope}[${index}] must be an object.`);
       const isFavorite = scope === "favorites";
-      const allowedKeys = isFavorite ? ["id", "sql", "createdAt"] : ["id", "sql", "status", "errorMessage", "executedAt", "createdAt"];
+      const allowedKeys = isFavorite ? ["id", "sql", "createdAt"] : ["id", "sql", "status", "errorMessage", "executedAt", "createdAt", "databaseName"];
       assertSettingsKeys(item, allowedKeys, `${scope}[${index}]`);
       const normalized = {
         id: normalizeSettingsString(item.id, `${scope}[${index}].id`, 128, { required: true }),
@@ -29184,6 +29793,9 @@ window.__HSQLITE_BOOT__ = {
       if (isFavorite) {
         normalized.createdAt = normalizeSettingsString(item.createdAt || "", `${scope}[${index}].createdAt`, 64);
       } else {
+        if (item.databaseName !== void 0) {
+          normalized.databaseName = normalizeSettingsString(item.databaseName, `${scope}[${index}].databaseName`, 1024);
+        }
         normalized.executedAt = normalizeSettingsString(
           item.executedAt || item.createdAt || "",
           `${scope}[${index}].executedAt`,
@@ -29519,7 +30131,7 @@ window.__HSQLITE_BOOT__ = {
     document.body.appendChild(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(link.href);
+    setTimeout(() => URL.revokeObjectURL(link.href), 3e4);
   }
   function downloadText(filename, text, mime = "text/plain;charset=utf-8") {
     triggerBrowserDownload(filename, text, mime);
@@ -29556,6 +30168,65 @@ window.__HSQLITE_BOOT__ = {
     throw error;
   }
 
+  // src/core/16-query-results.js
+  function readBoundedStatement(db2, sql, budget, limits, prepared = null) {
+    const statement = prepared || db2.prepare(sql);
+    try {
+      const columns = statement.getColumnNames();
+      const values = [];
+      budget.bytes += columns.reduce((sum, column) => sum + column.length * 2, 0);
+      while (statement.step()) {
+        budget.rows += 1;
+        budget.cells += columns.length;
+        const row = statement.get(null, { useBigInt: true }).map((value) => {
+          if (typeof value !== "bigint") return value;
+          return value <= BigInt(Number.MAX_SAFE_INTEGER) && value >= BigInt(Number.MIN_SAFE_INTEGER) ? Number(value) : value.toString();
+        });
+        budget.bytes += row.reduce((sum, value) => sum + (typeof value === "string" ? value.length * 2 : value instanceof Uint8Array ? value.byteLength : 8), 0);
+        if (budget.rows > limits.rows || budget.cells > limits.cells || budget.bytes > limits.bytes) {
+          const error = new Error("resultLimitExceeded");
+          error.errorCode = "resultLimitExceeded";
+          throw error;
+        }
+        values.push(row);
+      }
+      return { columns, values };
+    } finally {
+      if (!prepared) statement.free();
+    }
+  }
+  function normalizeResultColumns(columns) {
+    const reserved = /* @__PURE__ */ new Set(["__rowKey", "__proto__", "constructor", "prototype"]);
+    const original = new Set(columns);
+    const used = new Set(reserved);
+    return columns.map((raw) => {
+      const name = String(raw);
+      let label = name;
+      let suffix = 2;
+      while (used.has(label)) {
+        label = `${name} (${suffix++})`;
+        while (original.has(label)) label = `${name} (${suffix++})`;
+      }
+      used.add(label);
+      return label;
+    });
+  }
+  function databaseBytesEqual(left, right) {
+    if (left.length !== right.length) return false;
+    for (let index = 0; index < left.length; index += 1) {
+      if (left[index] !== right[index]) return false;
+    }
+    return true;
+  }
+  function escapeCsvCell(value) {
+    if (value === null || value === void 0) return "";
+    let text = value instanceof Uint8Array ? `X'${Array.from(value, (byte) => byte.toString(16).padStart(2, "0")).join("")}'` : String(value);
+    if (typeof value === "string" && /^[\s\uFEFF]*[=+\-@＝＋－＠]|^[\t\r\n]/u.test(text)) {
+      text = "'" + text;
+    }
+    return '"' + text.replaceAll('"', '""') + '"';
+  }
+
   // src/ports/20-sql-worker.js
   function createEmbeddedSqlWorker() {
     const workerCode = `
@@ -29566,6 +30237,9 @@ window.__HSQLITE_BOOT__ = {
     const TABLE_POPULATION_MAX_TEXT_LENGTH = 256;
     ${EMBEDDED_SQLJS_WORKER_SOURCE}
     ${EMBEDDED_SQL_WORKER_SHARED_SOURCE}
+    const readBoundedStatement = ${readBoundedStatement.toString()};
+    const databaseBytesEqual = ${databaseBytesEqual.toString()};
+    const SQL_RESULT_LIMITS = ${JSON.stringify(SQL_RESULT_LIMITS)};
 
     function quoteIdent(identifier) {
       return '"' + String(identifier || "").replace(/"/g, '""') + '"';
@@ -29837,29 +30511,27 @@ window.__HSQLITE_BOOT__ = {
           return;
         }
 
-        const statements = splitSqlStatements(sql);
-        if (!statements.length) {
-          postWorkerEvent(action, requestId, "error", "error", { ok: false, errorCode: "noValidSql", errorVariables: {} });
-          db.close();
-          return;
-        }
-
+        // Normalize the SQLite export header before comparing persistent changes.
+        const initialBytes = db.export();
         const resultSets = [];
+        const budget = { rows: 0, cells: 0, bytes: 0 };
         const startedAt = performance.now();
-        for (let statementIndex = 0; statementIndex < statements.length; statementIndex += 1) {
-          const statement = statements[statementIndex];
+        let statementIndex = 0;
+        // SQLite owns statement boundaries, including triggers and quoted identifiers.
+        for (const prepared of db.iterateStatements(sql)) {
+          const statement = prepared.getSQL();
           postWorkerEvent(action, requestId, "statement-start", "progress", {
             ok: true,
             statementIndex,
-            totalStatements: statements.length,
+            totalStatements: null,
             statement
           });
-          const results = db.exec(statement);
-          if (!results.length) {
+          const result = readBoundedStatement(db, statement, budget, SQL_RESULT_LIMITS, prepared);
+          if (!result.columns.length) {
             resultSets.push({ statement, statementIndex, columns: [], values: [], messageCode: "noResultSet" });
+            statementIndex += 1;
             continue;
           }
-          const result = results[0];
           resultSets.push({
             statement,
             statementIndex,
@@ -29867,16 +30539,28 @@ window.__HSQLITE_BOOT__ = {
             values: result.values || [],
             message: ""
           });
+          statementIndex += 1;
         }
 
+        if (!resultSets.length) throw workerError("noValidSql");
+        // export() closes the connection. Reject an unfinished transaction instead
+        // of reporting success for writes SQLite would silently roll back on close.
+        try { db.run("BEGIN"); } catch (error) {
+          if (/within a transaction/i.test(error.message || "")) throw workerError("openTransaction");
+          throw error;
+        }
+        db.run("ROLLBACK");
+
         const exportedBytes = db.export();
+        const changed = !databaseBytesEqual(initialBytes, exportedBytes);
         db.close();
         postWorkerEvent(action, requestId, "done", "done", {
           ok: true,
           elapsed: Math.round(performance.now() - startedAt),
           resultSets,
-          dbBytes: exportedBytes.buffer
-        }, [exportedBytes.buffer]);
+          changed,
+          dbBytes: changed ? exportedBytes.buffer : null
+        }, changed ? [exportedBytes.buffer] : []);
       } catch (err) {
         postWorkerEvent(action, requestId, "error", "error", {
           ok: false,
@@ -30590,6 +31274,16 @@ window.__HSQLITE_BOOT__ = {
 
   // src/capabilities/03a-localization-messages.js
   var I18N_MESSAGE_ROWS = Object.freeze([
+    ["settings.exportFailed", "Settings could not be exported as a restorable backup. Reduce the selected scopes or save large queries as SQL files.", "N\xE3o foi poss\xEDvel exportar um backup restaur\xE1vel das configura\xE7\xF5es. Reduza os itens selecionados ou salve consultas grandes como arquivos SQL.", "No se pudo exportar una copia restaurable de la configuraci\xF3n. Reduzca los \xE1mbitos seleccionados o guarde las consultas grandes como archivos SQL."],
+    ["recent.search", "Find database by name", "Buscar banco por nome", "Buscar base de datos por nombre"],
+    ["recent.noMatches", "No databases match your search.", "Nenhum banco corresponde \xE0 busca.", "Ninguna base de datos coincide con la b\xFAsqueda."],
+    ["status.runningStatementIndex", "Running statement {current}...", "Executando instru\xE7\xE3o {current}...", "Ejecutando sentencia {current}..."],
+    ["worker.openTransaction", "The script left a transaction open. Include COMMIT or ROLLBACK in the same execution. No changes from this execution were applied.", "O script deixou uma transa\xE7\xE3o aberta. Inclua COMMIT ou ROLLBACK na mesma execu\xE7\xE3o. Nenhuma altera\xE7\xE3o desta execu\xE7\xE3o foi aplicada.", "El script dej\xF3 una transacci\xF3n abierta. Incluya COMMIT o ROLLBACK en la misma ejecuci\xF3n. No se aplicaron cambios de esta ejecuci\xF3n."],
+    ["database.confirmDiscard", "Discard unsaved changes in {name} and open another database? Save a copy first if you need these changes.", "Descartar altera\xE7\xF5es n\xE3o salvas em {name} e abrir outro banco? Salve uma c\xF3pia antes se precisar dessas altera\xE7\xF5es.", "\xBFDescartar los cambios sin guardar en {name} y abrir otra base? Guarde una copia antes si necesita estos cambios."],
+    ["worker.resultLimitExceeded", "Result exceeds the safety limit (100,000 rows, 1,000,000 cells or 32 MiB). Use LIMIT, select fewer columns, or filter in SQL. No changes from this execution were applied.", "O resultado excede o limite de seguran\xE7a (100.000 linhas, 1.000.000 de c\xE9lulas ou 32 MiB). Use LIMIT, selecione menos colunas ou filtre no SQL. Nenhuma altera\xE7\xE3o desta execu\xE7\xE3o foi aplicada.", "El resultado supera el l\xEDmite de seguridad (100.000 filas, 1.000.000 de celdas o 32 MiB). Use LIMIT, seleccione menos columnas o filtre en SQL. No se aplicaron cambios de esta ejecuci\xF3n."],
+    ["file.runSingleOnly", "Select a single SQL file to open and run. Multiple files can be opened without execution.", "Selecione um \xFAnico arquivo SQL para abrir e executar. V\xE1rios arquivos podem ser abertos sem executar.", "Seleccione un solo archivo SQL para abrir y ejecutar. Puede abrir varios archivos sin ejecutarlos."],
+    ["file.tooLarge", "SQL files must be no larger than 5 MiB. Split large scripts before importing.", "Arquivos SQL devem ter no m\xE1ximo 5 MiB. Divida scripts grandes antes de importar.", "Los archivos SQL deben tener como m\xE1ximo 5 MiB. Divida los scripts grandes antes de importarlos."],
+    ["file.loadedBatch", "Opened {count} SQL file(s) in separate tabs. Existing queries were preserved.", "{count} arquivo(s) SQL aberto(s) em abas separadas. As consultas existentes foram preservadas.", "Se abrieron {count} archivo(s) SQL en pesta\xF1as separadas. Se conservaron las consultas existentes."],
     ["boot.ready", "Editor ready", "Editor pronto", "Editor listo"],
     ["boot.interrupted", "Startup interrupted", "Inicializa\xE7\xE3o interrompida", "Inicio interrumpido"],
     ["boot.failedTitle", "The editor could not start", "N\xE3o foi poss\xEDvel iniciar o editor", "No se pudo iniciar el editor"],
@@ -31043,7 +31737,7 @@ window.__HSQLITE_BOOT__ = {
     ["editor.replacePlaceholder", "Replace with...", "Substituir por...", "Reemplazar por..."],
     ["editor.replaceHide", "Hide replace", "Ocultar substituir", "Ocultar reemplazo"],
     ["status.elapsedInitial", "Elapsed: 0s", "Tempo decorrido: 0s", "Tiempo transcurrido: 0s"],
-    ["results.exportCsvTitle", "Export results as CSV (F9)", "Exportar resultados em CSV (F9)", "Exportar resultados como CSV (F9)"],
+    ["results.exportCsvTitle", "Export CSV for spreadsheets; formula-like text gets an apostrophe prefix (F9)", "Exportar CSV para planilhas; textos semelhantes a f\xF3rmulas recebem ap\xF3strofo (F9)", "Exportar CSV para hojas de c\xE1lculo; los textos similares a f\xF3rmulas reciben un ap\xF3strofo (F9)"],
     ["results.exportJsonTitle", "Export results as JSON (F10)", "Exportar resultados em JSON (F10)", "Exportar resultados como JSON (F10)"],
     ["results.horizontalScroll", "Horizontal results-table scroll", "Rolagem horizontal da tabela de resultados", "Desplazamiento horizontal de la tabla de resultados"],
     ["sqlMap.search", "Search for a table or field in SQL Map", "Buscar tabela ou campo no Mapa SQL", "Buscar una tabla o un campo en el Mapa SQL"],
@@ -31100,7 +31794,22 @@ window.__HSQLITE_BOOT__ = {
     ["results.jsonFilename", "sqlite_result.json", "resultado_sqlite.json", "resultado_sqlite.json"],
     ["sqlMap.pngFilenamePrefix", "sql-map-er", "mapa-sql-der", "mapa-sql-der"],
     ["footer.privacy", "Privacy", "Privacidade", "Privacidad"],
-    ["database.filePickerDescription", "SQLite database", "Banco de dados SQLite", "Base de datos SQLite"]
+    ["database.filePickerDescription", "SQLite database", "Banco de dados SQLite", "Base de datos SQLite"],
+    ["footer.madeWith", "Made with", "Feito com", "Hecho con"],
+    ["footer.coffee", "coffee", "caf\xE9", "caf\xE9"],
+    ["footer.coffeeLinkLabel", "Coffee on Wikipedia", "Caf\xE9 na Wikip\xE9dia", "Caf\xE9 en Wikipedia"],
+    ["footer.coffeeLinkTitle", "Learn about coffee on Wikipedia", "Conhecer o caf\xE9 na Wikip\xE9dia", "Conocer el caf\xE9 en Wikipedia"],
+    ["footer.in", "in", "em", "en"],
+    ["footer.minasLinkTitle", "Learn about Minas Gerais on Wikipedia", "Conhecer Minas Gerais na Wikip\xE9dia", "Conocer Minas Gerais en Wikipedia"],
+    ["footer.variantsLabel", "Footer coffee options", "Op\xE7\xF5es de caf\xE9 no rodap\xE9", "Opciones de caf\xE9 en el pie de p\xE1gina"],
+    ["footer.variantA", "Option A, bean heart", "Op\xE7\xE3o A, cora\xE7\xE3o de gr\xE3os", "Opci\xF3n A, coraz\xF3n de granos"],
+    ["footer.variantB", "Option B, mountain-steam cup", "Op\xE7\xE3o B, x\xEDcara com vapor de serra", "Opci\xF3n B, taza con vapor de sierra"],
+    ["footer.variantC", "Option C, traditional cloth filter", "Op\xE7\xE3o C, coador de pano tradicional", "Opci\xF3n C, filtro de tela tradicional"],
+    ["footer.variantD", "Option D, enamel cup", "Op\xE7\xE3o D, caneca esmaltada", "Opci\xF3n D, taza esmaltada"],
+    ["footer.variantE", "Option E, coffee branch and cherries", "Op\xE7\xE3o E, ramo e frutos de caf\xE9", "Opci\xF3n E, rama y cerezas de caf\xE9"],
+    ["footer.variantF", "Option F, takeaway coffee cup", "Op\xE7\xE3o F, copo de caf\xE9 para viagem", "Opci\xF3n F, vaso de caf\xE9 para llevar"],
+    ["footer.variantG", "Option G, localized coffee badge", "Op\xE7\xE3o G, emblema de caf\xE9 localizado", "Opci\xF3n G, emblema de caf\xE9 localizado"],
+    ["footer.badgeWord", "Coffee", "Caf\xE9", "Caf\xE9"]
   ]);
   var I18N_ADDITIONAL_MESSAGES = Object.freeze(Object.fromEntries(
     SUPPORTED_LOCALES.map((locale, localeIndex) => [
@@ -31649,6 +32358,7 @@ window.__HSQLITE_BOOT__ = {
   var clearRecentDbBtn = document.getElementById("clearRecentDbBtn");
   var recentDbModal = document.getElementById("recentDbModal");
   var recentDbList = document.getElementById("recentDbList");
+  var recentDbSearch = document.getElementById("recentDbSearch");
   var closeRecentDbBtn = document.getElementById("closeRecentDbBtn");
   var newDbModal = document.getElementById("newDbModal");
   var newDbFileNameInput = document.getElementById("newDbFileNameInput");
@@ -32189,7 +32899,8 @@ window.__HSQLITE_BOOT__ = {
     for (let i = 0; i < maxAttempts; i += 1) {
       const bagIndex = nextSqlTabNameIndex % tabNameBag.length;
       const candidate = String(tabNameBag[bagIndex] || "").trim() || `SQL ${nextSqlTabNumber}`;
-      setSqlTabsState({ nextSqlTabNameIndex: (nextSqlTabNameIndex + 1) % Math.max(1, pool.length) });
+      nextSqlTabNameIndex = (nextSqlTabNameIndex + 1) % Math.max(1, pool.length);
+      setSqlTabsState({ nextSqlTabNameIndex });
       if (!usedTitles.has(candidate)) return candidate;
     }
     const baseName = String(tabNameBag[(nextSqlTabNameIndex - 1 + tabNameBag.length) % tabNameBag.length] || "SQL").trim() || "SQL";
@@ -32644,10 +33355,7 @@ window.__HSQLITE_BOOT__ = {
     return out;
   }
   function csvEscape(value) {
-    if (value === null || value === void 0) return "";
-    const s = String(value);
-    if (/[;"\n\r]/.test(s)) return '"' + s.replaceAll('"', '""') + '"';
-    return s;
+    return escapeCsvCell(value);
   }
 
   // src/ui/22-results-table.js
@@ -33871,19 +34579,20 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       setSqlTabsState({ activeTabId: tabId });
       loadTabState(tab);
     },
-    add() {
+    add(title = null, sql = null) {
       const sqlTabs = getSqlTabsItems();
       if (sqlTabs.length >= MAX_SQL_TABS) {
         setStatus(t("tabs.limitReached", { count: MAX_SQL_TABS }), "warn");
         return;
       }
       saveCurrentTabState();
-      const tab = createEmptyTab();
+      const tab = createEmptyTab(title, sql);
       replaceSqlTabsItems([...sqlTabs, tab]);
       setSqlTabsState({ activeTabId: tab.id });
       loadTabState(tab);
       setStatus(t("tabs.created", { title: tab.title }), "ok");
       saveSqlTabsToStorage();
+      return tab;
     },
     requestClose(tabId) {
       if (getSqlTabsItems().length <= 1) {
@@ -34169,9 +34878,14 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         executedAt: (/* @__PURE__ */ new Date()).toISOString(),
         status: status === "success" ? "success" : "error",
         sql: normalizedSql,
+        databaseName: getCurrentDbFileName(),
         errorMessage: String(errorMessage || "").trim()
       }, ...queryHistory].slice(0, QUERY_HISTORY_LIMIT));
-      this.save();
+      try {
+        this.save();
+      } catch (error) {
+        console.warn("query-history-save-failed", error);
+      }
     },
     clear() {
       setQueryHistoryState([]);
@@ -34182,7 +34896,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       const queryHistory = getQueryHistoryState();
       if (!filter) return queryHistory;
       return queryHistory.filter(
-        (item) => String(item.sql || "").toLowerCase().includes(filter) || String(item.errorMessage || "").toLowerCase().includes(filter) || String(item.status || "").toLowerCase().includes(filter)
+        (item) => String(item.sql || "").toLowerCase().includes(filter) || String(item.errorMessage || "").toLowerCase().includes(filter) || String(item.status || "").toLowerCase().includes(filter) || String(item.databaseName || "").toLowerCase().includes(filter)
       );
     },
     getQuickItems() {
@@ -34206,7 +34920,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         <div class="query-history-item">
           <span class="query-history-status-icon" title="${statusLabel}" aria-hidden="true">${getHistoryStatusIcon(item.status)}</span>
           <div>
-            <div class="query-history-meta"><span class="query-history-status-label">${statusLabel}</span><span>\xB7</span><span>${escapeHtml(formatQueryHistoryDate(item.executedAt))}</span></div>
+            <div class="query-history-meta"><span class="query-history-status-label">${statusLabel}</span><span>\xB7</span><span>${escapeHtml(formatQueryHistoryDate(item.executedAt))}</span>${item.databaseName ? `<span>\xB7</span><span>${escapeHtml(item.databaseName)}</span>` : ""}</div>
             <pre class="query-history-sql">${highlightHistoryMatch(item.sql, filter)}</pre>
             ${errorBlock}
           </div>
@@ -34801,7 +35515,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
   var schemaController = {
     load() {
       const activeDb = getActiveDatabase();
-      const nextSchemaObjects = {};
+      const nextSchemaObjects = /* @__PURE__ */ Object.create(null);
       const nextSchemaTypes = [];
       try {
         const objectsRes = activeDb.exec(`
@@ -35137,7 +35851,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       doneType: "done",
       onProgress(data) {
         if (data.type !== "statement-start") return;
-        const runningLabel = t("status.runningStatement", { current: data.statementIndex + 1, total: data.totalStatements });
+        const runningLabel = data.totalStatements ? t("status.runningStatement", { current: data.statementIndex + 1, total: data.totalStatements }) : t("status.runningStatementIndex", { current: data.statementIndex + 1 });
         if (sqlRunningText) sqlRunningText.textContent = runningLabel;
         setStatus(runningLabel, "warn");
       }
@@ -35193,7 +35907,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     mapWorkerResultSets(workerResult) {
       const pageSize = getGridPageSize();
       return workerResult.resultSets.map((workerSet) => {
-        const resultColumns = workerSet.columns || [];
+        const resultColumns = normalizeResultColumns(workerSet.columns || []);
         const resultRows = (workerSet.values || []).map((values, idx) => {
           const obj = { __rowKey: `q${workerSet.statementIndex}_row_${idx}` };
           resultColumns.forEach((col, i) => obj[col] = values[i]);
@@ -35229,7 +35943,9 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         await nextPaint();
         const workerResult = await runSqlInWorker(sql);
         applyWorkerDatabaseState(workerResult);
-        loadSchema();
+        const hasMutation = workerResult.changed ?? splitSqlStatements(sql).some(isMutationStatement);
+        if (hasMutation) setDbDirty(true);
+        if (workerResult.changed !== false) loadSchema();
         const nextResultSets = this.mapWorkerResultSets(workerResult);
         const preferredActiveResultIndex = this.getPreferredActiveResultIndex(nextResultSets);
         setGridState({ resultSets: nextResultSets, activeResultIndex: preferredActiveResultIndex });
@@ -35248,7 +35964,6 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         renderSqlTabs();
         const totalRows = resultSets.reduce((sum, rs) => sum + rs.allRows.length, 0);
         addQueryHistoryEntry(sql, "success");
-        const hasMutation = splitSqlStatements(sql).some(isMutationStatement);
         setStatus(
           t("status.executionSummary", {
             queries: formatNumber(resultSets.length),
@@ -35258,7 +35973,6 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
           "ok"
         );
         if (hasMutation) {
-          setDbDirty(true);
           showToast("info", t("toast.memoryChanges"), t("toast.saveDatabaseHint"), 7e3);
         }
       } catch (err) {
@@ -35305,7 +36019,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       return storage.getJSON(STORAGE_KEYS.RECENT_DBS, []);
     },
     save(items) {
-      storage.setJSON(STORAGE_KEYS.RECENT_DBS, items.slice(0, 10));
+      storage.setJSON(STORAGE_KEYS.RECENT_DBS, items.slice(0, RECENT_DATABASE_LIMIT));
     },
     clear() {
       storage.remove(STORAGE_KEYS.RECENT_DBS);
@@ -35313,7 +36027,8 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
   };
   function getRecentDbs() {
     try {
-      return recentDbStorage.load();
+      const items = recentDbStorage.load();
+      return Array.isArray(items) ? items.filter((item) => item && typeof item.id === "string" && typeof item.name === "string").slice(0, RECENT_DATABASE_LIMIT) : [];
     } catch {
       return [];
     }
@@ -35323,10 +36038,11 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     renderRecentDbs();
   }
   function renderRecentDbs() {
-    const items = getRecentDbs();
+    const query = String(recentDbSearch?.value || "").trim().toLowerCase();
+    const items = getRecentDbs().filter((item) => !query || `${item.name} ${item.path || ""}`.toLowerCase().includes(query));
     if (!recentDbList) return;
     if (!items.length) {
-      recentDbList.innerHTML = `<div class="query-history-empty">${escapeHtml(t("recent.empty"))}</div>`;
+      recentDbList.innerHTML = `<div class="query-history-empty">${escapeHtml(t(query ? "recent.noMatches" : "recent.empty"))}</div>`;
       return;
     }
     recentDbList.innerHTML = items.map((item) => {
@@ -35904,6 +36620,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
   }
 
   // src/capabilities/31-database-session-runtime.js
+  var databaseOpenSequence = 0;
   function resetAllTabResultsForNewDatabase() {
     resetAllSqlTabResultStates();
     const active = findSqlTabById(getActiveSqlTabId());
@@ -35920,8 +36637,18 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     loadingMessage,
     readyMessage = "",
     rememberRecent = null,
-    debugDetails = null
+    debugDetails = null,
+    openSequence = databaseOpenSequence
   }) {
+    if (openSequence !== databaseOpenSequence || isSqlExecutionRunning()) {
+      nextDb.close();
+      if (isSqlExecutionRunning()) setStatus(t("database.switchWait"), "warn");
+      return false;
+    }
+    if (isCurrentDbDirty() && !window.confirm(t("database.confirmDiscard", { name: getCurrentDbFileName() }))) {
+      nextDb.close();
+      return false;
+    }
     const resolvedFileName = fileName || "sqlite-db";
     const resolvedSession = createDbSession(nextSession || {
       id: sessionId,
@@ -35954,9 +36681,14 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       updateAutocomplete(false);
     }
     if (typeof rememberRecent === "function") {
-      await rememberRecent();
+      try {
+        await rememberRecent();
+      } catch (error) {
+        console.warn("recent-database-save-failed", error);
+      }
     }
-    if (readyMessage) setStatus(readyMessage, "ok");
+    if (readyMessage && openSequence === databaseOpenSequence) setStatus(readyMessage, "ok");
+    return true;
   }
   async function createValidatedDatabaseRuntime({
     fileName,
@@ -35973,14 +36705,26 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     });
     await initSqlJsIfNeeded();
     const SqlJs = getSqlRuntime();
+    const nextDb = nextDbBytes.length ? new SqlJs.Database(nextDbBytes) : new SqlJs.Database();
+    try {
+      nextDb.exec("SELECT name FROM sqlite_schema LIMIT 1");
+    } catch (error) {
+      nextDb.close();
+      throw error;
+    }
     return {
       fileName: normalizedFileName,
       nextDbBytes,
-      nextDb: nextDbBytes.length ? new SqlJs.Database(nextDbBytes) : new SqlJs.Database()
+      nextDb
     };
   }
   var dbController = {
     async openFromFile(file, handle = null) {
+      const openSequence = ++databaseOpenSequence;
+      if (isSqlExecutionRunning()) {
+        setStatus(t("database.switchWait"), "warn");
+        return false;
+      }
       const buffer = await file.arrayBuffer();
       const prepared = await createValidatedDatabaseRuntime({
         fileName: file && file.name ? file.name : "sqlite-db.db",
@@ -35995,7 +36739,8 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         size: file.size,
         lastModified: file.lastModified
       });
-      await replaceDatabaseSession({
+      return replaceDatabaseSession({
+        openSequence,
         nextDb,
         nextDbBytes,
         fileName,
@@ -36044,8 +36789,8 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
           }
           if (permission === "granted") {
             const file = await handle.getFile();
-            await this.openFromFile(file, handle);
-            modalController.close(recentDbModal);
+            const opened = await this.openFromFile(file, handle);
+            if (opened) modalController.close(recentDbModal);
             return;
           }
         }
@@ -36086,6 +36831,11 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       }
     },
     async openFromBytes(fileName, bytes) {
+      const openSequence = ++databaseOpenSequence;
+      if (isSqlExecutionRunning()) {
+        setStatus(t("database.switchWait"), "warn");
+        return false;
+      }
       const prepared = await createValidatedDatabaseRuntime({
         fileName: normalizeSqliteFileName(fileName, "sqlite-db.db"),
         bytes,
@@ -36100,7 +36850,8 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         size: nextDbBytes.byteLength,
         lastModified: Date.now()
       });
-      await replaceDatabaseSession({
+      return replaceDatabaseSession({
+        openSequence,
         nextDb,
         nextDbBytes,
         fileName: normalizedFileName,
@@ -36179,7 +36930,6 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     }
   }
   function openQuickQueryHistory() {
-    loadQueryHistoryFromStorage();
     setEditorState({ quickHistoryActiveIndex: 0 });
     hideAutocomplete();
     renderQuickHistoryPopover();
@@ -36247,32 +36997,66 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     sqlFileInput.value = "";
     sqlFileInput.click();
   }
+  var importingSqlFiles = false;
   async function loadSqlFile(file) {
-    if (!file) return;
-    const lowerName = (file.name || "").toLowerCase();
-    const allowed = lowerName.endsWith(".sql") || lowerName.endsWith(".txt") || file.type.startsWith("text/") || file.type === "";
-    if (!allowed) {
-      setEditorState({ executeSqlAfterFileOpen: false });
-      setStatus(t("file.invalidSql"), "warn");
-      return;
+    return loadSqlFiles(file ? [file] : []);
+  }
+  async function loadSqlFiles(fileList) {
+    const files = Array.from(fileList || []);
+    const executeAfterOpen = shouldExecuteSqlAfterFileOpen();
+    setEditorState({ executeSqlAfterFileOpen: false });
+    if (!files.length) return false;
+    if (importingSqlFiles || isSqlExecutionRunning()) {
+      setStatus(t("file.waitForExecution"), "warn");
+      return false;
     }
+    if (executeAfterOpen && files.length !== 1) {
+      setStatus(t("file.runSingleOnly"), "warn");
+      return false;
+    }
+    if (files.length + getSqlTabsItems().length > MAX_SQL_TABS) {
+      setStatus(t("tabs.limitReached", { count: MAX_SQL_TABS }), "warn");
+      return false;
+    }
+    if (files.some((file) => !isLikelyTextFile(file))) {
+      setStatus(t("file.invalidSql"), "warn");
+      return false;
+    }
+    if (files.some((file) => file.size > MAX_SQL_FILE_BYTES)) {
+      setStatus(t("file.tooLarge"), "warn");
+      return false;
+    }
+    importingSqlFiles = true;
     try {
-      const text = await file.text();
-      setEditorValue(text);
-      saveCurrentTabState();
-      if (shouldExecuteSqlAfterFileOpen()) {
-        setEditorState({ executeSqlAfterFileOpen: false });
-        setStatus(t("file.loadedRunning", { name: file.name }), "warn");
-        setTimeout(() => executeSql(), 0);
-      } else {
-        setStatus(t("file.loaded", { name: file.name }), "ok");
+      const documents = [];
+      for (const file of files) {
+        const text = await file.text();
+        if (text.includes("\0")) throw new Error(t("file.invalidSql"));
+        documents.push({ title: String(file.name || "SQL").slice(0, 50), text });
       }
+      if (isSqlExecutionRunning()) {
+        setStatus(t("file.waitForExecution"), "warn");
+        return false;
+      }
+      if (documents.length + getSqlTabsItems().length > MAX_SQL_TABS) {
+        setStatus(t("tabs.limitReached", { count: MAX_SQL_TABS }), "warn");
+        return false;
+      }
+      for (const document2 of documents) sqlTabsController.add(document2.title, document2.text);
+      if (executeAfterOpen) {
+        await executeSql();
+      } else {
+        setStatus(t("file.loadedBatch", { count: documents.length }), "ok");
+      }
+      return true;
     } catch (err) {
       console.error(err);
       const message = t("file.openFailed", { reason: err.message || String(err) });
       setStatus(message, "error");
-      setEditorState({ executeSqlAfterFileOpen: false });
       showToast("error", t("file.openFailedTitle"), t("file.openFailed", { reason: err.message || String(err) }));
+      return false;
+    } finally {
+      importingSqlFiles = false;
     }
   }
   function isLikelyTextFile(file) {
@@ -36293,17 +37077,13 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       setStatus(t("file.waitForExecution"), "warn");
       return;
     }
-    const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
-    if (!file) {
+    const files = event.dataTransfer && event.dataTransfer.files;
+    if (!files || !files.length) {
       setStatus(t("file.dropEmpty"), "warn");
       return;
     }
-    if (!isLikelyTextFile(file)) {
-      setStatus(t("file.dropTextOnly"), "warn");
-      return;
-    }
     setEditorState({ executeSqlAfterFileOpen: false });
-    await loadSqlFile(file);
+    await loadSqlFiles(files);
   }
   function bindEditorDropZone() {
     const wrap = document.querySelector(".editor-wrap");
@@ -36368,7 +37148,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
         const emptyDb = new SqlJs.Database();
         const bytes = emptyDb.export();
         if (typeof emptyDb.close === "function") emptyDb.close();
-        await openDbFromBytes(fileName, bytes);
+        if (!await openDbFromBytes(fileName, bytes)) return;
         setDbDirty(false);
         this.closeModal();
         setStatus(t("database.created", { name: fileName }), "ok");
@@ -37005,7 +37785,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     openSqlBtn.addEventListener("click", () => openSqlFilePicker(false));
     openRunSqlBtn.addEventListener("click", () => openSqlFilePicker(true));
     sqlFileInput.addEventListener("change", (event) => {
-      loadSqlFile(event.target.files && event.target.files[0]);
+      loadSqlFiles(event.target.files);
     });
     copySqlBtn.addEventListener("click", copyFullSql);
     clearSqlBtn.addEventListener("click", clearSqlEditor);
@@ -37449,31 +38229,41 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       setStatus(t("settings.scopeRequiredExport"), "warn");
       return;
     }
-    const scopes = new Set(getSelectedConfigScopes());
-    const payload = {
-      version: 1,
-      exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
-      scopes: Array.from(scopes),
-      data: {}
-    };
-    if (scopes.has("favorites")) payload.data.favorites = getFavoriteQueriesState();
-    if (scopes.has("queryHistory")) payload.data.queryHistory = getQueryHistoryState();
-    if (scopes.has("theme")) payload.data.theme = document.documentElement.dataset.theme || "dark";
-    if (scopes.has("locale")) payload.data.locale = getLocale();
-    if (scopes.has("session")) payload.data.session = {
-      shouldPersistSession: getShouldPersistSession(),
-      sqlTabs: sqlTabsStorage.load()
-    };
-    if (scopes.has("tabPreset")) payload.data.tabPreset = getSelectedTabNamePreset();
-    if (scopes.has("starterSql")) payload.data.starterSql = getShouldInsertStarterSql();
-    downloadText(
-      `hsqlite-config-${(/* @__PURE__ */ new Date()).toISOString().slice(0, 19).replaceAll(":", "-")}.json`,
-      JSON.stringify(payload, null, 2),
-      "application/json;charset=utf-8"
-    );
-    storage.set(STORAGE_KEYS.LAST_SETTINGS_EXPORT_AT, payload.exportedAt);
-    renderLastSettingsExportInfo();
-    setStatus(t("settings.exported"), "ok");
+    try {
+      saveCurrentTabState();
+      const scopes = new Set(getSelectedConfigScopes());
+      const payload = {
+        version: 1,
+        exportedAt: (/* @__PURE__ */ new Date()).toISOString(),
+        scopes: Array.from(scopes),
+        data: {}
+      };
+      if (scopes.has("favorites")) payload.data.favorites = getFavoriteQueriesState();
+      if (scopes.has("queryHistory")) payload.data.queryHistory = getQueryHistoryState();
+      if (scopes.has("theme")) payload.data.theme = document.documentElement.dataset.theme || "dark";
+      if (scopes.has("locale")) payload.data.locale = getLocale();
+      if (scopes.has("session")) payload.data.session = {
+        shouldPersistSession: getShouldPersistSession(),
+        sqlTabs: serializeSqlTabs()
+      };
+      if (scopes.has("tabPreset")) payload.data.tabPreset = getSelectedTabNamePreset();
+      if (scopes.has("starterSql")) payload.data.starterSql = getShouldInsertStarterSql();
+      downloadText(
+        `hsqlite-config-${(/* @__PURE__ */ new Date()).toISOString().slice(0, 19).replaceAll(":", "-")}.json`,
+        serializeSettingsExportPayload(payload),
+        "application/json;charset=utf-8"
+      );
+      try {
+        storage.set(STORAGE_KEYS.LAST_SETTINGS_EXPORT_AT, payload.exportedAt);
+        renderLastSettingsExportInfo();
+      } catch (error) {
+        console.warn("settings-export-timestamp-save-failed", error);
+      }
+      setStatus(t("settings.exported"), "ok");
+    } catch (error) {
+      console.warn("Settings export rejected.", error);
+      setStatus(t("settings.exportFailed"), "error");
+    }
   }
   async function importSettingsConfig(file) {
     if (!file) return;
@@ -37483,6 +38273,7 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
       return;
     }
     try {
+      if (file.size > SETTINGS_TRANSFER_MAX_FILE_CHARS * 4) throw new Error("settings-file-too-large");
       const raw = await file.text();
       if (raw.length > SETTINGS_TRANSFER_MAX_FILE_CHARS) {
         throw new Error(`Settings file exceeds ${SETTINGS_TRANSFER_MAX_FILE_CHARS} characters.`);
@@ -38913,7 +39704,29 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
   }
 
   // src/ui/05-localization-refresh.js
+  var MINAS_WIKIPEDIA_URLS = Object.freeze({
+    "en-US": "https://en.wikipedia.org/wiki/Minas_Gerais",
+    "pt-BR": "https://pt.wikipedia.org/wiki/Minas_Gerais",
+    "es-ES": "https://es.wikipedia.org/wiki/Minas_Gerais"
+  });
+  var COFFEE_WIKIPEDIA_URLS = Object.freeze({
+    "en-US": "https://en.wikipedia.org/wiki/Coffee",
+    "pt-BR": "https://pt.wikipedia.org/wiki/Caf%C3%A9",
+    "es-ES": "https://es.wikipedia.org/wiki/Caf%C3%A9"
+  });
+  function refreshFooterLinks() {
+    const locale = getLocale();
+    const minasHref = MINAS_WIKIPEDIA_URLS[locale] || MINAS_WIKIPEDIA_URLS["en-US"];
+    const coffeeHref = COFFEE_WIKIPEDIA_URLS[locale] || COFFEE_WIKIPEDIA_URLS["en-US"];
+    document.querySelectorAll("[data-minas-wikipedia-link]").forEach((link) => {
+      link.href = minasHref;
+    });
+    document.querySelectorAll("[data-coffee-wikipedia-link]").forEach((link) => {
+      link.href = coffeeHref;
+    });
+  }
   function refreshFeatureLocalization() {
+    refreshFooterLinks();
     renderToolbars();
     renderSchema();
     renderSqlTabs();
@@ -39015,6 +39828,11 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
 
   // src/ui/70-bindings-database.js
   function bindDatabaseFileInputs() {
+    window.addEventListener("beforeunload", (event) => {
+      if (!isCurrentDbDirty() && !isSqlExecutionRunning()) return;
+      event.preventDefault();
+      event.returnValue = "";
+    });
     dbFile.addEventListener("change", async (event) => {
       const file = event.target.files[0];
       if (!file) return;
@@ -39039,8 +39857,10 @@ ${escapeHtml(t("grid.sortHelp"))}"${widthStyle}><span class="column-title">${esc
     }
   }
   function bindRecentDatabaseUi() {
+    recentDbSearch?.addEventListener("input", renderRecentDbs);
     openRecentDbBtn.addEventListener("click", () => {
       closeDatabaseMenu();
+      if (recentDbSearch) recentDbSearch.value = "";
       renderRecentDbs();
       modalController.open(recentDbModal);
     });

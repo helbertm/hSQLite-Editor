@@ -15,6 +15,7 @@
       --accent: #2a3441;
       --accent-foreground: #e6edf3;
       --destructive: #da3633;
+      --destructive-text: #ff938a;
       --destructive-foreground: #ffffff;
       --border: #37414c;
       --input: #242d38;
@@ -63,6 +64,7 @@ html[data-theme="light"] {
       --accent: #dee4eb;
       --accent-foreground: #2a313a;
       --destructive: #b42318;
+      --destructive-text: #b42318;
       --destructive-foreground: #fff6f5;
       --border: #cdd4dd;
       --input: #e4e9ef;

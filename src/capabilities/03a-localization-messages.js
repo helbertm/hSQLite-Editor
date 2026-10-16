@@ -1,6 +1,16 @@
 import { SUPPORTED_LOCALES } from "../core/02-locales.js";
 
 export const I18N_MESSAGE_ROWS = Object.freeze([
+  ["settings.exportFailed", "Settings could not be exported as a restorable backup. Reduce the selected scopes or save large queries as SQL files.", "Não foi possível exportar um backup restaurável das configurações. Reduza os itens selecionados ou salve consultas grandes como arquivos SQL.", "No se pudo exportar una copia restaurable de la configuración. Reduzca los ámbitos seleccionados o guarde las consultas grandes como archivos SQL."],
+  ["recent.search", "Find database by name", "Buscar banco por nome", "Buscar base de datos por nombre"],
+  ["recent.noMatches", "No databases match your search.", "Nenhum banco corresponde à busca.", "Ninguna base de datos coincide con la búsqueda."],
+  ["status.runningStatementIndex", "Running statement {current}...", "Executando instrução {current}...", "Ejecutando sentencia {current}..."],
+  ["worker.openTransaction", "The script left a transaction open. Include COMMIT or ROLLBACK in the same execution. No changes from this execution were applied.", "O script deixou uma transação aberta. Inclua COMMIT ou ROLLBACK na mesma execução. Nenhuma alteração desta execução foi aplicada.", "El script dejó una transacción abierta. Incluya COMMIT o ROLLBACK en la misma ejecución. No se aplicaron cambios de esta ejecución."],
+  ["database.confirmDiscard", "Discard unsaved changes in {name} and open another database? Save a copy first if you need these changes.", "Descartar alterações não salvas em {name} e abrir outro banco? Salve uma cópia antes se precisar dessas alterações.", "¿Descartar los cambios sin guardar en {name} y abrir otra base? Guarde una copia antes si necesita estos cambios."],
+  ["worker.resultLimitExceeded", "Result exceeds the safety limit (100,000 rows, 1,000,000 cells or 32 MiB). Use LIMIT, select fewer columns, or filter in SQL. No changes from this execution were applied.", "O resultado excede o limite de segurança (100.000 linhas, 1.000.000 de células ou 32 MiB). Use LIMIT, selecione menos colunas ou filtre no SQL. Nenhuma alteração desta execução foi aplicada.", "El resultado supera el límite de seguridad (100.000 filas, 1.000.000 de celdas o 32 MiB). Use LIMIT, seleccione menos columnas o filtre en SQL. No se aplicaron cambios de esta ejecución."],
+  ["file.runSingleOnly", "Select a single SQL file to open and run. Multiple files can be opened without execution.", "Selecione um único arquivo SQL para abrir e executar. Vários arquivos podem ser abertos sem executar.", "Seleccione un solo archivo SQL para abrir y ejecutar. Puede abrir varios archivos sin ejecutarlos."],
+  ["file.tooLarge", "SQL files must be no larger than 5 MiB. Split large scripts before importing.", "Arquivos SQL devem ter no máximo 5 MiB. Divida scripts grandes antes de importar.", "Los archivos SQL deben tener como máximo 5 MiB. Divida los scripts grandes antes de importarlos."],
+  ["file.loadedBatch", "Opened {count} SQL file(s) in separate tabs. Existing queries were preserved.", "{count} arquivo(s) SQL aberto(s) em abas separadas. As consultas existentes foram preservadas.", "Se abrieron {count} archivo(s) SQL en pestañas separadas. Se conservaron las consultas existentes."],
   ["boot.ready", "Editor ready", "Editor pronto", "Editor listo"],
   ["boot.interrupted", "Startup interrupted", "Inicialização interrompida", "Inicio interrumpido"],
   ["boot.failedTitle", "The editor could not start", "Não foi possível iniciar o editor", "No se pudo iniciar el editor"],
@@ -454,7 +464,7 @@ export const I18N_MESSAGE_ROWS = Object.freeze([
   , ["editor.replacePlaceholder", "Replace with...", "Substituir por...", "Reemplazar por..."]
   , ["editor.replaceHide", "Hide replace", "Ocultar substituir", "Ocultar reemplazo"]
   , ["status.elapsedInitial", "Elapsed: 0s", "Tempo decorrido: 0s", "Tiempo transcurrido: 0s"]
-  , ["results.exportCsvTitle", "Export results as CSV (F9)", "Exportar resultados em CSV (F9)", "Exportar resultados como CSV (F9)"]
+  , ["results.exportCsvTitle", "Export CSV for spreadsheets; formula-like text gets an apostrophe prefix (F9)", "Exportar CSV para planilhas; textos semelhantes a fórmulas recebem apóstrofo (F9)", "Exportar CSV para hojas de cálculo; los textos similares a fórmulas reciben un apóstrofo (F9)"]
   , ["results.exportJsonTitle", "Export results as JSON (F10)", "Exportar resultados em JSON (F10)", "Exportar resultados como JSON (F10)"]
   , ["results.horizontalScroll", "Horizontal results-table scroll", "Rolagem horizontal da tabela de resultados", "Desplazamiento horizontal de la tabla de resultados"]
   , ["sqlMap.search", "Search for a table or field in SQL Map", "Buscar tabela ou campo no Mapa SQL", "Buscar una tabla o un campo en el Mapa SQL"]
@@ -512,6 +522,21 @@ export const I18N_MESSAGE_ROWS = Object.freeze([
   , ["sqlMap.pngFilenamePrefix", "sql-map-er", "mapa-sql-der", "mapa-sql-der"]
   , ["footer.privacy", "Privacy", "Privacidade", "Privacidad"]
   , ["database.filePickerDescription", "SQLite database", "Banco de dados SQLite", "Base de datos SQLite"]
+  , ["footer.madeWith", "Made with", "Feito com", "Hecho con"]
+  , ["footer.coffee", "coffee", "café", "café"]
+  , ["footer.coffeeLinkLabel", "Coffee on Wikipedia", "Café na Wikipédia", "Café en Wikipedia"]
+  , ["footer.coffeeLinkTitle", "Learn about coffee on Wikipedia", "Conhecer o café na Wikipédia", "Conocer el café en Wikipedia"]
+  , ["footer.in", "in", "em", "en"]
+  , ["footer.minasLinkTitle", "Learn about Minas Gerais on Wikipedia", "Conhecer Minas Gerais na Wikipédia", "Conocer Minas Gerais en Wikipedia"]
+  , ["footer.variantsLabel", "Footer coffee options", "Opções de café no rodapé", "Opciones de café en el pie de página"]
+  , ["footer.variantA", "Option A, bean heart", "Opção A, coração de grãos", "Opción A, corazón de granos"]
+  , ["footer.variantB", "Option B, mountain-steam cup", "Opção B, xícara com vapor de serra", "Opción B, taza con vapor de sierra"]
+  , ["footer.variantC", "Option C, traditional cloth filter", "Opção C, coador de pano tradicional", "Opción C, filtro de tela tradicional"]
+  , ["footer.variantD", "Option D, enamel cup", "Opção D, caneca esmaltada", "Opción D, taza esmaltada"]
+  , ["footer.variantE", "Option E, coffee branch and cherries", "Opção E, ramo e frutos de café", "Opción E, rama y cerezas de café"]
+  , ["footer.variantF", "Option F, takeaway coffee cup", "Opção F, copo de café para viagem", "Opción F, vaso de café para llevar"]
+  , ["footer.variantG", "Option G, localized coffee badge", "Opção G, emblema de café localizado", "Opción G, emblema de café localizado"]
+  , ["footer.badgeWord", "Coffee", "Café", "Café"]
 ]);
 
 export const I18N_ADDITIONAL_MESSAGES = Object.freeze(Object.fromEntries(

@@ -1,4 +1,6 @@
 import { EMBEDDED_SQLJS_WASM_DATA_URL, EMBEDDED_SQLJS_WORKER_SOURCE, EMBEDDED_SQL_WORKER_SHARED_SOURCE } from "../core/08-runtime-config.js";
+import { SQL_RESULT_LIMITS } from "../core/03-app-limits.js";
+import { databaseBytesEqual, readBoundedStatement } from "../core/16-query-results.js";
 
 export function createEmbeddedSqlWorker() {
   const workerCode = `
@@ -9,6 +11,9 @@ export function createEmbeddedSqlWorker() {
     const TABLE_POPULATION_MAX_TEXT_LENGTH = 256;
     ${EMBEDDED_SQLJS_WORKER_SOURCE}
     ${EMBEDDED_SQL_WORKER_SHARED_SOURCE}
+    const readBoundedStatement = ${readBoundedStatement.toString()};
+    const databaseBytesEqual = ${databaseBytesEqual.toString()};
+    const SQL_RESULT_LIMITS = ${JSON.stringify(SQL_RESULT_LIMITS)};
 
     function quoteIdent(identifier) {
       return '"' + String(identifier || "").replace(/"/g, '""') + '"';
@@ -280,29 +285,27 @@ export function createEmbeddedSqlWorker() {
           return;
         }
 
-        const statements = splitSqlStatements(sql);
-        if (!statements.length) {
-          postWorkerEvent(action, requestId, "error", "error", { ok: false, errorCode: "noValidSql", errorVariables: {} });
-          db.close();
-          return;
-        }
-
+        // Normalize the SQLite export header before comparing persistent changes.
+        const initialBytes = db.export();
         const resultSets = [];
+        const budget = { rows: 0, cells: 0, bytes: 0 };
         const startedAt = performance.now();
-        for (let statementIndex = 0; statementIndex < statements.length; statementIndex += 1) {
-          const statement = statements[statementIndex];
+        let statementIndex = 0;
+        // SQLite owns statement boundaries, including triggers and quoted identifiers.
+        for (const prepared of db.iterateStatements(sql)) {
+          const statement = prepared.getSQL();
           postWorkerEvent(action, requestId, "statement-start", "progress", {
             ok: true,
             statementIndex,
-            totalStatements: statements.length,
+            totalStatements: null,
             statement
           });
-          const results = db.exec(statement);
-          if (!results.length) {
+          const result = readBoundedStatement(db, statement, budget, SQL_RESULT_LIMITS, prepared);
+          if (!result.columns.length) {
             resultSets.push({ statement, statementIndex, columns: [], values: [], messageCode: "noResultSet" });
+            statementIndex += 1;
             continue;
           }
-          const result = results[0];
           resultSets.push({
             statement,
             statementIndex,
@@ -310,16 +313,28 @@ export function createEmbeddedSqlWorker() {
             values: result.values || [],
             message: ""
           });
+          statementIndex += 1;
         }
 
+        if (!resultSets.length) throw workerError("noValidSql");
+        // export() closes the connection. Reject an unfinished transaction instead
+        // of reporting success for writes SQLite would silently roll back on close.
+        try { db.run("BEGIN"); } catch (error) {
+          if (/within a transaction/i.test(error.message || "")) throw workerError("openTransaction");
+          throw error;
+        }
+        db.run("ROLLBACK");
+
         const exportedBytes = db.export();
+        const changed = !databaseBytesEqual(initialBytes, exportedBytes);
         db.close();
         postWorkerEvent(action, requestId, "done", "done", {
           ok: true,
           elapsed: Math.round(performance.now() - startedAt),
           resultSets,
-          dbBytes: exportedBytes.buffer
-        }, [exportedBytes.buffer]);
+          changed,
+          dbBytes: changed ? exportedBytes.buffer : null
+        }, changed ? [exportedBytes.buffer] : []);
       } catch (err) {
         postWorkerEvent(action, requestId, "error", "error", {
           ok: false,

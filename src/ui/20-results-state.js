@@ -3,6 +3,7 @@ import { saveActiveResultSetState } from "../capabilities/05a-result-state-contr
 import { setStatus } from "../capabilities/12-shell-status.js";
 import { getGridAllRows, getGridColumnOrder, getGridColumns, getGridCurrentPage, getGridCurrentRowKey, getGridFilteredRows, getGridPageSize, getGridSelectedKeys, getGridSortStates, setGridState } from "../core/12-state-grid-results.js";
 import { escapeHtml } from "./00-helpers.js";
+import { escapeCsvCell } from "../core/16-query-results.js";
 
 let refreshResultsView = () => {};
 
@@ -229,8 +230,5 @@ export function stripInternal(row) {
 }
 
 export function csvEscape(value) {
-  if (value === null || value === undefined) return "";
-  const s = String(value);
-  if (/[;"\n\r]/.test(s)) return '"' + s.replaceAll('"', '""') + '"';
-  return s;
+  return escapeCsvCell(value);
 }

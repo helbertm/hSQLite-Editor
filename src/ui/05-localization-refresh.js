@@ -1,4 +1,4 @@
-import { registerLocaleRefresher } from "../capabilities/03-localization.js";
+import { getLocale, registerLocaleRefresher } from "../capabilities/03-localization.js";
 import { favoritesModal, queryHistoryModal } from "../capabilities/05-dom-library-settings.js";
 import { tablePopulationModal } from "../capabilities/07-dom-table-population.js";
 import { renderQueryHistory } from "../capabilities/20-history-query.js";
@@ -13,7 +13,32 @@ import { renderSchema } from "./10-schema.js";
 import { renderToolbars } from "./21-results-toolbar.js";
 import { renderAllResults } from "./22-results-table.js";
 
+const MINAS_WIKIPEDIA_URLS = Object.freeze({
+  "en-US": "https://en.wikipedia.org/wiki/Minas_Gerais",
+  "pt-BR": "https://pt.wikipedia.org/wiki/Minas_Gerais",
+  "es-ES": "https://es.wikipedia.org/wiki/Minas_Gerais"
+});
+
+const COFFEE_WIKIPEDIA_URLS = Object.freeze({
+  "en-US": "https://en.wikipedia.org/wiki/Coffee",
+  "pt-BR": "https://pt.wikipedia.org/wiki/Caf%C3%A9",
+  "es-ES": "https://es.wikipedia.org/wiki/Caf%C3%A9"
+});
+
+function refreshFooterLinks() {
+  const locale = getLocale();
+  const minasHref = MINAS_WIKIPEDIA_URLS[locale] || MINAS_WIKIPEDIA_URLS["en-US"];
+  const coffeeHref = COFFEE_WIKIPEDIA_URLS[locale] || COFFEE_WIKIPEDIA_URLS["en-US"];
+  document.querySelectorAll("[data-minas-wikipedia-link]").forEach(link => {
+    link.href = minasHref;
+  });
+  document.querySelectorAll("[data-coffee-wikipedia-link]").forEach(link => {
+    link.href = coffeeHref;
+  });
+}
+
 export function refreshFeatureLocalization() {
+  refreshFooterLinks();
   renderToolbars();
   renderSchema();
   renderSqlTabs();

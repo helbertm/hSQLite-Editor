@@ -2,10 +2,10 @@ import { sqlFileInput } from "./03-dom-editor-results.js";
 import { t } from "./03-localization.js";
 import { executeSql } from "./10-sql-execution.js";
 import { setStatus } from "./12-shell-status.js";
-import { saveCurrentTabState } from "./22c-active-tab-sync.js";
-import { setEditorValue } from "./32a-editor-api.js";
+import { sqlTabsController } from "./23-sql-tabs-state.js";
+import { MAX_SQL_FILE_BYTES, MAX_SQL_TABS } from "../core/03-app-limits.js";
 import { showToast } from "./32b-editor-feedback.js";
-import { shouldExecuteSqlAfterFileOpen } from "../core/11-state-tabs.js";
+import { getSqlTabsItems, shouldExecuteSqlAfterFileOpen } from "../core/11-state-tabs.js";
 import { isSqlExecutionRunning, setEditorState } from "../core/15-state-runtime-library.js";
 
 export function openSqlFilePicker(executeAfterOpen = false) {
@@ -19,36 +19,70 @@ export function openSqlFilePicker(executeAfterOpen = false) {
   sqlFileInput.click();
 }
 
+let importingSqlFiles = false;
+
 export async function loadSqlFile(file) {
-  if (!file) return;
+  return loadSqlFiles(file ? [file] : []);
+}
 
-  const lowerName = (file.name || "").toLowerCase();
-  const allowed = lowerName.endsWith(".sql") || lowerName.endsWith(".txt") || file.type.startsWith("text/") || file.type === "";
-
-  if (!allowed) {
-    setEditorState({ executeSqlAfterFileOpen: false });
+export async function loadSqlFiles(fileList) {
+  const files = Array.from(fileList || []);
+  const executeAfterOpen = shouldExecuteSqlAfterFileOpen();
+  setEditorState({ executeSqlAfterFileOpen: false });
+  if (!files.length) return false;
+  if (importingSqlFiles || isSqlExecutionRunning()) {
+    setStatus(t("file.waitForExecution"), "warn");
+    return false;
+  }
+  if (executeAfterOpen && files.length !== 1) {
+    setStatus(t("file.runSingleOnly"), "warn");
+    return false;
+  }
+  if (files.length + getSqlTabsItems().length > MAX_SQL_TABS) {
+    setStatus(t("tabs.limitReached", { count: MAX_SQL_TABS }), "warn");
+    return false;
+  }
+  if (files.some(file => !isLikelyTextFile(file))) {
     setStatus(t("file.invalidSql"), "warn");
-    return;
+    return false;
+  }
+  if (files.some(file => file.size > MAX_SQL_FILE_BYTES)) {
+    setStatus(t("file.tooLarge"), "warn");
+    return false;
   }
 
+  importingSqlFiles = true;
   try {
-    const text = await file.text();
-    setEditorValue(text);
-    saveCurrentTabState();
-
-    if (shouldExecuteSqlAfterFileOpen()) {
-      setEditorState({ executeSqlAfterFileOpen: false });
-      setStatus(t("file.loadedRunning", { name: file.name }), "warn");
-      setTimeout(() => executeSql(), 0);
-    } else {
-      setStatus(t("file.loaded", { name: file.name }), "ok");
+    // Read the whole selection before changing tabs, so a failed read keeps drafts intact.
+    const documents = [];
+    for (const file of files) {
+      const text = await file.text();
+      if (text.includes("\0")) throw new Error(t("file.invalidSql"));
+      documents.push({ title: String(file.name || "SQL").slice(0, 50), text });
     }
+    if (isSqlExecutionRunning()) {
+      setStatus(t("file.waitForExecution"), "warn");
+      return false;
+    }
+    if (documents.length + getSqlTabsItems().length > MAX_SQL_TABS) {
+      setStatus(t("tabs.limitReached", { count: MAX_SQL_TABS }), "warn");
+      return false;
+    }
+    for (const document of documents) sqlTabsController.add(document.title, document.text);
+    if (executeAfterOpen) {
+      await executeSql();
+    } else {
+      setStatus(t("file.loadedBatch", { count: documents.length }), "ok");
+    }
+    return true;
   } catch (err) {
     console.error(err);
     const message = t("file.openFailed", { reason: err.message || String(err) });
     setStatus(message, "error");
-    setEditorState({ executeSqlAfterFileOpen: false });
     showToast("error", t("file.openFailedTitle"), t("file.openFailed", { reason: err.message || String(err) }));
+    return false;
+  } finally {
+    importingSqlFiles = false;
   }
 }
 
@@ -82,20 +116,13 @@ export async function handleEditorFileDrop(event) {
     return;
   }
 
-  const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
-
-  if (!file) {
+  const files = event.dataTransfer && event.dataTransfer.files;
+  if (!files || !files.length) {
     setStatus(t("file.dropEmpty"), "warn");
     return;
   }
-
-  if (!isLikelyTextFile(file)) {
-    setStatus(t("file.dropTextOnly"), "warn");
-    return;
-  }
-
   setEditorState({ executeSqlAfterFileOpen: false });
-  await loadSqlFile(file);
+  await loadSqlFiles(files);
 }
 
 export function bindEditorDropZone() {

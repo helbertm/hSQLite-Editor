@@ -166,3 +166,11 @@ Rule:
 - Header actions may reflow into additional rows; they must never overlap the database status or locale selector.
 - Modal content must remain usable at 320 CSS px width and 400% browser zoom.
 - Tables may scroll horizontally inside their own region; the document itself must not gain incoherent horizontal overflow.
+
+## Support workflow safeguards
+
+- SQL file picker and editor drop zone accept multiple text files, opening each in a named tab while preserving existing queries. Open-and-run accepts exactly one file. Maximum: 20 tabs.
+- Recent databases use the existing history-search field and modal pattern, with localized search and empty-result feedback. Retain keyboard access and visible focus at mobile widths.
+- Replacing an unsaved database uses a localized native confirmation; cancellation preserves the database and results. A browser-native leave-page warning protects dirty databases and active executions.
+- Result errors explain the aggregate safety budget and suggest SQL filtering or LIMIT. No truncated result is presented as complete. CSV tooltip discloses spreadsheet formula escaping.
+- Destructive button text uses `--destructive-text` independently of red fills; primary hover darkens the blue fill to maintain white-label contrast. Recent-database modal tests cover dark/light themes and primary-button hover.

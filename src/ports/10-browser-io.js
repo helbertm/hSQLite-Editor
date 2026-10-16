@@ -6,7 +6,8 @@ export function triggerBrowserDownload(filename, payload, mime = "application/oc
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(link.href);
+  // Browsers may consume the URL after the click dispatch, especially for large files.
+  setTimeout(() => URL.revokeObjectURL(link.href), 30000);
 }
 
 export function downloadText(filename, text, mime = "text/plain;charset=utf-8") {

@@ -1,0 +1,393 @@
+/* Temporary footer comparison surface */
+.app-footer {
+flex-direction: column;
+      gap: 10px;
+}
+
+.app-footer-links {
+display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+}
+
+.footer-svg-symbols {
+position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+}
+
+.footer-signature-options {
+width: min(100%, 480px);
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding-top: 2px;
+      padding-inline: 0;
+      list-style: none;
+      --footer-coffee-underline: #9a613c;
+}
+
+html[data-theme="light"] .footer-signature-options {
+--footer-coffee-underline: #6f3f24;
+}
+
+.footer-signature-option {
+position: relative;
+      min-height: 28px;
+      display: grid;
+      place-items: center;
+      padding-inline: 26px;
+      --footer-underline-duration: 900ms;
+}
+
+.footer-signature-option:not(:nth-child(5)):not(:nth-child(6)) {
+display: none;
+}
+
+.footer-signature-option-wide {
+padding-inline: 0;
+}
+
+.footer-variant-label {
+position: absolute;
+      left: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--mutedText);
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+}
+
+.footer-signature-copy {
+display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+      max-width: 40ch;
+      color: var(--mutedText);
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: center;
+}
+
+.footer-signature-copy-wide {
+max-width: 48ch;
+}
+
+.footer-signature-lead,
+.footer-minas-link {
+display: inline-flex;
+      align-items: center;
+}
+
+.footer-signature-lead {
+gap: 5px;
+}
+
+.footer-coffee-art {
+width: 34px;
+      height: 24px;
+      flex: 0 0 34px;
+      display: inline-grid;
+      place-items: center;
+      color: var(--mutedText);
+}
+
+.footer-coffee-art svg {
+width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+}
+
+.coffee-bean-fill,
+.coffee-bean-mini {
+fill: #8b4e2f;
+}
+
+.coffee-bean-seam,
+.coffee-bean-mini-seam {
+fill: none;
+      stroke: #e7c19c;
+      stroke-width: 1.35;
+      stroke-linecap: round;
+}
+
+.coffee-highlight {
+fill: none;
+      stroke: #f0d4b9;
+      stroke-width: 1.1;
+      stroke-linecap: round;
+}
+
+.coffee-serra-steam {
+fill: none;
+      stroke: #a96a43;
+      stroke-width: 1.55;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+}
+
+.coffee-cup-outline,
+.coffee-kettle-line,
+.coffee-enamel-handle {
+fill: none;
+      stroke: currentColor;
+      stroke-width: 1.45;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+}
+
+.coffee-liquid {
+fill: none;
+      stroke: #8b4e2f;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+}
+
+.coffee-kettle {
+fill: #4f78a8;
+      stroke: #315678;
+      stroke-width: 1.2;
+      stroke-linejoin: round;
+}
+
+.coffee-pour {
+fill: none;
+      stroke: #a96a43;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+}
+
+.coffee-filter-cloth {
+fill: #eee3cd;
+      stroke: #9c7d5b;
+      stroke-width: 1.2;
+      stroke-linejoin: round;
+}
+
+.coffee-enamel-steam {
+fill: none;
+      stroke: #a96a43;
+      stroke-width: 1.4;
+      stroke-linecap: round;
+}
+
+.coffee-enamel-body {
+fill: #f5f0e5;
+      stroke: #3d68a6;
+      stroke-width: 1.5;
+      stroke-linejoin: round;
+}
+
+.coffee-enamel-rim {
+fill: none;
+      stroke: #3d68a6;
+      stroke-width: 1.45;
+      stroke-linecap: round;
+}
+
+.coffee-liquid-fill {
+fill: #8b4e2f;
+}
+
+.coffee-enamel-speck {
+fill: #3d68a6;
+}
+
+.coffee-branch-line {
+fill: none;
+      stroke: #6b573d;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+}
+
+.coffee-leaf {
+fill: #4f8057;
+      stroke: #35613e;
+      stroke-width: 1;
+      stroke-linejoin: round;
+}
+
+.coffee-cherry {
+fill: #ad3434;
+      stroke: #7b2525;
+      stroke-width: .9;
+}
+
+.coffee-cherry-light {
+fill: #d65745;
+}
+
+.coffee-takeaway-body {
+fill: #f3e7d6;
+      stroke: #9a6a43;
+      stroke-width: 1.35;
+      stroke-linejoin: round;
+}
+
+.coffee-takeaway-lid {
+fill: #4f3528;
+}
+
+.coffee-takeaway-sleeve {
+fill: #b57a56;
+}
+
+.coffee-takeaway-bean {
+fill: #f3e7d6;
+}
+
+.coffee-takeaway-bean-line {
+fill: none;
+      stroke: #b57a56;
+      stroke-width: 1;
+      stroke-linecap: round;
+}
+
+.app-footer .footer-coffee-link {
+width: 32px;
+      height: 28px;
+      flex: 0 0 32px;
+      display: inline-grid;
+      place-items: center;
+      margin-inline: -3px;
+      color: inherit;
+      text-decoration: none;
+      border-radius: 4px;
+}
+
+.app-footer .footer-coffee-link:hover {
+color: inherit;
+      text-decoration: none;
+}
+
+.footer-coffee-link .footer-coffee-takeaway {
+width: 30px;
+      height: 22px;
+      transform: translateY(-1px);
+}
+
+.footer-coffee-link .footer-coffee-takeaway svg {
+width: 24px;
+      height: 22px;
+}
+
+.footer-coffee-badge {
+width: 68px;
+      height: 28px;
+      flex-basis: 68px;
+}
+
+.coffee-badge-body {
+fill: #5b3a29;
+      stroke: #9a6a43;
+      stroke-width: 1.6;
+      stroke-linejoin: round;
+}
+
+.coffee-badge-accent {
+fill: #b57a56;
+}
+
+.coffee-badge-bean-line {
+fill: none;
+      stroke: #f6ecdf;
+      stroke-width: 1;
+      stroke-linecap: round;
+}
+
+.coffee-badge-word {
+fill: #f6ecdf;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-anchor: middle;
+}
+
+.footer-minas-link {
+gap: 6px;
+      color: var(--foreground);
+      font-weight: 750;
+      text-decoration: none;
+      border-radius: 2px;
+}
+
+.app-footer .footer-minas-link:hover {
+color: var(--foreground);
+      text-decoration: none;
+}
+
+.footer-minas-name {
+position: relative;
+      display: inline-block;
+      white-space: nowrap;
+}
+
+.footer-minas-name-flagged {
+display: inline-flex;
+      align-items: center;
+      gap: 6px;
+}
+
+.footer-minas-name::after {
+content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      border-radius: 1px;
+      background: var(--footer-coffee-underline);
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      transition: transform var(--footer-underline-duration, 300ms) cubic-bezier(.22, 1, .36, 1);
+      will-change: transform;
+}
+
+.footer-minas-link:hover .footer-minas-name::after,
+.footer-minas-link:focus-visible .footer-minas-name::after {
+transform: scaleX(1);
+}
+
+.footer-coffee-link:focus-visible,
+.footer-minas-link:focus-visible {
+border-color: var(--ring);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
+      outline: 2px solid color-mix(in srgb, var(--ring) 75%, transparent);
+      outline-offset: 1px;
+}
+
+.footer-minas-flag {
+width: 21px;
+      height: 16px;
+      flex: 0 0 21px;
+      display: block;
+      overflow: visible;
+}
+
+@media (max-width: 350px) {
+.footer-signature-option {
+padding-inline: 20px;
+}
+
+.footer-signature-option-wide {
+padding-inline: 0;
+}
+
+.footer-variant-label {
+left: 0;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+.footer-minas-name::after {
+transition: none;
+}
+}

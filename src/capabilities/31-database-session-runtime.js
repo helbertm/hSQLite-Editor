@@ -15,11 +15,13 @@ import { resetSqlMapSessionState } from "./45-sql-map-core.js";
 import { createDbSession } from "../core/00-contracts.js";
 import { debugLog } from "../core/08-runtime-config.js";
 import { findSqlTabById, getActiveSqlTabId, resetAllSqlTabResultStates } from "../core/11-state-tabs.js";
-import { getSchemaObjects, setDbSessionState } from "../core/14-state-database-schema.js";
+import { getCurrentDbFileName, getSchemaObjects, isCurrentDbDirty, setDbSessionState } from "../core/14-state-database-schema.js";
 import { isSqlExecutionRunning } from "../core/15-state-runtime-library.js";
 import { chooseSingleFileHandle } from "../ports/30-file-access.js";
 import { loadSchema } from "../ui/10-schema.js";
 import { updateAutocomplete } from "../ui/30-autocomplete.js";
+
+let databaseOpenSequence = 0;
 
 export function resetAllTabResultsForNewDatabase() {
   resetAllSqlTabResultStates();
@@ -38,8 +40,19 @@ export async function replaceDatabaseSession({
   loadingMessage,
   readyMessage = "",
   rememberRecent = null,
-  debugDetails = null
+  debugDetails = null,
+  openSequence = databaseOpenSequence
 }) {
+  // File reads and permission prompts may finish after another open or execution.
+  if (openSequence !== databaseOpenSequence || isSqlExecutionRunning()) {
+    nextDb.close();
+    if (isSqlExecutionRunning()) setStatus(t("database.switchWait"), "warn");
+    return false;
+  }
+  if (isCurrentDbDirty() && !window.confirm(t("database.confirmDiscard", { name: getCurrentDbFileName() }))) {
+    nextDb.close();
+    return false;
+  }
   const resolvedFileName = fileName || "sqlite-db";
   const resolvedSession = createDbSession(nextSession || {
     id: sessionId,
@@ -73,9 +86,12 @@ export async function replaceDatabaseSession({
     updateAutocomplete(false);
   }
   if (typeof rememberRecent === "function") {
-    await rememberRecent();
+    try { await rememberRecent(); } catch (error) {
+      console.warn("recent-database-save-failed", error);
+    }
   }
-  if (readyMessage) setStatus(readyMessage, "ok");
+  if (readyMessage && openSequence === databaseOpenSequence) setStatus(readyMessage, "ok");
+  return true;
 }
 
 export async function createValidatedDatabaseRuntime({
@@ -93,15 +109,28 @@ export async function createValidatedDatabaseRuntime({
   });
   await initSqlJsIfNeeded();
   const SqlJs = getSqlRuntime();
+  const nextDb = nextDbBytes.length ? new SqlJs.Database(nextDbBytes) : new SqlJs.Database();
+  try {
+    // Opening SQLite bytes is lazy. Validate the catalog before retiring the current DB.
+    nextDb.exec("SELECT name FROM sqlite_schema LIMIT 1");
+  } catch (error) {
+    nextDb.close();
+    throw error;
+  }
   return {
     fileName: normalizedFileName,
     nextDbBytes,
-    nextDb: nextDbBytes.length ? new SqlJs.Database(nextDbBytes) : new SqlJs.Database()
+    nextDb
   };
 }
 
 export const dbController = {
   async openFromFile(file, handle = null) {
+    const openSequence = ++databaseOpenSequence;
+    if (isSqlExecutionRunning()) {
+      setStatus(t("database.switchWait"), "warn");
+      return false;
+    }
     const buffer = await file.arrayBuffer();
     const prepared = await createValidatedDatabaseRuntime({
       fileName: file && file.name ? file.name : "sqlite-db.db",
@@ -116,7 +145,8 @@ export const dbController = {
       size: file.size,
       lastModified: file.lastModified
     });
-    await replaceDatabaseSession({
+    return replaceDatabaseSession({
+      openSequence,
       nextDb,
       nextDbBytes,
       fileName,
@@ -167,8 +197,8 @@ export const dbController = {
         }
         if (permission === "granted") {
           const file = await handle.getFile();
-          await this.openFromFile(file, handle);
-          modalController.close(recentDbModal);
+          const opened = await this.openFromFile(file, handle);
+          if (opened) modalController.close(recentDbModal);
           return;
         }
       }
@@ -212,6 +242,11 @@ export const dbController = {
     }
   },
   async openFromBytes(fileName, bytes) {
+    const openSequence = ++databaseOpenSequence;
+    if (isSqlExecutionRunning()) {
+      setStatus(t("database.switchWait"), "warn");
+      return false;
+    }
     const prepared = await createValidatedDatabaseRuntime({
       fileName: normalizeSqliteFileName(fileName, "sqlite-db.db"),
       bytes,
@@ -226,7 +261,8 @@ export const dbController = {
       size: nextDbBytes.byteLength,
       lastModified: Date.now()
     });
-    await replaceDatabaseSession({
+    return replaceDatabaseSession({
+      openSequence,
       nextDb,
       nextDbBytes,
       fileName: normalizedFileName,

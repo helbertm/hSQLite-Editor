@@ -8,6 +8,7 @@ export const newDbBtn = document.getElementById("newDbBtn");
 export const clearRecentDbBtn = document.getElementById("clearRecentDbBtn");
 export const recentDbModal = document.getElementById("recentDbModal");
 export const recentDbList = document.getElementById("recentDbList");
+export const recentDbSearch = document.getElementById("recentDbSearch");
 export const closeRecentDbBtn = document.getElementById("closeRecentDbBtn");
 export const newDbModal = document.getElementById("newDbModal");
 export const newDbFileNameInput = document.getElementById("newDbFileNameInput");

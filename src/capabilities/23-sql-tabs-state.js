@@ -87,19 +87,20 @@ export const sqlTabsController = {
     setSqlTabsState({ activeTabId: tabId });
     loadTabState(tab);
   },
-  add() {
+  add(title = null, sql = null) {
     const sqlTabs = getSqlTabsItems();
     if (sqlTabs.length >= MAX_SQL_TABS) {
       setStatus(t("tabs.limitReached", { count: MAX_SQL_TABS }), "warn");
       return;
     }
     saveCurrentTabState();
-    const tab = createEmptyTab();
+    const tab = createEmptyTab(title, sql);
     replaceSqlTabsItems([...sqlTabs, tab]);
     setSqlTabsState({ activeTabId: tab.id });
     loadTabState(tab);
     setStatus(t("tabs.created", { title: tab.title }), "ok");
     saveSqlTabsToStorage();
+    return tab;
   },
   requestClose(tabId) {
     if (getSqlTabsItems().length <= 1) {

@@ -19,7 +19,8 @@ export function getNextSqlTabName() {
   for (let i = 0; i < maxAttempts; i += 1) {
     const bagIndex = nextSqlTabNameIndex % tabNameBag.length;
     const candidate = String(tabNameBag[bagIndex] || "").trim() || `SQL ${nextSqlTabNumber}`;
-    setSqlTabsState({ nextSqlTabNameIndex: (nextSqlTabNameIndex + 1) % Math.max(1, pool.length) });
+    nextSqlTabNameIndex = (nextSqlTabNameIndex + 1) % Math.max(1, pool.length);
+    setSqlTabsState({ nextSqlTabNameIndex });
     if (!usedTitles.has(candidate)) return candidate;
   }
 

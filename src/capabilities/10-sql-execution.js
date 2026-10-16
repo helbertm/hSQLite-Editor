@@ -14,6 +14,7 @@ import { splitSqlStatements } from "../core/05-sql-statement-splitter.js";
 import { createResultSetState, getGridAllRows, getGridColumnOrder, getGridPageSize, getGridResultSets, setGridState } from "../core/12-state-grid-results.js";
 import { getCurrentDbBytes, setDbSessionState } from "../core/14-state-database-schema.js";
 import { isSqlExecutionRunning } from "../core/15-state-runtime-library.js";
+import { normalizeResultColumns } from "../core/16-query-results.js";
 import { createEmbeddedSqlWorker, disposeEmbeddedSqlWorker } from "../ports/20-sql-worker.js";
 import { getSelectedOrAllSql } from "./33-editor-selection.js";
 import { loadSchema } from "../ui/10-schema.js";
@@ -127,7 +128,9 @@ export function runSqlInWorker(sql) {
     doneType: "done",
     onProgress(data) {
       if (data.type !== "statement-start") return;
-      const runningLabel = t("status.runningStatement", { current: data.statementIndex + 1, total: data.totalStatements });
+      const runningLabel = data.totalStatements
+        ? t("status.runningStatement", { current: data.statementIndex + 1, total: data.totalStatements })
+        : t("status.runningStatementIndex", { current: data.statementIndex + 1 });
       if (sqlRunningText) sqlRunningText.textContent = runningLabel;
       setStatus(runningLabel, "warn");
     }
@@ -192,7 +195,7 @@ export const executionController = {
   mapWorkerResultSets(workerResult) {
     const pageSize = getGridPageSize();
     return workerResult.resultSets.map((workerSet) => {
-      const resultColumns = workerSet.columns || [];
+      const resultColumns = normalizeResultColumns(workerSet.columns || []);
       const resultRows = (workerSet.values || []).map((values, idx) => {
         const obj = { __rowKey: `q${workerSet.statementIndex}_row_${idx}` };
         resultColumns.forEach((col, i) => obj[col] = values[i]);
@@ -233,7 +236,9 @@ export const executionController = {
 
       const workerResult = await runSqlInWorker(sql);
       applyWorkerDatabaseState(workerResult);
-      loadSchema();
+      const hasMutation = workerResult.changed ?? splitSqlStatements(sql).some(isMutationStatement);
+      if (hasMutation) setDbDirty(true);
+      if (workerResult.changed !== false) loadSchema();
       const nextResultSets = this.mapWorkerResultSets(workerResult);
       const preferredActiveResultIndex = this.getPreferredActiveResultIndex(nextResultSets);
       setGridState({ resultSets: nextResultSets, activeResultIndex: preferredActiveResultIndex });
@@ -254,7 +259,6 @@ export const executionController = {
 
       const totalRows = resultSets.reduce((sum, rs) => sum + rs.allRows.length, 0);
       addQueryHistoryEntry(sql, "success");
-      const hasMutation = splitSqlStatements(sql).some(isMutationStatement);
       setStatus(
         t("status.executionSummary", {
           queries: formatNumber(resultSets.length),
@@ -264,7 +268,6 @@ export const executionController = {
         "ok"
       );
       if (hasMutation) {
-        setDbDirty(true);
         showToast("info", t("toast.memoryChanges"), t("toast.saveDatabaseHint"), 7000);
       }
     } catch (err) {

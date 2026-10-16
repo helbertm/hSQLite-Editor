@@ -559,6 +559,26 @@ try {
       assert((await page.locator("#queryHistoryList").innerText()).includes(successfulSql), `${locale.tag}/${viewport.name}: successful query is absent from history.`);
       await page.locator("[data-history-fav]").first().click();
       await page.locator("#closeQueryHistoryBtn").click();
+      await page.evaluate(() => {
+        saveRecentDbs([{ id: "qa-recent", name: "incident-42.db", path: "support/incident-42.db" }]);
+        modalController.open(recentDbModal);
+      });
+      await page.locator("#recentDbSearch").fill("incident-42");
+      assert((await page.locator("#recentDbList").innerText()).includes("incident-42.db"), `${locale.tag}/${viewport.name}: recent database search lost its match.`);
+      await page.locator("#recentDbSearch").fill("no-such-database");
+      assert(await page.locator("#recentDbList [data-recent-open]").count() === 0, `${locale.tag}/${viewport.name}: recent database search retained non-matches.`);
+      await page.locator("#recentDbSearch").fill("incident-42");
+      const originalTheme = await page.evaluate(() => document.documentElement.dataset.theme);
+      const recentAxe = { violations: [] };
+      for (const theme of ["dark", "light"]) {
+        await page.evaluate(theme => setTheme(theme), theme);
+        await page.locator("#closeRecentDbBtn").hover();
+        const analysis = await new AxeBuilder({ page }).include("#recentDbModal").analyze();
+        recentAxe.violations.push(...analysis.violations);
+        assert(analysis.violations.length === 0, `${locale.tag}/${viewport.name}/${theme}: recent database dialog: ${JSON.stringify(analysis.violations.map(({ id, nodes }) => ({ id, nodes: nodes.map(node => ({ target: node.target, summary: node.failureSummary })) })))}.`);
+      }
+      await page.evaluate(theme => setTheme(theme), originalTheme);
+      await page.locator("#closeRecentDbBtn").click();
       await page.locator("#editorMoreActions > summary").click();
       await page.locator("#favoritesBtn").click();
       await page.locator("#favoritesModal").waitFor({ state: "visible" });
@@ -760,6 +780,7 @@ try {
       results.push({
         locale: locale.tag,
         viewport: viewport.name,
+        recentViolations: recentAxe.violations.length,
         shellViolations: axe.violations.length,
         shellSerious: serious.length,
         helpViolations: helpAxe.violations.length,

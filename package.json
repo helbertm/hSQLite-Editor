@@ -59,6 +59,7 @@
     "validate:artifact": "npm run validate:artifact:structure && npm run validate:runtime:all",
     "validate:browser:backlog": "node scripts/validate-browser-backlog.mjs",
     "validate:browser:quality": "node scripts/validate-browser-quality.mjs",
+    "validate:browser:support": "node scripts/validate-support-workflows.mjs",
     "validate:native:chromium": "node scripts/validate-native-chromium.mjs",
     "validate:quality:offline": "npm run validate:static && npm run test:contract && npm run build && npm run build:release && npm run validate:linux && npm run validate:approval",
     "quality:docker": "bash scripts/run-codex-quality.sh",
