@@ -28,6 +28,8 @@ On Ubuntu or another supported Linux build host with `appstreamcli`, `desktop-fi
 
 Run `npm run validate:browser:quality` against the exact served release URL. The matrix owns real Chromium rendering, interaction, responsive reflow, locale behavior, accessible names, downloads, and axe results. `npm run validate:browser:backlog` is a focused real-worker regression command and is not a replacement for the quality matrix.
 
+Run `npm run validate:browser:support` against the same URL for the real embedded SQLite worker: triggers, complete/incomplete transactions, 64-bit identifiers, result budgets, duplicate columns, discard decisions, asynchronous database replacement, batch SQL imports, storage quota failures, and a 50,000-row pagination workload. This command is a required step in the Browser Quality workflow. Set `HSQLITE_BASE_URL` to test either readable or minified output.
+
 ## Security and reproducibility
 
 Run `npm run validate:dependencies` for blocking current npm advisory status. Run `npm run quality:docker` for the offline/read-only `codex-quality` surface and `npm run quality:security:docker` for update-capable npm and OSV analysis. On a new machine, run `npm run quality:docker:update` once to populate the container cache from the lockfile, then require `npm run quality:docker` to pass with networking disabled. Network or scanner failure blocks an update-capable command.

@@ -55,7 +55,7 @@ export const newDbController = {
         const bytes = emptyDb.export();
         if (typeof emptyDb.close === "function") emptyDb.close();
 
-        await openDbFromBytes(fileName, bytes);
+        if (!await openDbFromBytes(fileName, bytes)) return;
         setDbDirty(false);
 
         this.closeModal();

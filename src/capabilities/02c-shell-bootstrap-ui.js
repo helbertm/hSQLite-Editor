@@ -9,7 +9,7 @@ import { setTabNamePresetPreference } from "./22a-sql-tab-presets.js";
 import { addSqlTab, requestCloseAllSqlTabs } from "./23-sql-tabs-state.js";
 import { updateSqlTabsOverflow } from "./24-sql-tabs-render.js";
 import { bindDatabaseMenuActions, bindEditorMoreActions, bindSqlTabsShellActions, initKeyboardController } from "./25-shell-shortcuts.js";
-import { loadSqlFile, openSqlFilePicker } from "./36-editor-file-workflow.js";
+import { loadSqlFiles, openSqlFilePicker } from "./36-editor-file-workflow.js";
 import { clearAndPasteSql, clearSqlEditor, copyFullSql } from "./37-editor-actions.js";
 import { updateOfflineMode } from "./02a-offline-mode.js";
 
@@ -55,7 +55,7 @@ export function bindShellBootstrapUi() {
   openSqlBtn.addEventListener("click", () => openSqlFilePicker(false));
   openRunSqlBtn.addEventListener("click", () => openSqlFilePicker(true));
   sqlFileInput.addEventListener("change", (event) => {
-    loadSqlFile(event.target.files && event.target.files[0]);
+    loadSqlFiles(event.target.files);
   });
   copySqlBtn.addEventListener("click", copyFullSql);
   clearSqlBtn.addEventListener("click", clearSqlEditor);

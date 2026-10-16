@@ -15,11 +15,14 @@ The product is distributed as one standalone `index.html` artifact and is offlin
 - [Open hSQLite Editor](https://helbertm.github.io/hSQLite-Editor/)
 - Download the versioned standalone HTML file from the latest [GitHub release](https://github.com/helbertm/hSQLite-Editor/releases/latest) for direct offline use.
 
+For incident investigation, large results, safe file switching, and export semantics, see the [support analyst guide](docs/support-workflows.md).
+
 ## Capabilities
 
 - Open, create, inspect, modify, and save SQLite databases locally.
 - Execute multiple SQL statements in an isolated Web Worker with cancellation and elapsed-time feedback.
-- Use independent SQL tabs, query history, favorites, file import/export, and keyboard shortcuts.
+- Use up to 20 independent SQL tabs, 200 history entries/favorites, batch SQL-file import, and keyboard shortcuts.
+- Search 30 recent databases and query history by database filename. Protect unsaved changes when switching databases.
 - Inspect schema objects and insert table or column identifiers into the editor.
 - Sort, filter, paginate, select, freeze, move, resize, and export result columns.
 - Build SQL visually from declared and session-only virtual relationships in SQL Map.

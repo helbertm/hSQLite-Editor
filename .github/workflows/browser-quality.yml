@@ -47,3 +47,4 @@ jobs:
           done
           RELEASE_VERSION="$(node -p 'require("./package.json").version')"
           HSQLITE_BASE_URL="http://127.0.0.1:4173/dist/hSQLite-Editor-v${RELEASE_VERSION}.html" npm run validate:browser:quality
+          HSQLITE_BASE_URL="http://127.0.0.1:4173/dist/hSQLite-Editor-v${RELEASE_VERSION}.html" npm run validate:browser:support

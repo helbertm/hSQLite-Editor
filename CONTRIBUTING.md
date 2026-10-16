@@ -17,6 +17,8 @@ Requirements:
 - A current Chromium-based browser for automated browser checks
 - Safari on macOS for the native `file://` release smoke test
 
+Install the pinned dependencies with `npm ci`. For browser checks, install Chromium with `npx playwright install chromium`.
+
 Run the repository-owned checks:
 
 ```sh
@@ -28,6 +30,7 @@ npm run validate:full
 ```
 
 Use `npm run serve:artifact` to inspect the generated application over loopback. The production contract remains direct `file://` use of the standalone HTML artifact.
+For support-workflow changes, run `npm run validate:browser:support` against the loopback server.
 The validation layers and their runtime boundaries are documented in [docs/validation.md](docs/validation.md).
 
 ## Change requirements

@@ -1,12 +1,19 @@
 import { SUPPORTED_LOCALES } from "./02-locales.js";
-import { MAX_SQL_TABS, QUERY_HISTORY_LIMIT } from "./03-app-limits.js";
+import { MAX_SQL_FILE_BYTES, MAX_SQL_TABS, QUERY_HISTORY_LIMIT } from "./03-app-limits.js";
 import { SQL_TAB_NAME_PRESETS } from "./04-tab-name-presets.js";
 
 export const SETTINGS_TRANSFER_VERSION = 1;
 
-export const SETTINGS_TRANSFER_MAX_FILE_CHARS = 2_000_000;
+export const SETTINGS_TRANSFER_MAX_FILE_CHARS = 32 * 1024 * 1024;
 
-export const SETTINGS_TRANSFER_MAX_SQL_CHARS = 250_000;
+export const SETTINGS_TRANSFER_MAX_SQL_CHARS = MAX_SQL_FILE_BYTES;
+
+export function serializeSettingsExportPayload(payload) {
+  validateSettingsImportPayload(payload, payload.scopes);
+  const json = JSON.stringify(payload, null, 2);
+  if (json.length > SETTINGS_TRANSFER_MAX_FILE_CHARS) throw new Error("settings-export-too-large");
+  return json;
+}
 
 export const SETTINGS_TRANSFER_SCOPES = Object.freeze([
   "favorites",
@@ -52,7 +59,7 @@ export function normalizeSettingsTimelineItems(items, scope) {
     const isFavorite = scope === "favorites";
     const allowedKeys = isFavorite
       ? ["id", "sql", "createdAt"]
-      : ["id", "sql", "status", "errorMessage", "executedAt", "createdAt"];
+      : ["id", "sql", "status", "errorMessage", "executedAt", "createdAt", "databaseName"];
     assertSettingsKeys(item, allowedKeys, `${scope}[${index}]`);
     const normalized = {
       id: normalizeSettingsString(item.id, `${scope}[${index}].id`, 128, { required: true }),
@@ -61,6 +68,9 @@ export function normalizeSettingsTimelineItems(items, scope) {
     if (isFavorite) {
       normalized.createdAt = normalizeSettingsString(item.createdAt || "", `${scope}[${index}].createdAt`, 64);
     } else {
+      if (item.databaseName !== undefined) {
+        normalized.databaseName = normalizeSettingsString(item.databaseName, `${scope}[${index}].databaseName`, 1024);
+      }
       normalized.executedAt = normalizeSettingsString(
         item.executedAt || item.createdAt || "",
         `${scope}[${index}].executedAt`,

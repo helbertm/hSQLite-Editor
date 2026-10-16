@@ -275,7 +275,7 @@ background: transparent;
 
 .ui-button-destructive {
 background: color-mix(in srgb, var(--destructive) 11%, transparent);
-      color: var(--destructive);
+      color: var(--destructive-text);
       border-color: color-mix(in srgb, var(--destructive) 35%, var(--border));
 }
 
@@ -292,7 +292,7 @@ color: var(--foreground);
 
 .ui-button-primary:hover {
 color: var(--primary-foreground);
-      background: color-mix(in srgb, var(--primary) 88%, var(--foreground));
+      background: color-mix(in srgb, var(--primary) 88%, black);
 }
 
 .ui-button-destructive:hover {
@@ -2172,7 +2172,7 @@ background: color-mix(in srgb, var(--info) 20%, transparent);
       padding: 0 2px;
 }
 
-#queryHistorySearch {
+#queryHistorySearch, #recentDbSearch {
 -webkit-appearance: none;
       appearance: none;
 }

@@ -1,9 +1,10 @@
-import { recentDbList } from "./02-dom-database.js";
+import { recentDbList, recentDbSearch } from "./02-dom-database.js";
 import { formatDateTime, t } from "./03-localization.js";
 import { invokeRuntimeTestOverride } from "../core/09-test-hooks.js";
 import { STORAGE_KEYS, storage } from "../ports/05-storage.js";
 import { clearStoredFileHandles, loadStoredFileHandle, saveStoredFileHandle } from "../ports/30-file-access.js";
 import { escapeHtml } from "../ui/00-helpers.js";
+import { RECENT_DATABASE_LIMIT } from "../core/03-app-limits.js";
 
 let openRecentDatabase = async () => {};
 
@@ -25,7 +26,7 @@ export const recentDbStorage = {
     return storage.getJSON(STORAGE_KEYS.RECENT_DBS, []);
   },
   save(items) {
-    storage.setJSON(STORAGE_KEYS.RECENT_DBS, items.slice(0, 10));
+    storage.setJSON(STORAGE_KEYS.RECENT_DBS, items.slice(0, RECENT_DATABASE_LIMIT));
   },
   clear() {
     storage.remove(STORAGE_KEYS.RECENT_DBS);
@@ -34,7 +35,10 @@ export const recentDbStorage = {
 
 export function getRecentDbs() {
   try {
-    return recentDbStorage.load();
+    const items = recentDbStorage.load();
+    return Array.isArray(items)
+      ? items.filter(item => item && typeof item.id === "string" && typeof item.name === "string").slice(0, RECENT_DATABASE_LIMIT)
+      : [];
   } catch {
     return [];
   }
@@ -46,10 +50,11 @@ export function saveRecentDbs(items) {
 }
 
 export function renderRecentDbs() {
-  const items = getRecentDbs();
+  const query = String(recentDbSearch?.value || "").trim().toLowerCase();
+  const items = getRecentDbs().filter(item => !query || `${item.name} ${item.path || ""}`.toLowerCase().includes(query));
   if (!recentDbList) return;
   if (!items.length) {
-    recentDbList.innerHTML = `<div class="query-history-empty">${escapeHtml(t("recent.empty"))}</div>`;
+    recentDbList.innerHTML = `<div class="query-history-empty">${escapeHtml(t(query ? "recent.noMatches" : "recent.empty"))}</div>`;
     return;
   }
   recentDbList.innerHTML = items.map((item) => {

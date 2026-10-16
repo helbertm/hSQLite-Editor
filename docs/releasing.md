@@ -5,7 +5,7 @@
 3. Run `npm run validate:full:ci` from a clean worktree. The command validates the complete tracked and untracked repository surface before and after the release gate.
 4. Run `npm run validate:dependencies`, `npm run quality:docker`, and `npm run quality:security:docker`. The first two validate repo-owned and offline-valid controls; the last command intentionally uses update mode for current npm and OSV advisory data.
 5. Inspect both readable `index.html` and minified `dist/hSQLite-Editor-v<version>.html` artifacts.
-6. Run the browser locale/accessibility matrix on the generated artifact.
+6. Run `npm run validate:browser:quality` and `npm run validate:browser:support` against the exact generated artifact.
 7. Run `npm run validate:native:chromium`, then open the final artifact directly with `file://` in current Safari and complete changed assistive-technology spot checks.
 8. Confirm the standalone and release artifacts make no runtime network request and contain no machine-local path or hosted analytics loader.
 9. Run `npm run validate:linux`; when publishing a distribution-specific Linux package, complete the host-native installation and desktop-session check defined in [linux-packaging.md](linux-packaging.md).

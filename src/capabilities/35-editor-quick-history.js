@@ -2,7 +2,7 @@ import { cmEditor, queryHistoryPopover } from "./03-dom-editor-results.js";
 import { formatNumber, t } from "./03-localization.js";
 import { setStatus } from "./12-shell-status.js";
 import { formatQueryHistoryDate, getHistoryStatusIcon } from "./19-history-formatting.js";
-import { getQuickHistoryItems, loadQueryHistoryFromStorage } from "./20-history-query.js";
+import { getQuickHistoryItems } from "./20-history-query.js";
 import { saveCurrentTabState } from "./22c-active-tab-sync.js";
 import { setEditorValue } from "./32a-editor-api.js";
 import { getQuickHistoryActiveIndex, setEditorState } from "../core/15-state-runtime-library.js";
@@ -57,7 +57,6 @@ export function renderQuickHistoryPopover() {
 }
 
 export function openQuickQueryHistory() {
-  loadQueryHistoryFromStorage();
   setEditorState({ quickHistoryActiveIndex: 0 });
   hideAutocomplete();
   renderQuickHistoryPopover();

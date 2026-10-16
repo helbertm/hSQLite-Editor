@@ -200,7 +200,7 @@ if (fs.existsSync(generatedDbRuntimePath)) {
   if (emptyPayloadAllowances.length !== 1) {
     failures.push(`src/capabilities/31-database-session-runtime.js must contain exactly one generated empty-payload allowance, found ${emptyPayloadAllowances.length}.`);
   }
-  if (!/nextDb:\s*nextDbBytes\.length\s*\?\s*new SqlJs\.Database\(nextDbBytes\)\s*:\s*new SqlJs\.Database\(\)/.test(runtimeText)) {
+  if (!/nextDb\s*(?::|=)\s*nextDbBytes\.length\s*\?\s*new SqlJs\.Database\(nextDbBytes\)\s*:\s*new SqlJs\.Database\(\)/.test(runtimeText)) {
     failures.push("src/capabilities/31-database-session-runtime.js must keep the explicit empty-vs-bytes SqlJs.Database runtime split for generated databases.");
   }
 }

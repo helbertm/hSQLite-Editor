@@ -23,17 +23,17 @@ The application can store these entries:
 | Key | Content | Removal |
 | --- | --- | --- |
 | `hSQLiteEditorStorageSchemaVersion` | Internal storage schema version. | Clear browser site data. |
-| `hSQLiteEditorSqlTabsV1` | Up to five tab identifiers, titles, SQL text, and active-tab counters when session persistence is enabled. | Turning session persistence off clears this entry. Clearing browser site data also removes it. |
+| `hSQLiteEditorSqlTabsV1` | Up to 20 tab identifiers, titles, SQL text, and active-tab counters when session persistence is enabled. | Turning session persistence off clears this entry. Clearing browser site data also removes it. |
 | `hSQLiteEditorSessionPersistenceV1` | Whether SQL tab restoration is enabled. | Change the setting or clear browser site data. |
 | `hSQLiteEditorStarterSqlV1` | Whether newly created SQL tabs start with the built-in starter SQL. | Change the setting or clear browser site data. |
 | `hSQLiteEditorFirstRunDoneV1` | Whether first-run preferences were completed. | Clear browser site data. |
-| `hSQLiteEditorQueryHistoryV1` | Up to 50 SQL statements with execution time, success/error status, and error text. | Use **Clear history** or clear browser site data. |
-| `hSQLiteEditorFavoritesV1` | Up to 50 saved SQL statements with identifiers and creation times. | Use **Clear favorites** or clear browser site data. |
+| `hSQLiteEditorQueryHistoryV1` | Up to 200 SQL statements with execution time, success/error status, error text, and the source database filename (`databaseName`). | Use **Clear history** or clear browser site data. |
+| `hSQLiteEditorFavoritesV1` | Up to 200 saved SQL statements with identifiers and creation times. | Use **Clear favorites** or clear browser site data. |
 | `hSQLiteEditorThemeV1` | Selected light/dark theme. | Change the setting or clear browser site data. |
 | `hSQLiteEditorTabNamePresetV1` | Selected tab-name preset. | Change the setting or clear browser site data. |
 | `hSQLiteEditorSchemaCollapsedV1` | Schema-panel collapsed state. | Change the panel state or clear browser site data. |
 | `hSQLiteEditorSchemaFiltersV1` | Schema object-type filter preferences. | Use the schema filter reset where applicable or clear browser site data. |
-| `hSQLiteEditorRecentDbsV1` | Up to 10 recent-database metadata records. | Use **Clear recent databases** or clear browser site data. |
+| `hSQLiteEditorRecentDbsV1` | Up to 30 recent-database metadata records. | Use **Clear recent databases** or clear browser site data. |
 | `hSQLiteEditorLastSettingsExportAtV1` | Timestamp of the last settings export. | Clear browser site data. |
 | `hSQLiteEditorLastSeenReleaseVersionV1` | Last acknowledged application version. | Clear browser site data. |
 | `hSQLiteEditorLocaleV1` | Selected `en-US`, `pt-BR`, or `es-ES` locale. | Change the locale or clear browser site data. |

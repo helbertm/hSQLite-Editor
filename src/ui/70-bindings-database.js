@@ -1,12 +1,19 @@
-import { clearRecentDbBtn, closeRecentDbBtn, dbFile, openDbMenuBtn, openRecentDbBtn, recentDbModal } from "../capabilities/02-dom-database.js";
+import { clearRecentDbBtn, closeRecentDbBtn, dbFile, openDbMenuBtn, openRecentDbBtn, recentDbModal, recentDbSearch } from "../capabilities/02-dom-database.js";
 import { t } from "../capabilities/03-localization.js";
 import { modalController } from "../capabilities/05-modal-controller.js";
 import { setStatus } from "../capabilities/12-shell-status.js";
 import { clearFileHandles, recentDbStorage, renderRecentDbs } from "../capabilities/30-database-session-storage.js";
 import { closeDatabaseMenu, openDatabasePicker, openDbFromFile } from "../capabilities/31-database-session-runtime.js";
 import { getSqliteValidationErrorMessage, isExpectedSqliteValidationError } from "../capabilities/32-database-file-validation.js";
+import { isCurrentDbDirty } from "../core/14-state-database-schema.js";
+import { isSqlExecutionRunning } from "../core/15-state-runtime-library.js";
 
 export function bindDatabaseFileInputs() {
+  window.addEventListener("beforeunload", event => {
+    if (!isCurrentDbDirty() && !isSqlExecutionRunning()) return;
+    event.preventDefault();
+    event.returnValue = "";
+  });
   dbFile.addEventListener("change", async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -34,8 +41,10 @@ export function bindDatabaseFileInputs() {
 }
 
 export function bindRecentDatabaseUi() {
+  recentDbSearch?.addEventListener("input", renderRecentDbs);
   openRecentDbBtn.addEventListener("click", () => {
     closeDatabaseMenu();
+    if (recentDbSearch) recentDbSearch.value = "";
     renderRecentDbs();
     modalController.open(recentDbModal);
   });

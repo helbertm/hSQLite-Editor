@@ -8,6 +8,7 @@ import { saveCurrentTabState } from "./22c-active-tab-sync.js";
 import { setEditorValue } from "./32a-editor-api.js";
 import { QUERY_HISTORY_LIMIT } from "../core/03-app-limits.js";
 import { getFavoriteQueriesState, getQueryHistoryState, setQueryHistoryState } from "../core/15-state-runtime-library.js";
+import { getCurrentDbFileName } from "../core/14-state-database-schema.js";
 import { queryHistoryStorage } from "../ports/05-storage.js";
 import { escapeHtml, escapeRegExp } from "../ui/00-helpers.js";
 
@@ -32,9 +33,13 @@ export const queryHistoryController = {
       executedAt: new Date().toISOString(),
       status: status === "success" ? "success" : "error",
       sql: normalizedSql,
+      databaseName: getCurrentDbFileName(),
       errorMessage: String(errorMessage || "").trim()
     }, ...queryHistory].slice(0, QUERY_HISTORY_LIMIT));
-    this.save();
+    try { this.save(); } catch (error) {
+      // Execution remains successful; explicit settings transfers retain strict writes.
+      console.warn("query-history-save-failed", error);
+    }
   },
   clear() {
     setQueryHistoryState([]);
@@ -48,6 +53,7 @@ export const queryHistoryController = {
       String(item.sql || "").toLowerCase().includes(filter)
         || String(item.errorMessage || "").toLowerCase().includes(filter)
         || String(item.status || "").toLowerCase().includes(filter)
+        || String(item.databaseName || "").toLowerCase().includes(filter)
     );
   },
   getQuickItems() {
@@ -71,7 +77,7 @@ export const queryHistoryController = {
         <div class="query-history-item">
           <span class="query-history-status-icon" title="${statusLabel}" aria-hidden="true">${getHistoryStatusIcon(item.status)}</span>
           <div>
-            <div class="query-history-meta"><span class="query-history-status-label">${statusLabel}</span><span>·</span><span>${escapeHtml(formatQueryHistoryDate(item.executedAt))}</span></div>
+            <div class="query-history-meta"><span class="query-history-status-label">${statusLabel}</span><span>·</span><span>${escapeHtml(formatQueryHistoryDate(item.executedAt))}</span>${item.databaseName ? `<span>·</span><span>${escapeHtml(item.databaseName)}</span>` : ""}</div>
             <pre class="query-history-sql">${highlightHistoryMatch(item.sql, filter)}</pre>
             ${errorBlock}
           </div>
