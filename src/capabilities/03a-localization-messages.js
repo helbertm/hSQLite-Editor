@@ -522,21 +522,6 @@ export const I18N_MESSAGE_ROWS = Object.freeze([
   , ["sqlMap.pngFilenamePrefix", "sql-map-er", "mapa-sql-der", "mapa-sql-der"]
   , ["footer.privacy", "Privacy", "Privacidade", "Privacidad"]
   , ["database.filePickerDescription", "SQLite database", "Banco de dados SQLite", "Base de datos SQLite"]
-  , ["footer.madeWith", "Made with", "Feito com", "Hecho con"]
-  , ["footer.coffee", "coffee", "café", "café"]
-  , ["footer.coffeeLinkLabel", "Coffee on Wikipedia", "Café na Wikipédia", "Café en Wikipedia"]
-  , ["footer.coffeeLinkTitle", "Learn about coffee on Wikipedia", "Conhecer o café na Wikipédia", "Conocer el café en Wikipedia"]
-  , ["footer.in", "in", "em", "en"]
-  , ["footer.minasLinkTitle", "Learn about Minas Gerais on Wikipedia", "Conhecer Minas Gerais na Wikipédia", "Conocer Minas Gerais en Wikipedia"]
-  , ["footer.variantsLabel", "Footer coffee options", "Opções de café no rodapé", "Opciones de café en el pie de página"]
-  , ["footer.variantA", "Option A, bean heart", "Opção A, coração de grãos", "Opción A, corazón de granos"]
-  , ["footer.variantB", "Option B, mountain-steam cup", "Opção B, xícara com vapor de serra", "Opción B, taza con vapor de sierra"]
-  , ["footer.variantC", "Option C, traditional cloth filter", "Opção C, coador de pano tradicional", "Opción C, filtro de tela tradicional"]
-  , ["footer.variantD", "Option D, enamel cup", "Opção D, caneca esmaltada", "Opción D, taza esmaltada"]
-  , ["footer.variantE", "Option E, coffee branch and cherries", "Opção E, ramo e frutos de café", "Opción E, rama y cerezas de café"]
-  , ["footer.variantF", "Option F, takeaway coffee cup", "Opção F, copo de café para viagem", "Opción F, vaso de café para llevar"]
-  , ["footer.variantG", "Option G, localized coffee badge", "Opção G, emblema de café localizado", "Opción G, emblema de café localizado"]
-  , ["footer.badgeWord", "Coffee", "Café", "Café"]
 ]);
 
 export const I18N_ADDITIONAL_MESSAGES = Object.freeze(Object.fromEntries(
