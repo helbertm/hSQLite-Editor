@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.12.1",
-    "@codemirror/commands": "6.10.4",
+    "@codemirror/commands": "6.11.0",
     "@codemirror/lang-sql": "6.10.0",
     "@codemirror/language": "6.12.4",
     "@codemirror/state": "6.7.1",
